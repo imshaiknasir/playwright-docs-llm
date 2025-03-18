@@ -2,7 +2,6 @@
 
 [![Playwright Documentation Scraper](https://github.com/imshaiknasir/playwright-docs-llm/actions/workflows/playwright.yml/badge.svg)](https://github.com/imshaiknasir/playwright-docs-llm/actions/workflows/playwright.yml)
 [![Deploy to GitHub Pages](https://github.com/imshaiknasir/playwright-docs-llm/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/imshaiknasir/playwright-docs-llm/actions/workflows/deploy-pages.yml)
-[![pages-build-deployment](https://github.com/imshaiknasir/playwright-docs-llm/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/imshaiknasir/playwright-docs-llm/actions/workflows/pages/pages-build-deployment)
 
 An automated documentation scraper for Playwright that maintains up-to-date documentation for both Node.js and Python versions. The documentation is automatically updated daily and published to GitHub Pages.
 
