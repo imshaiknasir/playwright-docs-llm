@@ -13,8 +13,7 @@ This site provides automatically updated documentation for both Node.js and Pyth
 Choose your preferred version:
 
 <div class="documentation-links">
-  <a href="./nodejs-docs" class="btn">Node.js Documentation</a>
-  <a href="./python-docs" class="btn">Python Documentation</a>
+  <a href="{{ site.baseurl }}/README" class="btn">Documentation</a>
 </div>
 
 ## 🔄 Daily Updates

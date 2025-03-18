@@ -1,6 +1,7 @@
 title: Playwright Documentation
 description: Automated documentation scraper for Playwright Node.js and Python versions
 theme: jekyll-theme-cayman
+baseurl: "/playwright-docs-llm"
 
 # Show downloads and view on github links
 show_downloads: true
@@ -11,11 +12,11 @@ github:
 # Navigation
 nav:
   - title: Home
-    url: /
+    url: /playwright-docs-llm/
   - title: Node.js Docs
-    url: /nodejs-docs
+    url: /playwright-docs-llm/nodejs-docs
   - title: Python Docs
-    url: /python-docs
+    url: /playwright-docs-llm/python-docs
 
 # SEO
 author: imshaiknasir
