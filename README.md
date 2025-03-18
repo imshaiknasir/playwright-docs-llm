@@ -7,8 +7,6 @@ An automated documentation scraper for Playwright that maintains up-to-date docu
 
 ## 📚 Documentation
 
-View the documentation at: [https://imshaiknasir.github.io/playwright-docs-llm/](https://imshaiknasir.github.io/playwright-docs-llm/)
-
 Available documentation:
 - Node.js Documentation
 - Python Documentation
