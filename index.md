@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Playwright Documentation
-description: Automated documentation for Playwright Node.js and Python versions
+title: Playwright Documentation For LLMs
+description: Documentation for Playwright Node.js and Python versions for LLMs
 ---
 
 # Welcome to Playwright Documentation
 
-This site provides automatically updated documentation for both Node.js and Python versions of Playwright. The content is scraped daily from the official documentation and converted into an easy-to-read for LLMs.
+The documentation is automatically updated for both Node.js and Python versions of Playwright. The content is scraped daily from the official documentation and converted into an easy-to-read for LLMs.
 
 ## 📚 Raw Documentation Files
 
