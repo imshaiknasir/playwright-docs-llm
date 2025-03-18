@@ -1,0 +1,41 @@
+title: Playwright Documentation
+description: Automated documentation scraper for Playwright Node.js and Python versions
+theme: jekyll-theme-cayman
+
+# Show downloads and view on github links
+show_downloads: true
+github:
+  repository_url: https://github.com/imshaiknasir/playwright-docs-llm
+  is_project_page: true
+
+# Navigation
+nav:
+  - title: Home
+    url: /
+  - title: Node.js Docs
+    url: /nodejs-docs
+  - title: Python Docs
+    url: /python-docs
+
+# SEO
+author: imshaiknasir
+twitter:
+  username: imshaiknasir
+  card: summary
+
+# Analytics (you can add your Google Analytics ID here if you have one)
+# google_analytics: [Your ID]
+
+# Additional settings
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+  input: GFM
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git 

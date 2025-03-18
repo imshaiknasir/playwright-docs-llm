@@ -1,0 +1,41 @@
+name: Playwright Documentation Scraper
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  scrape:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for all branches and tags
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install chromium
+    - name: Run Node.js Documentation Scraper
+      run: npm run scrape-nodejs
+    - name: Run Python Documentation Scraper
+      run: npm run scrape-python
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+    - name: Commit and push if changed
+      run: |
+        git add .
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update documentation [skip ci]" && git push)
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7

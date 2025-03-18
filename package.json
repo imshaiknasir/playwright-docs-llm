@@ -1,0 +1,24 @@
+{
+  "name": "playwright-nodejs-scraped",
+  "version": "1.0.0",
+  "description": "Playwright documentation scraper",
+  "main": "scrape-docs.js",
+  "scripts": {
+    "scrape-nodejs": "node pw-nodejs.js",
+    "scrape-python": "node pw-python.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/node": "^22.13.10"
+  },
+  "dependencies": {
+    "playwright": "^1.51.1",
+    "playwright-core": "^1.51.1",
+    "turndown": "^7.1.2",
+    "undici-types": "^6.20.0"
+  }
+}
