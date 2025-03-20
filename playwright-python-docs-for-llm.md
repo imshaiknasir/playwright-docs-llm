@@ -6978,7 +6978,7 @@ You can open remote traces directly using its URL. This makes it easy to view th
 
 When using [trace.playwright.dev](https://trace.playwright.dev), you can also pass the URL of your uploaded trace at some accessible storage (e.g. inside your CI) as a query parameter. CORS (Cross-Origin Resource Sharing) rules might apply.
 
-    https://trace.playwright.dev/?trace=https://demo.playwright.dev/reports/todomvc/data/cb0fa77ebd9487a5c899f3ae65a7ffdbac681182.zip
+    https://trace.playwright.dev/?trace=https://demo.playwright.dev/reports/todomvc/data/fa874b0d59cdedec675521c21124e93161d66533.zip
 
 Recording a trace[​](#recording-a-trace "Direct link to Recording a trace")
 ---------------------------------------------------------------------------
@@ -7220,7 +7220,7 @@ This Docker image is intended to be used for testing and development purposes on
 
 ### Pull the image[​](#pull-the-image "Direct link to Pull the image")
 
-    docker pull mcr.microsoft.com/playwright/python:v1.50.0-noble
+    docker pull mcr.microsoft.com/playwright/python:v1.51.0-noble
 
 ### Run the image[​](#run-the-image "Direct link to Run the image")
 
@@ -7230,13 +7230,13 @@ By default, the Docker image will use the `root` user to run the browsers. This 
 
 On trusted websites, you can avoid creating a separate user and use root for it since you trust the code which will run on the browsers.
 
-    docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.50.0-noble /bin/bash
+    docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.51.0-noble /bin/bash
 
 #### Crawling and scraping[​](#crawling-and-scraping "Direct link to Crawling and scraping")
 
 On untrusted websites, it's recommended to use a separate user for launching the browsers in combination with the seccomp profile. Inside the container or if you are using the Docker image as a base image you have to use `adduser` for it.
 
-    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright/python:v1.50.0-noble /bin/bash
+    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright/python:v1.51.0-noble /bin/bash
 
 [`seccomp_profile.json`](https://github.com/microsoft/playwright/blob/main/utils/docker/seccomp_profile.json) is needed to run Chromium with sandbox. This is a [default Docker seccomp profile](https://github.com/docker/engine/blob/d0d99b04cf6e00ed3fc27e81fc3d94e7eda70af3/profiles/seccomp/default.json) with extra user namespace cloning permissions:
 
@@ -7258,7 +7258,7 @@ You can run Playwright Server in Docker while keeping your tests running on the 
 
 Start the Playwright Server in Docker:
 
-    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.50.0-noble /bin/sh -c "npx -y playwright@1.50.0 run-server --port 3000 --host 0.0.0.0"
+    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.51.0-noble /bin/sh -c "npx -y playwright@1.51.0 run-server --port 3000 --host 0.0.0.0"
 
 #### Connecting to the Server[​](#connecting-to-the-server "Direct link to Connecting to the Server")
 
@@ -7273,7 +7273,7 @@ Start the Playwright Server in Docker:
 
 If you need to access local servers from within the Docker container:
 
-    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.50.0-noble /bin/sh -c "npx -y playwright@1.50.0 run-server --port 3000 --host 0.0.0.0"
+    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.51.0-noble /bin/sh -c "npx -y playwright@1.51.0 run-server --port 3000 --host 0.0.0.0"
 
 This makes `hostmachine` point to the host's localhost. Your tests should use `hostmachine` instead of `localhost` when accessing local servers.
 
@@ -7288,9 +7288,9 @@ See [all available image tags](https://mcr.microsoft.com/en-us/product/playwrigh
 
 We currently publish images with the following tags:
 
-*   `:v1.50.0` - Playwright v1.50.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.50.0-noble` - Playwright v1.50.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.50.0-jammy` - Playwright v1.50.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
+*   `:v1.51.0` - Playwright v1.51.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.51.0-noble` - Playwright v1.51.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.51.0-jammy` - Playwright v1.51.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
 
 note
 
@@ -7312,7 +7312,7 @@ Build your own image[​](#build-your-own-image "Direct link to Build your own i
 
 To run Playwright inside Docker, you need to have Python, [Playwright browsers](/python/docs/browsers#install-browsers) and [browser system dependencies](/python/docs/browsers#install-system-dependencies) installed. See the following Dockerfile:
 
-    FROM python:3.12-bookwormRUN pip install playwright==@1.50.0 && \    playwright install --with-deps
+    FROM python:3.12-bookwormRUN pip install playwright==@1.51.0 && \    playwright install --with-deps
 
 # Continuous Integration
 
@@ -7358,7 +7358,7 @@ GitHub Actions support [running jobs in a container](https://docs.github.com/en/
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright/python:v1.50.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v4      - name: Set up Python        uses: actions/setup-python@v4        with:          python-version: '3.11'      - name: Install dependencies        run: |          python -m pip install --upgrade pip          pip install -r local-requirements.txt          pip install -e .      - name: Run your tests        run: pytest
+    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright/python:v1.51.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v4      - name: Set up Python        uses: actions/setup-python@v4        with:          python-version: '3.11'      - name: Install dependencies        run: |          python -m pip install --upgrade pip          pip install -r local-requirements.txt          pip install -e .      - name: Run your tests        run: pytest
 
 #### On deployment[​](#on-deployment "Direct link to On deployment")
 
@@ -7390,13 +7390,13 @@ For running the Playwright tests use this pipeline task:
 
 #### Azure Pipelines (containerized)[​](#azure-pipelines-containerized "Direct link to Azure Pipelines (containerized)")
 
-    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright/python:v1.50.0-noblesteps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.11'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: pytest  displayName: 'Run tests'
+    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright/python:v1.51.0-noblesteps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.11'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: pytest  displayName: 'Run tests'
 
 ### CircleCI[​](#circleci "Direct link to CircleCI")
 
 Running Playwright on CircleCI is very similar to running on GitHub Actions. In order to specify the pre-built Playwright [Docker image](/python/docs/docker), simply modify the agent definition with `docker:` in your config like so:
 
-    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright/python:v1.50.0-noble
+    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright/python:v1.51.0-noble
 
 Note: When using the docker agent definition, you are specifying the resource class of where playwright runs to the 'medium' tier [here](https://circleci.com/docs/configuration-reference?#docker-execution-environment). The default behavior of Playwright is to set the number of workers to the detected core count (2 in the case of the medium tier). Overriding the number of workers to greater than this number will cause unnecessary timeouts and failures.
 
@@ -7404,19 +7404,19 @@ Note: When using the docker agent definition, you are specifying the resource cl
 
 Jenkins supports Docker agents for pipelines. Use the [Playwright Docker image](/python/docs/docker) to run tests on Jenkins.
 
-    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright/python:v1.50.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'pip install -r requirements.txt'            sh 'pytest'         }      }   }}
+    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright/python:v1.51.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'pip install -r requirements.txt'            sh 'pytest'         }      }   }}
 
 ### Bitbucket Pipelines[​](#bitbucket-pipelines "Direct link to Bitbucket Pipelines")
 
 Bitbucket Pipelines can use public [Docker images as build environments](https://confluence.atlassian.com/bitbucket/use-docker-images-as-build-environments-792298897.html). To run Playwright tests on Bitbucket, use our public Docker image ([see Dockerfile](/python/docs/docker)).
 
-    image: mcr.microsoft.com/playwright/python:v1.50.0-noble
+    image: mcr.microsoft.com/playwright/python:v1.51.0-noble
 
 ### GitLab CI[​](#gitlab-ci "Direct link to GitLab CI")
 
 To run Playwright tests on GitLab, use our public Docker image ([see Dockerfile](/python/docs/docker)).
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright/python:v1.50.0-noble  script:  ...
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright/python:v1.51.0-noble  script:  ...
 
 Caching browsers[​](#caching-browsers "Direct link to Caching browsers")
 ------------------------------------------------------------------------
