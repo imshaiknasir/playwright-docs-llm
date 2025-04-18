@@ -223,6 +223,49 @@ What's next[​](#whats-next "Direct link to What's next")
 Release notes
 =============
 
+Version 1.52[​](#version-152 "Direct link to Version 1.52")
+-----------------------------------------------------------
+
+### Highlights[​](#highlights "Direct link to Highlights")
+
+*   New method [expect(locator).toContainClass()](/docs/api/class-locatorassertions#locator-assertions-to-contain-class) to ergonomically assert individual class names on the element.
+    
+        await expect(page.getByRole('listitem', { name: 'Ship v1.52' })).toContainClass('done');
+    
+*   [Aria Snapshots](/docs/aria-snapshots) got two new properties: [`/children`](/docs/aria-snapshots#strict-matching) for strict matching and `/url` for links.
+    
+        await expect(locator).toMatchAriaSnapshot(`  - list    - /children: equal    - listitem: Feature A    - listitem:      - link "Feature B":        - /url: "https://playwright.dev"`);
+    
+
+### Test Runner[​](#test-runner "Direct link to Test Runner")
+
+*   New property [testProject.workers](/docs/api/class-testproject#test-project-workers) allows to specify the number of concurrent worker processes to use for a test project. The global limit of property [testConfig.workers](/docs/api/class-testconfig#test-config-workers) still applies.
+*   New [testConfig.failOnFlakyTests](/docs/api/class-testconfig#test-config-fail-on-flaky-tests) option to fail the test run if any flaky tests are detected, similarly to `--fail-on-flaky-tests`. This is useful for CI/CD environments where you want to ensure that all tests are stable before deploying.
+*   New property [testResult.annotations](/docs/api/class-testresult#test-result-annotations) contains annotations for each test retry.
+
+### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+
+*   New option [maxRedirects](/docs/api/class-apirequest#api-request-new-context-option-max-redirects) in [apiRequest.newContext()](/docs/api/class-apirequest#api-request-new-context) to control the maximum number of redirects.
+*   New option [ref](/docs/api/class-locator#locator-aria-snapshot-option-ref) in [locator.ariaSnapshot()](/docs/api/class-locator#locator-aria-snapshot) to generate reference for each element in the snapshot which can later be used to locate the element.
+*   HTML reporter now supports _NOT filtering_ via `!@my-tag` or `!my-file.spec.ts` or `!p:my-project`.
+
+### Breaking Changes[​](#breaking-changes "Direct link to Breaking Changes")
+
+*   Glob URL patterns in methods like [page.route()](/docs/api/class-page#page-route) do not support `?` and `[]` anymore. We recommend using regular expressions instead.
+*   Method [route.continue()](/docs/api/class-route#route-continue) does not allow to override the `Cookie` header anymore. If a `Cookie` header is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browserContext.addCookies()](/docs/api/class-browsercontext#browser-context-add-cookies).
+*   macOS 13 is now deprecated and will no longer receive WebKit updates. Please upgrade to a more recent macOS version to continue benefiting from the latest WebKit improvements.
+
+### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+
+*   Chromium 136.0.7103.25
+*   Mozilla Firefox 137.0
+*   WebKit 18.4
+
+This version was also tested against the following stable channels:
+
+*   Google Chrome 135
+*   Microsoft Edge 135
+
 Version 1.51[​](#version-151 "Direct link to Version 1.51")
 -----------------------------------------------------------
 
@@ -269,13 +312,13 @@ A new [TestStepInfo](/docs/api/class-teststepinfo "TestStepInfo") object is now 
 
     test('some test', async ({ page, isMobile }) => {  // Note the new "step" argument:  await test.step('here is my step', async step => {    step.skip(isMobile, 'not relevant on mobile layouts');    // ...    await step.attach('my attachment', { body: 'some text' });    // ...  });});
 
-### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
 
 *   New option `contrast` for methods [page.emulateMedia()](/docs/api/class-page#page-emulate-media) and [browser.newContext()](/docs/api/class-browser#browser-new-context) allows to emulate the `prefers-contrast` media feature.
 *   New option [failOnStatusCode](/docs/api/class-apirequest#api-request-new-context-option-fail-on-status-code) makes all fetch requests made through the [APIRequestContext](/docs/api/class-apirequestcontext "APIRequestContext") throw on response codes other than 2xx and 3xx.
 *   Assertion [expect(page).toHaveURL()](/docs/api/class-pageassertions#page-assertions-to-have-url) now supports a predicate.
 
-### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
 
 *   Chromium 134.0.6998.35
 *   Mozilla Firefox 135.0
@@ -289,7 +332,7 @@ This version was also tested against the following stable channels:
 Version 1.50[​](#version-150 "Direct link to Version 1.50")
 -----------------------------------------------------------
 
-### Test runner[​](#test-runner "Direct link to Test runner")
+### Test runner[​](#test-runner-1 "Direct link to Test runner")
 
 *   New option [timeout](/docs/api/class-test#test-step-option-timeout) allows specifying a maximum run time for an individual test step. A timed-out step will fail the execution of the test.
     
@@ -329,7 +372,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 *   [expect(locator).toBeEditable()](/docs/api/class-locatorassertions#locator-assertions-to-be-editable) and [locator.isEditable()](/docs/api/class-locator#locator-is-editable) now throw if the target element is not `<input>`, `<select>`, or a number of other editable elements.
 *   Option [testConfig.updateSnapshots](/docs/api/class-testconfig#test-config-update-snapshots) now updates all snapshots when set to `all`, rather than only the failed/changed snapshots. Use the new enum `changed` to keep the old functionality of only updating the changed snapshots.
 
-### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
 
 *   Chromium 133.0.6943.16
 *   Mozilla Firefox 134.0
@@ -353,7 +396,7 @@ You can generate this assertion with [Test Generator](/docs/codegen) and update 
 
 Learn more in the [aria snapshots guide](/docs/aria-snapshots).
 
-### Test runner[​](#test-runner-1 "Direct link to Test runner")
+### Test runner[​](#test-runner-2 "Direct link to Test runner")
 
 *   New option [testConfig.tsconfig](/docs/api/class-testconfig#test-config-tsconfig) allows to specify a single `tsconfig` to be used for all tests.
 *   New method [test.fail.only()](/docs/api/class-test#test-fail-only) to focus on a failing test.
@@ -389,13 +432,13 @@ See [issue #33566](https://github.com/microsoft/playwright/issues/33566) for the
 
     import { defineConfig, devices } from '@playwright/test';export default defineConfig({  projects: [    {      name: 'chromium',      use: { ...devices['Desktop Chrome'], channel: 'chromium' },    },  ],});
 
-### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
 
 *   `<canvas>` elements inside a snapshot now draw a preview.
 *   New method [tracing.group()](/docs/api/class-tracing#tracing-group) to visually group actions in the trace.
 *   Playwright docker images switched from Node.js v20 to Node.js v22 LTS.
 
-### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
 
 *   Chromium 131.0.6778.33
 *   Mozilla Firefox 132.0
@@ -423,14 +466,14 @@ See [WebSocketRoute](/docs/api/class-websocketroute "WebSocketRoute") for more d
 *   Route method calls like [route.fulfill()](/docs/api/class-route#route-fulfill) are not shown in the report and trace viewer anymore. You can see which network requests were routed in the network tab instead.
 *   New "Copy as cURL" and "Copy as fetch" buttons for requests in the network tab.
 
-### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
 
 *   Option [form](/docs/api/class-apirequestcontext#api-request-context-fetch-option-form) and similar ones now accept [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
 *   New method [page.requestGC()](/docs/api/class-page#page-request-gc) may help detect memory leaks.
 *   New option [location](/docs/api/class-test#test-step-option-location) to pass custom step location.
 *   Requests made by [APIRequestContext](/docs/api/class-apirequestcontext "APIRequestContext") now record detailed timing and security information in the HAR.
 
-### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
 
 *   Chromium 130.0.6723.19
 *   Mozilla Firefox 130.0
@@ -466,7 +509,7 @@ You can now pass [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/We
 
     test('query params', async ({ request }) => {  const searchParams = new URLSearchParams();  searchParams.set('userId', 1);  const response = await request.get(      'https://jsonplaceholder.typicode.com/posts',      {        params: searchParams // or as a string: 'userId=1'      }  );  // ...});
 
-### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
 
 *   The `mcr.microsoft.com/playwright:v1.47.0` now serves a Playwright image based on Ubuntu 24.04 Noble. To use the 22.04 jammy-based image, please use `mcr.microsoft.com/playwright:v1.47.0-jammy` instead.
 *   New options [behavior](/docs/api/class-page#page-remove-all-listeners-option-behavior), [behavior](/docs/api/class-browser#browser-remove-all-listeners-option-behavior) and [behavior](/docs/api/class-browsercontext#browser-context-remove-all-listeners-option-behavior) to wait for ongoing listeners to complete.
@@ -475,7 +518,7 @@ You can now pass [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/We
 *   [noWaitAfter](/docs/api/class-locator#locator-select-option-option-no-wait-after) option in [locator.selectOption()](/docs/api/class-locator#locator-select-option) was deprecated.
 *   We've seen reports of WebGL in Webkit misbehaving on GitHub Actions `macos-13`. We recommend upgrading GitHub Actions to `macos-14`.
 
-### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
 
 *   Chromium 129.0.6668.29
 *   Mozilla Firefox 130.0
@@ -527,13 +570,13 @@ This fixture is only available in [component tests](/docs/test-components#handli
 *   New button to copy source file location to clipboard.
 *   Metadata pane now displays the `baseURL`.
 
-### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
 
 *   New `maxRetries` option in [apiRequestContext.fetch()](/docs/api/class-apirequestcontext#api-request-context-fetch) which retries on the `ECONNRESET` network error.
 *   New option to [box a fixture](/docs/test-fixtures#box-fixtures) to minimize the fixture exposure in test reports and error messages.
 *   New option to provide a [custom fixture title](/docs/test-fixtures#custom-fixture-title) to be used in test reports and error messages.
 
-### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
 
 *   Chromium 128.0.6613.18
 *   Mozilla Firefox 128.0
@@ -560,7 +603,7 @@ Utilizing the new [Clock](/docs/api/class-clock "Clock") API allows to manipulat
 
 See [the clock guide](/docs/clock) for more details.
 
-### Test runner[​](#test-runner-2 "Direct link to Test runner")
+### Test runner[​](#test-runner-3 "Direct link to Test runner")
 
 *   New CLI option `--fail-on-flaky-tests` that sets exit code to `1` upon any flaky tests. Note that by default, the test runner exits with code `0` when all failed tests recovered upon a retry. With this option, the test run will fail in such case.
     
@@ -575,7 +618,7 @@ See [the clock guide](/docs/clock) for more details.
         import { expect as baseExpect } from '@playwright/test';export const expect = baseExpect.extend({  async toHaveAmount(locator: Locator, expected: number, options?: { timeout?: number }) {    // When no timeout option is specified, use the config timeout.    const timeout = options?.timeout ?? this.timeout;    // ... implement the assertion ...  },});
     
 
-### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
 
 *   Method [locator.setInputFiles()](/docs/api/class-locator#locator-set-input-files) now supports uploading a directory for `<input type=file webkitdirectory>` elements.
     
@@ -596,7 +639,7 @@ See [the clock guide](/docs/clock) for more details.
 *   v1.45 is the last release to receive WebKit update for macOS 12 Monterey. Please update macOS to keep using the latest WebKit.
     
 
-### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
 
 *   Chromium 127.0.6533.5
 *   Mozilla Firefox 127.0
@@ -668,7 +711,7 @@ Version 1.44[​](#version-144 "Direct link to Version 1.44")
         $ npx playwright test --last-failedRunning 2 tests using 2 workers  2 passed (1.2s)
     
 
-### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
 
 *   Chromium 125.0.6422.14
 *   Mozilla Firefox 125.0.1
@@ -716,7 +759,7 @@ Version 1.43[​](#version-143 "Direct link to Version 1.43")
     *   "Shift F5" to stop running tests.
     *   "Ctrl \`" to toggle test output.
 
-### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
 
 *   Chromium 124.0.6367.8
 *   Mozilla Firefox 124.0
@@ -763,7 +806,7 @@ Use `--grep` command line option to run only tests with certain tags.
 
 *   ⚠️ Ubuntu 18 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
 
 *   Chromium 123.0.6312.4
 *   Mozilla Firefox 123.0
@@ -785,7 +828,7 @@ Version 1.41[​](#version-141 "Direct link to Version 1.41")
 *   New option `stylePath` for methods [expect(page).toHaveScreenshot()](/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1) and [expect(locator).toHaveScreenshot()](/docs/api/class-locatorassertions#locator-assertions-to-have-screenshot-1) to apply a custom stylesheet while making the screenshot.
 *   New `fileName` option for [Blob reporter](/docs/test-reporters#blob-reporter), to specify the name of the report to be created.
 
-### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
 
 *   Chromium 121.0.6167.57
 *   Mozilla Firefox 121.0
@@ -823,7 +866,7 @@ Here is an example of a generated test with assertions:
 *   Methods [download.path()](/docs/api/class-download#download-path) and [download.createReadStream()](/docs/api/class-download#download-create-read-stream) throw an error for failed and cancelled downloads.
 *   Playwright [docker image](/docs/docker) now comes with Node.js v20.
 
-### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
 
 *   Chromium 120.0.6099.28
 *   Mozilla Firefox 119.0
@@ -885,7 +928,7 @@ See [test.step()](/docs/api/class-test#test-step) documentation for a full examp
 
 *   [expect(locator).toHaveAttribute()](/docs/api/class-locatorassertions#locator-assertions-to-have-attribute-2)
 
-### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
 
 *   Chromium 119.0.6045.9
 *   Mozilla Firefox 118.0.1
@@ -944,7 +987,7 @@ Add `@playwright/browser-chromium`, `@playwright/browser-firefox` and `@playwrig
 
     // package.json{  "devDependencies": {    "playwright": "1.38.0",    "@playwright/browser-chromium": "1.38.0",    "@playwright/browser-firefox": "1.38.0",    "@playwright/browser-webkit": "1.38.0"  }}
 
-### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
 
 *   Chromium 117.0.5938.62
 *   Mozilla Firefox 117.0
@@ -1028,7 +1071,7 @@ Firefox
 *   UI Mode now respects project dependencies. You can control which dependencies to respect by checking/unchecking them in a projects list.
 *   Console logs from the test are now displayed in the Console tab.
 
-### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
 
 *   Chromium 116.0.5845.82
 *   Mozilla Firefox 115.0
@@ -1044,7 +1087,7 @@ Version 1.36[​](#version-136 "Direct link to Version 1.36")
 
 🏝️ Summer maintenance release.
 
-### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.75
 *   Mozilla Firefox 115.0
@@ -1058,7 +1101,7 @@ This version was also tested against the following stable channels:
 Version 1.35[​](#version-135 "Direct link to Version 1.35")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights "Direct link to Highlights")
+### Highlights[​](#highlights-1 "Direct link to Highlights")
 
 *   UI mode is now available in VSCode Playwright extension via a new "Show trace viewer" button:
     
@@ -1090,7 +1133,7 @@ Version 1.35[​](#version-135 "Direct link to Version 1.35")
     This change **does not** affect `@playwright/test` and `playwright` package users.
     
 
-### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.13
 *   Mozilla Firefox 113.0
@@ -1104,7 +1147,7 @@ This version was also tested against the following stable channels:
 Version 1.34[​](#version-134 "Direct link to Version 1.34")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-1 "Direct link to Highlights")
+### Highlights[​](#highlights-2 "Direct link to Highlights")
 
 *   UI Mode now shows steps, fixtures and attachments: ![UI Mode attachments](https://github.com/microsoft/playwright/assets/746130/1d280419-d79a-4a56-b2dc-54d631281d56)
     
@@ -1144,7 +1187,7 @@ Version 1.34[​](#version-134 "Direct link to Version 1.34")
 *   Node.js 14 is no longer supported since it [reached its end-of-life](https://nodejs.dev/en/about/releases/) on April 30, 2023.
     
 
-### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
 
 *   Chromium 114.0.5735.26
 *   Mozilla Firefox 113.0
@@ -1184,7 +1227,7 @@ Version 1.33[​](#version-133 "Direct link to Version 1.33")
 
 *   The `mcr.microsoft.com/playwright:v1.33.0` now serves a Playwright image based on Ubuntu Jammy. To use the focal-based image, please use `mcr.microsoft.com/playwright:v1.33.0-focal` instead.
 
-### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
 
 *   Chromium 113.0.5672.53
 *   Mozilla Firefox 112.0
@@ -1222,7 +1265,7 @@ Note: **component tests only**, does not affect end-to-end tests.
 *   `@playwright/experimental-ct-react` now supports **React 18 only**.
 *   If you're running component tests with React 16 or 17, please replace `@playwright/experimental-ct-react` with `@playwright/experimental-ct-react17`.
 
-### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
 
 *   Chromium 112.0.5615.29
 *   Mozilla Firefox 111.0
@@ -1251,7 +1294,7 @@ Version 1.31[​](#version-131 "Direct link to Version 1.31")
         const button = page.getByRole('button');// Make sure at least some part of element intersects viewport.await expect(button).toBeInViewport();// Make sure element is fully outside of viewport.await expect(button).not.toBeInViewport();// Make sure that at least half of the element intersects viewport.await expect(button).toBeInViewport({ ratio: 0.5 });
     
 
-### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
 
 *   DOM snapshots in trace viewer can be now opened in a separate window.
 *   New method `defineConfig` to be used in `playwright.config`.
@@ -1271,7 +1314,7 @@ Replace `config` variable definition with `defineConfig` call:
 
     // Afterimport { defineConfig, devices } from '@playwright/experimental-ct-react';export default defineConfig({  // ... config goes here ...});
 
-### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
 
 *   Chromium 111.0.5563.19
 *   Mozilla Firefox 109.0
@@ -1285,7 +1328,7 @@ This version was also tested against the following stable channels:
 Version 1.30[​](#version-130 "Direct link to Version 1.30")
 -----------------------------------------------------------
 
-### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
 
 *   Chromium 110.0.5481.38
 *   Mozilla Firefox 108.0.2
@@ -1328,13 +1371,13 @@ Version 1.29[​](#version-129 "Direct link to Version 1.29")
         import { defineConfig } from '@playwright/test';export default defineConfig({  use: {    screenshot: {      mode: 'only-on-failure',      fullPage: true,    }  }});
     
 
-### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
 
 *   Playwright Test now respects [`jsconfig.json`](https://code.visualstudio.com/docs/languages/jsconfig).
 *   New options `args` and `proxy` for [androidDevice.launchBrowser()](/docs/api/class-androiddevice#android-device-launch-browser).
 *   Option `postData` in method [route.continue()](/docs/api/class-route#route-continue) now supports [Serializable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Description "Serializable") values.
 
-### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
 
 *   Chromium 109.0.5414.46
 *   Mozilla Firefox 107.0
@@ -1363,7 +1406,7 @@ Version 1.28[​](#version-128 "Direct link to Version 1.28")
 
 ![Dark Theme](https://user-images.githubusercontent.com/746130/201797969-603f74df-d7cf-4c56-befd-798dbd269796.png)
 
-### Test Runner[​](#test-runner-3 "Direct link to Test Runner")
+### Test Runner[​](#test-runner-4 "Direct link to Test Runner")
 
 *   Configure retries and test timeout for a file or a test with [test.describe.configure()](/docs/api/class-test#test-describe-configure).
     
@@ -1383,7 +1426,7 @@ Version 1.28[​](#version-128 "Direct link to Version 1.28")
 *   [android.launchServer()](/docs/api/class-android#android-launch-server) and [android.connect()](/docs/api/class-android#android-connect)
 *   [androidDevice.on('close')](/docs/api/class-androiddevice#android-device-event-close)
 
-### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
 
 *   Chromium 108.0.5359.29
 *   Mozilla Firefox 106.0
@@ -1437,7 +1480,7 @@ All the same methods are also available on [Locator](/docs/api/class-locator "Lo
 *   Command line options `--grep` and `--grep-invert` previously incorrectly ignored `grep` and `grepInvert` options specified in the config. Now all of them are applied together.
     
 
-### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
 
 *   Chromium 107.0.5304.18
 *   Mozilla Firefox 105.0.1
@@ -1474,7 +1517,7 @@ Prior to 1.26, this would wait for all iframes to fire the `DOMContentLoaded` ev
 
 To align with web specification, the `'domcontentloaded'` value only waits for the target frame to fire the `'DOMContentLoaded'` event. Use `waitUntil: 'load'` to wait for all iframes.
 
-### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
 
 *   Chromium 106.0.5249.30
 *   Mozilla Firefox 104.0
@@ -1496,7 +1539,7 @@ Version 1.25[​](#version-125 "Direct link to Version 1.25")
 
 ![vscode extension screenshot](https://user-images.githubusercontent.com/746130/183781999-1b9fdbc5-cfae-47d6-b4f7-5d4ae89716a8.jpg)
 
-### Test Runner[​](#test-runner-4 "Direct link to Test Runner")
+### Test Runner[​](#test-runner-5 "Direct link to Test Runner")
 
 *   [test.step()](/docs/api/class-test#test-step) now returns the value of the step function:
     
@@ -1516,7 +1559,7 @@ Version 1.25[​](#version-125 "Direct link to Version 1.25")
 *   🪦 This is the last release with Node.js 12 support, we recommend upgrading to Node.js LTS (16).
 *   ⚠️ Ubuntu 18 is now deprecated and will not be supported as of Dec 2022.
 
-### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
 
 *   Chromium 105.0.5195.19
 *   Mozilla Firefox 103.0
@@ -1619,7 +1662,7 @@ Note that the new methods [page.routeFromHAR()](/docs/api/class-page#page-route-
 
 Read more about [component testing with Playwright](/docs/test-components).
 
-### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
 
 *   If there's a service worker that's in your way, you can now easily disable it with a new context option `serviceWorkers`:
     
@@ -1649,7 +1692,7 @@ WebServer is now considered "ready" if request to the specified url has any of t
 Version 1.22[​](#version-122 "Direct link to Version 1.22")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-2 "Direct link to Highlights")
+### Highlights[​](#highlights-3 "Direct link to Highlights")
 
 *   Components Testing (preview)
     
@@ -1688,7 +1731,7 @@ Version 1.22[​](#version-122 "Direct link to Version 1.22")
 Version 1.21[​](#version-121 "Direct link to Version 1.21")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-3 "Direct link to Highlights")
+### Highlights[​](#highlights-4 "Direct link to Highlights")
 
 *   New role selectors that allow selecting elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles), [ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and [accessible name](https://w3c.github.io/accname/#dfn-accessible-name).
     
@@ -1713,7 +1756,7 @@ Version 1.21[​](#version-121 "Direct link to Version 1.21")
 *   The `mcr.microsoft.com/playwright` docker image no longer contains Python. Please use `mcr.microsoft.com/playwright/python` as a Playwright-ready docker image with pre-installed Python.
 *   Playwright now supports large file uploads (100s of MBs) via [locator.setInputFiles()](/docs/api/class-locator#locator-set-input-files) API.
 
-### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4951.26
 *   Mozilla Firefox 98.0.2
@@ -1727,7 +1770,7 @@ This version was also tested against the following stable channels:
 Version 1.20[​](#version-120 "Direct link to Version 1.20")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-4 "Direct link to Highlights")
+### Highlights[​](#highlights-5 "Direct link to Highlights")
 
 *   New options for methods [page.screenshot()](/docs/api/class-page#page-screenshot), [locator.screenshot()](/docs/api/class-locator#locator-screenshot) and [elementHandle.screenshot()](/docs/api/class-elementhandle#element-handle-screenshot):
     
@@ -1765,7 +1808,7 @@ Version 1.20[​](#version-120 "Direct link to Version 1.20")
 *   We now ship a designated Python docker image `mcr.microsoft.com/playwright/python`. Please switch over to it if you use Python. This is the last release that includes Python inside our javascript `mcr.microsoft.com/playwright` docker image.
 *   v1.20 is the last release to receive WebKit update for macOS 10.15 Catalina. Please update macOS to keep using latest & greatest WebKit!
 
-### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4921.0
 *   Mozilla Firefox 97.0.1
@@ -1827,7 +1870,7 @@ It is unlikely that this change will affect you, no action is required if your t
 
 We've noticed that in rare cases, the set of tests to be executed was configured in the global setup by means of the environment variables. We also noticed some applications that were post processing the reporters' output in the global teardown. If you are doing one of the two, [learn more](https://github.com/microsoft/playwright/issues/12018)
 
-### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
 
 *   Chromium 100.0.4863.0
 *   Mozilla Firefox 96.0.1
@@ -1892,7 +1935,7 @@ The proper way to make a fixture parametrized in the config file is to specify `
 
     // CORRECT: THIS SNIPPET WORKS SINCE v1.18.// fixtures.jsconst test = base.extend({  // Fixtures marked as "option: true" will get a value specified in the config,  // or fallback to the default value.  myParameter: ['default', { option: true }],});// playwright.config.jsmodule.exports = {  use: {    myParameter: 'value',  },};
 
-### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
 
 *   Chromium 99.0.4812.0
 *   Mozilla Firefox 95.0
@@ -2031,7 +2074,7 @@ Read more about [Docker integration](/docs/docker).
 
 Read more about [Trace Viewer](/docs/trace-viewer).
 
-### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
 
 *   Chromium 97.0.4666.0
 *   Mozilla Firefox 93.0
@@ -2047,7 +2090,7 @@ Version 1.15[​](#version-115 "Direct link to Version 1.15")
 
 ### 🎭 Playwright Library[​](#-playwright-library-1 "Direct link to 🎭 Playwright Library")
 
-#### 🖱️ Mouse Wheel[​](#️-mouse-wheel "Direct link to 🖱️ Mouse Wheel")
+#### 🖱️ Mouse Wheel[​](#️-mouse-wheel "Direct link to 🖱��️ Mouse Wheel")
 
 By using [mouse.wheel()](/docs/api/class-mouse#mouse-wheel) you are now able to scroll vertically or horizontally.
 
@@ -2087,7 +2130,7 @@ By default, tests in a single file are run in order. If you have many independen
 
 By using `npx playwright test --debug` it will enable the [Playwright Inspector](/docs/debug#playwright-inspector) for you to debug your tests.
 
-### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
 
 *   Chromium 96.0.4641.0
 *   Mozilla Firefox 92.0
@@ -2195,7 +2238,7 @@ playwright.config.ts
 
 Learn more in the [documentation](/docs/test-webserver).
 
-### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
 
 *   Chromium 94.0.4595.0
 *   Mozilla Firefox 91.0
@@ -2228,7 +2271,7 @@ Version 1.13[​](#version-113 "Direct link to Version 1.13")
 *   [Playwright Test Configuration](/docs/test-configuration)
 *   [Playwright Test Fixtures](/docs/test-fixtures)
 
-#### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4576.0
 *   Mozilla Firefox 90.0
@@ -2293,7 +2336,7 @@ That will open the following GUI:
 
 👉 Read more in [trace viewer documentation](/docs/trace-viewer).
 
-#### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4530.0
 *   Mozilla Firefox 89.0
@@ -2325,7 +2368,7 @@ Version 1.11[​](#version-111 "Direct link to Version 1.11")
 *   Did live demos with new features ✨
 *   **Special thanks** to [applitools](http://applitools.com/) for hosting the event and inviting us!
 
-#### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
 
 *   Chromium 92.0.4498.0
 *   Mozilla Firefox 89.0b6
@@ -2378,7 +2421,7 @@ Version 1.9[​](#version-19 "Direct link to Version 1.9")
 *   **Page dialogs are now auto-dismissed** during execution, unless a listener for `dialog` event is configured. [Learn more](/docs/dialogs) about this.
 *   [Playwright for Python](https://github.com/microsoft/playwright-python) is **now stable** with an idiomatic snake case API and pre-built [Docker image](/docs/docker) to run tests in CI/CD.
 
-#### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4421.0
 *   Mozilla Firefox 86.0b10
@@ -2418,7 +2461,7 @@ Version 1.8[​](#version-18 "Direct link to Version 1.8")
 *   [page.isVisible()](/docs/api/class-page#page-is-visible).
 *   New option `'editable'` in [elementHandle.waitForElementState()](/docs/api/class-elementhandle#element-handle-wait-for-element-state).
 
-#### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4392.0
 *   Mozilla Firefox 85.0b5
@@ -2438,7 +2481,7 @@ Version 1.7[​](#version-17 "Direct link to Version 1.7")
 *   [browserContext.storageState()](/docs/api/class-browsercontext#browser-context-storage-state) to get current state for later reuse.
 *   `storageState` option in [browser.newContext()](/docs/api/class-browser#browser-new-context) and [browser.newPage()](/docs/api/class-browser#browser-new-page) to setup browser context state.
 
-#### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
 
 *   Chromium 89.0.4344.0
 *   Mozilla Firefox 84.0b9
@@ -2463,8 +2506,6 @@ note
 Using a canary release in production might seem risky, but in practice, it's not.
 
 A canary release passes all automated tests and is used to test e.g. the HTML report, Trace Viewer, or Playwright Inspector with end-to-end tests.
-
-    npm install -D @playwright/test@next
 
 Next npm Dist Tag[​](#next-npm-dist-tag "Direct link to Next npm Dist Tag")
 ---------------------------------------------------------------------------
@@ -2664,7 +2705,7 @@ System requirements[​](#system-requirements "Direct link to System requirement
 
 *   Latest version of Node.js 18, 20 or 22.
 *   Windows 10+, Windows Server 2016+ or Windows Subsystem for Linux (WSL).
-*   macOS 13 Ventura, or later.
+*   macOS 14 Ventura, or later.
 *   Debian 12, Ubuntu 22.04, Ubuntu 24.04, on x86-64 and arm64 architecture.
 
 What's next[​](#whats-next "Direct link to What's next")
@@ -3173,7 +3214,12 @@ When [installing Playwright](/docs/intro) using the [VS Code extension](/docs/ge
 
 The workflow performs these steps:
 
-1.  Clone your repository 2. Install Node.js 3. Install NPM Dependencies 4. Install Playwright Browsers 5. Run Playwright tests 6. Upload HTML report to the GitHub UI
+1.  Clone your repository
+2.  Install Node.js
+3.  Install NPM Dependencies
+4.  Install Playwright Browsers
+5.  Run Playwright tests
+6.  Upload HTML report to the GitHub UI
 
 To learn more about this, see ["Understanding GitHub Actions"](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
 
@@ -3249,7 +3295,7 @@ Downloading the HTML report as a zip file is not very convenient. However, we ca
     *   `AZCOPY_SPA_CLIENT_SECRET`
     *   `AZCOPY_TENANT_ID`
     
-    For a detailed guide on how to authorize a service principal using a client secret, refer to [this Microsoft documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-azure-active-directory#authorize-a-service-principal-by-using-a-client-secret-1).
+    For a detailed guide on how to authorize a service principal using a client secret, refer to [this Microsoft documentation](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-azure-active-directory#authorize-a-service-principal-by-using-a-client-secret).
     
 5.  Add a step that uploads the HTML report to Azure Storage.
     
@@ -3262,7 +3308,7 @@ The contents of the `$web` storage container can be accessed from a browser by u
 
 note
 
-This step will not work for pull requests created from a forked repository because such workflow [doesn't have access to the secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow).
+This step will not work for pull requests created from a forked repository because such workflow [doesn't have access to the secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#using-secrets-in-a-workflow).
 
 What's Next[​](#whats-next "Direct link to What's Next")
 --------------------------------------------------------
@@ -4038,11 +4084,11 @@ playwright.config.ts
 Locale & Timezone[​](#locale--timezone "Direct link to Locale & Timezone")
 --------------------------------------------------------------------------
 
-Emulate the user Locale and Timezone which can be set globally for all tests in the config and then overridden for particular tests.
+Emulate the browser Locale and Timezone which can be set globally for all tests in the config and then overridden for particular tests.
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  use: {    // Emulates the user locale.    locale: 'en-GB',    // Emulates the user timezone.    timezoneId: 'Europe/Paris',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  use: {    // Emulates the browser locale.    locale: 'en-GB',    // Emulates the browser timezone.    timezoneId: 'Europe/Paris',  },});
 
 *   Test
 *   Library
@@ -4054,6 +4100,8 @@ tests/example.spec.ts
     const context = await browser.newContext({  locale: 'de-DE',  timezoneId: 'Europe/Berlin',});
 
 ![Bing in german lang and timezone](https://user-images.githubusercontent.com/13063165/220416571-ccc96ab1-44bb-4579-8430-64502fc24a15.png)
+
+Note that this only affects the browser timezone and locale, not the test runner timezone. To set the test runner timezone, you can use the [`TZ` environment variable](https://nodejs.org/api/cli.html#tz).
 
 Permissions[​](#permissions "Direct link to Permissions")
 ---------------------------------------------------------
@@ -4501,7 +4549,55 @@ Global setup and teardown
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-There are two ways to configure global setup and teardown: using a global setup file and setting it in the config under [`globalSetup`](#option-2-configure-globalsetup-and-globalteardown) or using [project dependencies](#option-1-project-dependencies). With project dependencies, you define a project that runs before all other projects. This is the recommended way to configure global setup as with Project dependencies your HTML report will show the global setup, trace viewer will record a trace of the setup and fixtures can be used.
+There are two ways to configure global setup and teardown: using a global setup file and setting it in the config under [`globalSetup`](#option-2-configure-globalsetup-and-globalteardown) or using [project dependencies](#option-1-project-dependencies). With project dependencies, you define a project that runs before all other projects. This is the recommended approach, as it integrates better with the Playwright test runner: your HTML report will include the global setup, traces will be recorded, and fixtures can be used. For a detailed comparison of the two approaches, see the table below.
+
+Feature
+
+Project Dependencies (recommended)
+
+`globalSetup` (config option)
+
+Runs before all tests
+
+✅ Yes
+
+✅ Yes
+
+HTML report visibility
+
+✅ Shown as a separate project
+
+❌ Not shown
+
+Trace recording
+
+✅ Full trace available
+
+❌ Not supported
+
+Playwright fixtures
+
+✅ Fully supported
+
+❌ Not supported
+
+Browser management
+
+✅ Via `browser` fixture
+
+❌ Fully manual via `browserType.launch()`
+
+Parallelism and retries
+
+✅ Supported via standard config
+
+❌ Not applicable
+
+Config options like `headless` or `testIdAttribute`
+
+✅ Automatically applied
+
+❌ Ignored
 
 Option 1: Project Dependencies[​](#option-1-project-dependencies "Direct link to Option 1: Project Dependencies")
 -----------------------------------------------------------------------------------------------------------------
@@ -4548,6 +4644,12 @@ tests/global.teardown.ts
 
     import { test as teardown } from '@playwright/test';teardown('delete database', async ({ }) => {  console.log('deleting test database...');  // Delete the database});
 
+### Test filtering[​](#test-filtering "Direct link to Test filtering")
+
+All test filtering options, such as `--grep`/`--grep-invert`, `--shard`, filtering directly by location in the command line, or using [`test.only()`](/docs/api/class-test#test-only), directly select the primary tests to be run. If those tests belong to a project with dependencies, all tests from those dependencies will also run.
+
+You can pass `--no-deps` command line option to ignore all dependencies and teardowns. Only your directly selected projects will run.
+
 ### More examples[​](#more-examples "Direct link to More examples")
 
 For more detailed examples check out:
@@ -4565,13 +4667,7 @@ Similarly, use `globalTeardown` to run something once after all the tests. Alter
 
 note
 
-Beware of `globalSetup` and `globalTeardown` caveats:
-
-*   These methods will not produce traces or artifacts unless explictly enabled, as described in [Capturing trace of failures during global setup](#capturing-trace-of-failures-during-global-setup).
-*   Options sush as `headless` or `testIdAttribute` specified in the config file are not applied,
-*   An uncaught exception thrown in `globalSetup` will prevent Playwright from running tests, and no test results will appear in reporters.
-
-Consider using [project dependencies](#option-1-project-dependencies) to produce traces, artifacts, respect config options and get test results in reporters even in case of a setup failure.
+Beware that `globalSetup` and `globalTeardown` lack some features — see the [intro](#introduction) section for a detailed comparison. Consider using [project dependencies](#option-1-project-dependencies) instead to get full feature support.
 
 playwright.config.ts
 
@@ -4691,6 +4787,13 @@ note
 Using serial is not recommended. It is usually better to make your tests isolated, so they can be run independently.
 
     import { test, type Page } from '@playwright/test';// Annotate entire file as serial.test.describe.configure({ mode: 'serial' });let page: Page;test.beforeAll(async ({ browser }) => {  page = await browser.newPage();});test.afterAll(async () => {  await page.close();});test('runs first', async () => {  await page.goto('https://playwright.dev/');});test('runs second', async () => {  await page.getByText('Get Started').click();});
+
+Opt out of fully parallel mode[​](#opt-out-of-fully-parallel-mode "Direct link to Opt out of fully parallel mode")
+------------------------------------------------------------------------------------------------------------------
+
+If your configuration applies parallel mode to all tests using [testConfig.fullyParallel](/docs/api/class-testconfig#test-config-fully-parallel), you might still want to run some tests with default settings. You can override the mode per describe:
+
+    test.describe('runs in parallel with other describes', () => {  test.describe.configure({ mode: 'default' });  test('in order 1', async ({ page }) => {});  test('in order 2', async ({ page }) => {});});
 
 Shard tests between multiple machines[​](#shard-tests-between-multiple-machines "Direct link to Shard tests between multiple machines")
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -5006,7 +5109,7 @@ In this example the chromium, firefox and webkit projects depend on the setup pr
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  projects: [    {      name: 'setup',      testMatch: '**/*.setup.ts',    },    {      name: 'chromium',      use: { ...devices['Desktop Chrome'] },      dependencies: ['setup'],    },    {      name: 'firefox',      use: { ...devices['Desktop Firefox'] },      dependencies: ['setup'],    },    {      name: 'webkit',      use: { ...devices['Desktop Safari'] },      dependencies: ['setup'],    },  ],});
+    import { defineConfig, devices } from '@playwright/test';export default defineConfig({  projects: [    {      name: 'setup',      testMatch: '**/*.setup.ts',    },    {      name: 'chromium',      use: { ...devices['Desktop Chrome'] },      dependencies: ['setup'],    },    {      name: 'firefox',      use: { ...devices['Desktop Firefox'] },      dependencies: ['setup'],    },    {      name: 'webkit',      use: { ...devices['Desktop Safari'] },      dependencies: ['setup'],    },  ],});
 
 ### Running Sequence[​](#running-sequence "Direct link to Running Sequence")
 
@@ -5040,7 +5143,9 @@ You can also teardown your setup by adding a [testProject.teardown](/docs/api/cl
 
 ### Test filtering[​](#test-filtering "Direct link to Test filtering")
 
-If `--grep/--grep-invert` or `--shard` [option](/docs/test-cli#reference) is used, test file name filter is specified in [command line](/docs/test-cli) or [test.only()](/docs/api/class-test#test-only) is used, it will only apply to the tests from the deepest projects in the project dependency chain. In other words, if a matching test belongs to a project that has project dependencies, Playwright will run all the tests from the project dependencies ignoring the filters.
+All test filtering options, such as `--grep`/`--grep-invert`, `--shard`, filtering directly by location in the command line, or using [`test.only()`](/docs/api/class-test#test-only), directly select the primary tests to be run. If those tests belong to a project with dependencies, all tests from those dependencies will also run.
+
+You can pass `--no-deps` command line option to ignore all dependencies and teardowns. Only your directly selected projects will run.
 
 Custom project parameters[​](#custom-project-parameters "Direct link to Custom project parameters")
 ---------------------------------------------------------------------------------------------------
@@ -6238,37 +6343,45 @@ Launch a development web server (or multiple) during the tests.
 
 Shell command to start the local dev server of your app.
 
-`url`
+`cwd`
 
-URL of your http server that is expected to return a 2xx, 3xx, 400, 401, 402, or 403 status code when the server is ready to accept connections.
+Current working directory of the spawned process, defaults to the directory of the configuration file.
 
-`reuseExistingServer`
+`env`
 
-If `true`, it will re-use an existing server on the url when available. If no server is running on that url, it will run the command to start a new server. If `false`, it will throw if an existing process is listening on the url. To see the stdout, you can set the `DEBUG=pw:webserver` environment variable.
+Environment variables to set for the command, `process.env` by default.
+
+`gracefulShutdown`
+
+How to shut down the process. If unspecified, the process group is forcefully `SIGKILL`ed. If set to `{ signal: 'SIGTERM', timeout: 500 }`, the process group is sent a `SIGTERM` signal, followed by `SIGKILL` if it doesn't exit within 500ms. You can also use `SIGINT` as the signal instead. A `0` timeout means no `SIGKILL` will be sent. Windows doesn't support `SIGTERM` and `SIGINT` signals, so this option is ignored on Windows. Note that shutting down a Docker container requires `SIGTERM`.
 
 `ignoreHTTPSErrors`
 
 Whether to ignore HTTPS errors when fetching the `url`. Defaults to `false`.
 
-`cwd`
+`name`
 
-Current working directory of the spawned process, defaults to the directory of the configuration file.
+Specifies a custom name for the web server. This name will be prefixed to log messages. Defaults to `[WebServer]`.
 
-`stdout`
+`reuseExistingServer`
 
-If `"pipe"`, it will pipe the stdout of the command to the process stdout. If `"ignore"`, it will ignore the stdout of the command. Default to `"ignore"`.
+If `true`, it will re-use an existing server on the url when available. If no server is running on that url, it will run the command to start a new server. If `false`, it will throw if an existing process is listening on the url. To see the stdout, you can set the `DEBUG=pw:webserver` environment variable.
 
 `stderr`
 
 Whether to pipe the stderr of the command to the process stderr or ignore it. Defaults to `"pipe"`.
 
+`stdout`
+
+If `"pipe"`, it will pipe the stdout of the command to the process stdout. If `"ignore"`, it will ignore the stdout of the command. Default to `"ignore"`.
+
 `timeout`
 
 How long to wait for the process to start up and be available in milliseconds. Defaults to 60000.
 
-`gracefulShutdown`
+`url`
 
-How to shut down the process. If unspecified, the process group is forcefully `SIGKILL`ed. If set to `{ signal: 'SIGTERM', timeout: 500 }`, the process group is sent a `SIGTERM` signal, followed by `SIGKILL` if it doesn't exit within 500ms. You can also use `SIGINT` as the signal instead. A `0` timeout means no `SIGKILL` will be sent. Windows doesn't support `SIGTERM` and `SIGINT` signals, so this option is ignored on Windows. Note that shutting down a Docker container requires `SIGTERM`.
+URL of your http server that is expected to return a 2xx, 3xx, 400, 401, 402, or 403 status code when the server is ready to accept connections.
 
 Adding a server timeout[​](#adding-a-server-timeout "Direct link to Adding a server timeout")
 ---------------------------------------------------------------------------------------------
@@ -6303,7 +6416,7 @@ Multiple web servers (or background processes) can be launched simultaneously by
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:3000',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:3000',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:3000',      name: 'Frontend',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      name: 'Backend',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:3000',  },});
 
 # Library
 
@@ -6606,7 +6719,7 @@ Note that automated testing cannot detect all types of WCAG violations.
 
     test('should not have any automatically detectable WCAG A or AA violations', async ({ page }) => {  await page.goto('https://your-site.com/');  const accessibilityScanResults = await new AxeBuilder({ page })      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])      .analyze();  expect(accessibilityScanResults.violations).toEqual([]);});
 
-You can find a complete listing of the rule tags axe-core supports in [the "Axe-core Tags" section of the axe API documentation](https://www.deque.com/axe/core-documentation/api-documentation/#axe-core-tags).
+You can find a complete listing of the rule tags axe-core supports in [the "Axe-core Tags" section of the axe API documentation](https://www.deque.com/axe/core-documentation/api-documentation/#axecore-tags).
 
 Handling known issues[​](#handling-known-issues "Direct link to Handling known issues")
 ---------------------------------------------------------------------------------------
@@ -6679,9 +6792,11 @@ This example fixture creates an `AxeBuilder` object which is pre-configured with
 
 axe-test.ts
 
-    import { test as base } from '@playwright/test';import AxeBuilder from '@axe-core/playwright';type AxeFixture = {  makeAxeBuilder: () => AxeBuilder;};// Extend base test by providing "makeAxeBuilder"//// This new "test" can be used in multiple test files, and each of them will get// a consistently configured AxeBuilder instance.export const test = base.extend<AxeFixture>({  makeAxeBuilder: async ({ page }, use, testInfo) => {    const makeAxeBuilder = () => new AxeBuilder({ page })        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])        .exclude('#commonly-reused-element-with-known-issue');    await use(makeAxeBuilder);  }});export { expect } from '@playwright/test';
+    import { test as base } from '@playwright/test';import AxeBuilder from '@axe-core/playwright';type AxeFixture = {  makeAxeBuilder: () => AxeBuilder;};// Extend base test by providing "makeAxeBuilder"//// This new "test" can be used in multiple test files, and each of them will get// a consistently configured AxeBuilder instance.export const test = base.extend<AxeFixture>({  makeAxeBuilder: async ({ page }, use) => {    const makeAxeBuilder = () => new AxeBuilder({ page })        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])        .exclude('#commonly-reused-element-with-known-issue');    await use(makeAxeBuilder);  }});export { expect } from '@playwright/test';
 
-    // axe-test.jsconst base = require('@playwright/test');const AxeBuilder = require('@axe-core/playwright').default;// Extend base test by providing "makeAxeBuilder"//// This new "test" can be used in multiple test files, and each of them will get// a consistently configured AxeBuilder instance.exports.test = base.test.extend({  makeAxeBuilder: async ({ page }, use, testInfo) => {    const makeAxeBuilder = () => new AxeBuilder({ page })        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])        .exclude('#commonly-reused-element-with-known-issue');    await use(makeAxeBuilder);  }});exports.expect = base.expect;
+axe-test.js
+
+    const base = require('@playwright/test');const AxeBuilder = require('@axe-core/playwright').default;// Extend base test by providing "makeAxeBuilder"//// This new "test" can be used in multiple test files, and each of them will get// a consistently configured AxeBuilder instance.exports.test = base.test.extend({  makeAxeBuilder: async ({ page }, use) => {    const makeAxeBuilder = () => new AxeBuilder({ page })        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])        .exclude('#commonly-reused-element-with-known-issue');    await use(makeAxeBuilder);  }});exports.expect = base.expect;
 
 ### Using a fixture[​](#using-a-fixture "Direct link to Using a fixture")
 
@@ -7191,7 +7306,7 @@ In this example we add a custom `toHaveAmount` function. Custom matcher should r
 
 fixtures.ts
 
-    import { expect as baseExpect } from '@playwright/test';import type { Page, Locator } from '@playwright/test';export { test } from '@playwright/test';export const expect = baseExpect.extend({  async toHaveAmount(locator: Locator, expected: number, options?: { timeout?: number }) {    const assertionName = 'toHaveAmount';    let pass: boolean;    let matcherResult: any;    try {      await baseExpect(locator).toHaveAttribute('data-amount', String(expected), options);      pass = true;    } catch (e: any) {      matcherResult = e.matcherResult;      pass = false;    }    const message = pass      ? () => this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot }) +          '\n\n' +          `Locator: ${locator}\n` +          `Expected: not ${this.utils.printExpected(expected)}\n` +          (matcherResult ? `Received: ${this.utils.printReceived(matcherResult.actual)}` : '')      : () =>  this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot }) +          '\n\n' +          `Locator: ${locator}\n` +          `Expected: ${this.utils.printExpected(expected)}\n` +          (matcherResult ? `Received: ${this.utils.printReceived(matcherResult.actual)}` : '');    return {      message,      pass,      name: assertionName,      expected,      actual: matcherResult?.actual,    };  },});
+    import { expect as baseExpect } from '@playwright/test';import type { Locator } from '@playwright/test';export { test } from '@playwright/test';export const expect = baseExpect.extend({  async toHaveAmount(locator: Locator, expected: number, options?: { timeout?: number }) {    const assertionName = 'toHaveAmount';    let pass: boolean;    let matcherResult: any;    try {      const expectation = this.isNot ? baseExpect(locator).not : baseExpect(locator);      await expectation.toHaveAttribute('data-amount', String(expected), options);      pass = true;    } catch (e: any) {      matcherResult = e.matcherResult;      pass = false;    }    if (this.isNot) {      pass =!pass;    }    const message = pass      ? () => this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot }) +          '\n\n' +          `Locator: ${locator}\n` +          `Expected: not ${this.utils.printExpected(expected)}\n` +          (matcherResult ? `Received: ${this.utils.printReceived(matcherResult.actual)}` : '')      : () =>  this.utils.matcherHint(assertionName, undefined, undefined, { isNot: this.isNot }) +          '\n\n' +          `Locator: ${locator}\n` +          `Expected: ${this.utils.printExpected(expected)}\n` +          (matcherResult ? `Received: ${this.utils.printReceived(matcherResult.actual)}` : '');    return {      message,      pass,      name: assertionName,      expected,      actual: matcherResult?.actual,    };  },});
 
 Now we can use `toHaveAmount` in the test.
 
@@ -7298,7 +7413,7 @@ The following test creates a new issue via API and then navigates to the list of
 
 The following test creates a new issue via user interface in the browser and then uses checks if it was created via API:
 
-    import { test, expect } from '@playwright/test';const REPO = 'test-repo-1';const USER = 'github-username';// Request context is reused by all tests in the file.let apiContext;test.beforeAll(async ({ playwright }) => {  apiContext = await playwright.request.newContext({    // All requests we send go to this API endpoint.    baseURL: 'https://api.github.com',    extraHTTPHeaders: {      // We set this header per GitHub guidelines.      'Accept': 'application/vnd.github.v3+json',      // Add authorization token to all requests.      // Assuming personal access token available in the environment.      'Authorization': `token ${process.env.API_TOKEN}`,    },  });});test.afterAll(async ({ }) => {  // Dispose all responses.  await apiContext.dispose();});test('last created issue should be on the server', async ({ page }) => {  await page.goto(`https://github.com/${USER}/${REPO}/issues`);  await page.getByText('New Issue').click();  await page.getByRole('textbox', { name: 'Title' }).fill('Bug report 1');  await page.getByRole('textbox', { name: 'Comment body' }).fill('Bug description');  await page.getByText('Submit new issue').click();  const issueId = page.url().substr(page.url().lastIndexOf('/'));  const newIssue = await apiContext.get(      `https://api.github.com/repos/${USER}/${REPO}/issues/${issueId}`  );  expect(newIssue.ok()).toBeTruthy();  expect(newIssue.json()).toEqual(expect.objectContaining({    title: 'Bug report 1'  }));});
+    import { test, expect } from '@playwright/test';const REPO = 'test-repo-1';const USER = 'github-username';// Request context is reused by all tests in the file.let apiContext;test.beforeAll(async ({ playwright }) => {  apiContext = await playwright.request.newContext({    // All requests we send go to this API endpoint.    baseURL: 'https://api.github.com',    extraHTTPHeaders: {      // We set this header per GitHub guidelines.      'Accept': 'application/vnd.github.v3+json',      // Add authorization token to all requests.      // Assuming personal access token available in the environment.      'Authorization': `token ${process.env.API_TOKEN}`,    },  });});test.afterAll(async ({ }) => {  // Dispose all responses.  await apiContext.dispose();});test('last created issue should be on the server', async ({ page }) => {  await page.goto(`https://github.com/${USER}/${REPO}/issues`);  await page.getByText('New Issue').click();  await page.getByRole('textbox', { name: 'Title' }).fill('Bug report 1');  await page.getByRole('textbox', { name: 'Comment body' }).fill('Bug description');  await page.getByText('Submit new issue').click();  const issueId = new URL(page.url()).pathname.split('/').pop();  const newIssue = await apiContext.get(      `https://api.github.com/repos/${USER}/${REPO}/issues/${issueId}`  );  expect(newIssue.ok()).toBeTruthy();  expect(newIssue.json()).toEqual(expect.objectContaining({    title: 'Bug report 1'  }));});
 
 Reusing authentication state[​](#reusing-authentication-state "Direct link to Reusing authentication state")
 ------------------------------------------------------------------------------------------------------------
@@ -7341,6 +7456,10 @@ Core concepts[​](#core-concepts "Direct link to Core concepts")
 Regardless of the authentication strategy you choose, you are likely to store authenticated browser state on the file system.
 
 We recommend to create `playwright/.auth` directory and add it to your `.gitignore`. Your authentication routine will produce authenticated browser state and save it to a file in this `playwright/.auth` directory. Later on, tests will reuse this state and start already authenticated.
+
+danger
+
+The browser state file may contain sensitive cookies and headers that could be used to impersonate you or your test account. We strongly discourage checking them into private or public repositories.
 
 *   Bash
 *   PowerShell
@@ -8874,7 +8993,7 @@ component.spec.tsx
 You can use `beforeMount` and `afterMount` hooks to configure your app. This lets you set up things like your app router, fake server etc. giving you the flexibility you need. You can also pass custom configuration from the `mount` call from a test, which is accessible from the `hooksConfig` fixture. This includes any config that needs to be run before or after mounting the component. An example of configuring a router is provided below:
 
 *   React
-*   Vue3
+*   Vue
 
 playwright/index.tsx
 
@@ -9058,6 +9177,10 @@ A browser window will open and the test will run and pause at where the breakpoi
 
 ![running test in debug mode](https://user-images.githubusercontent.com/13063165/212740233-3f278825-13e7-4a88-a118-dd4478d43a16.png)
 
+### Debug Tests Using Chrome DevTools[​](#debug-tests-using-chrome-devtools "Direct link to Debug Tests Using Chrome DevTools")
+
+Instead of using `Debug Test`, choose `Run Test` in VS Code. With `Show Browser` enabled, the browser session is reused, letting you open Chrome DevTools for continuous debugging of your tests and the web application.
+
 ### Debug in different Browsers[​](#debug-in-different-browsers "Direct link to Debug in different Browsers")
 
 By default, debugging is done using the Chromium profile. You can debug your tests on different browsers by right clicking on the debug icon in the testing sidebar and clicking on the 'Select Default Profile' option from the dropdown.
@@ -9148,8 +9271,6 @@ Trace Viewer[​](#trace-viewer "Direct link to Trace Viewer")
 ------------------------------------------------------------
 
 Playwright [Trace Viewer](/docs/trace-viewer) is a GUI tool that lets you explore recorded Playwright traces of your tests. You can go back and forward through each action on the left side, and visually see what was happening during the action. In the middle of the screen, you can see a DOM snapshot for the action. On the right side you can see action details, such as time, parameters, return value and log. You can also explore console messages, network requests and the source code.
-
- Your browser does not support the video tag.
 
 To learn more about how to record traces and use the Trace Viewer, check out the [Trace Viewer](/docs/trace-viewer) guide.
 
@@ -10281,9 +10402,6 @@ Introduction[​](#introduction "Direct link to Introduction")
 
 Playwright provides native support for most of the browser features. However, there are some experimental APIs and APIs which are not (yet) fully supported by all browsers. Playwright usually doesn't provide dedicated automation APIs in such cases. You can use mocks to test the behavior of your application in such cases. This guide gives a few examples.
 
-Introduction[​](#introduction-1 "Direct link to Introduction")
---------------------------------------------------------------
-
 Let's consider a web app that uses [battery API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getBattery) to show your device's battery status. We'll mock the battery API and check that the page correctly displays the battery status.
 
 Creating mocks[​](#creating-mocks "Direct link to Creating mocks")
@@ -10528,16 +10646,14 @@ Playwright uses simplified glob patterns for URL matching in network interceptio
 1.  Asterisks:
     *   A single `*` matches any characters except `/`
     *   A double `**` matches any characters including `/`
-2.  Question mark `?` matches any single character except `/`
+2.  Question mark `?` matches only question mark `?`. If you want to match any character, use `*` instead.
 3.  Curly braces `{}` can be used to match a list of options separated by commas `,`
-4.  Square brackets `[]` can be used to match a set of characters
-5.  Backslash `\` can be used to escape any of special characters (note to escape backslash itself as `\\`)
+4.  Backslash `\` can be used to escape any of special characters (note to escape backslash itself as `\\`)
 
 Examples:
 
 *   `https://example.com/*.js` matches `https://example.com/file.js` but not `https://example.com/path/file.js`
-*   `https://example.com/\\?page=1` matches `https://example.com/?page=1` but not `https://example.com`
-*   `**/v[0-9]*` matches `https://example.com/v1/` but not `https://example.com/vote/`
+*   `https://example.com/?page=1` matches `https://example.com/?page=1` but not `https://example.com`
 *   `**/*.js` matches both `https://example.com/file.js` and `https://example.com/path/file.js`
 *   `**/*.{png,jpg,jpeg}` matches all image requests
 
@@ -11016,17 +11132,12 @@ Implementation[​](#implementation "Direct link to Implementation")
 
 We will create a `PlaywrightDevPage` helper class to encapsulate common operations on the `playwright.dev` page. Internally, it will use the `page` object.
 
-*   TypeScript
-*   JavaScript
+*   Test
 *   Library
 
 playwright-dev-page.ts
 
     import { expect, type Locator, type Page } from '@playwright/test';export class PlaywrightDevPage {  readonly page: Page;  readonly getStartedLink: Locator;  readonly gettingStartedHeader: Locator;  readonly pomLink: Locator;  readonly tocList: Locator;  constructor(page: Page) {    this.page = page;    this.getStartedLink = page.locator('a', { hasText: 'Get started' });    this.gettingStartedHeader = page.locator('h1', { hasText: 'Installation' });    this.pomLink = page.locator('li', {      hasText: 'Guides',    }).locator('a', {      hasText: 'Page Object Model',    });    this.tocList = page.locator('article div.markdown ul > li > a');  }  async goto() {    await this.page.goto('https://playwright.dev');  }  async getStarted() {    await this.getStartedLink.first().click();    await expect(this.gettingStartedHeader).toBeVisible();  }  async pageObjectModel() {    await this.getStarted();    await this.pomLink.click();  }}
-
-playwright-dev-page.js
-
-    const { expect } = require('@playwright/test');exports.PlaywrightDevPage = class PlaywrightDevPage {  /**   * @param {import('@playwright/test').Page} page   */  constructor(page) {    this.page = page;    this.getStartedLink = page.locator('a', { hasText: 'Get started' });    this.gettingStartedHeader = page.locator('h1', { hasText: 'Installation' });    this.pomLink = page.locator('li', {      hasText: 'Guides',    }).locator('a', {      hasText: 'Page Object Model',    });    this.tocList = page.locator('article div.markdown ul > li > a');  }  async goto() {    await this.page.goto('https://playwright.dev');  }  async getStarted() {    await this.getStartedLink.first().click();    await expect(this.gettingStartedHeader).toBeVisible();  }  async pageObjectModel() {    await this.getStarted();    await this.pomLink.click();  }};
 
 models/PlaywrightDevPage.js
 
@@ -11034,17 +11145,12 @@ models/PlaywrightDevPage.js
 
 Now we can use the `PlaywrightDevPage` class in our tests.
 
-*   TypeScript
-*   JavaScript
+*   Test
 *   Library
 
 example.spec.ts
 
     import { test, expect } from '@playwright/test';import { PlaywrightDevPage } from './playwright-dev-page';test('getting started should contain table of contents', async ({ page }) => {  const playwrightDev = new PlaywrightDevPage(page);  await playwrightDev.goto();  await playwrightDev.getStarted();  await expect(playwrightDev.tocList).toHaveText([    `How to install Playwright`,    `What's Installed`,    `How to run the example test`,    `How to open the HTML test report`,    `Write tests using web first assertions, page fixtures and locators`,    `Run single test, multiple tests, headed mode`,    `Generate tests with Codegen`,    `See a trace of your tests`  ]);});test('should show Page Object Model article', async ({ page }) => {  const playwrightDev = new PlaywrightDevPage(page);  await playwrightDev.goto();  await playwrightDev.pageObjectModel();  await expect(page.locator('article')).toContainText('Page Object Model is a common pattern');});
-
-example.spec.js
-
-    const { test, expect } = require('@playwright/test');const { PlaywrightDevPage } = require('./playwright-dev-page');test('getting started should contain table of contents', async ({ page }) => {  const playwrightDev = new PlaywrightDevPage(page);  await playwrightDev.goto();  await playwrightDev.getStarted();  await expect(playwrightDev.tocList).toHaveText([    `How to install Playwright`,    `What's Installed`,    `How to run the example test`,    `How to open the HTML test report`,    `Write tests using web first assertions, page fixtures and locators`,    `Run single test, multiple tests, headed mode`,    `Generate tests with Codegen`,    `See a trace of your tests`  ]);});test('should show Page Object Model article', async ({ page }) => {  const playwrightDev = new PlaywrightDevPage(page);  await playwrightDev.goto();  await playwrightDev.pageObjectModel();  await expect(page.locator('article')).toContainText('Page Object Model is a common pattern');});
 
 example.spec.js
 
@@ -11161,7 +11267,7 @@ Each accessible element in the tree is represented as a YAML node:
 *   **"name"**: Accessible name of the element. Quoted strings indicate exact values, `/patterns/` are used for regular expression.
 *   **\[attribute=value\]**: Attributes and values, in square brackets, represent specific ARIA attributes, such as `checked`, `disabled`, `expanded`, `level`, `pressed`, or `selected`.
 
-These values are derived from ARIA attributes or calculated based on HTML semantics. To inspect the accessibility tree structure of a page, use the [Chrome DevTools Accessibility Pane](https://developer.chrome.com/docs/devtools/accessibility/reference#pane).
+These values are derived from ARIA attributes or calculated based on HTML semantics. To inspect the accessibility tree structure of a page, use the [Chrome DevTools Accessibility Tab](https://developer.chrome.com/docs/devtools/accessibility/reference#tab).
 
 Snapshot matching[​](#snapshot-matching "Direct link to Snapshot matching")
 ---------------------------------------------------------------------------
@@ -11218,6 +11324,28 @@ _aria snapshot for partial match_
 
 Partial matches let you create flexible snapshot tests that verify essential page structure without enforcing specific content or attributes.
 
+### Strict matching[​](#strict-matching "Direct link to Strict matching")
+
+By default, a template containing the subset of children will be matched:
+
+    <ul>  <li>Feature A</li>  <li>Feature B</li>  <li>Feature C</li></ul>
+
+_aria snapshot for partial match_
+
+    - list  - listitem: Feature B
+
+The `/children` property can be used to control how child elements are matched:
+
+*   `contain` (default): Matches if all specified children are present in order
+*   `equal`: Matches if the children exactly match the specified list in order
+*   `deep-equal`: Matches if the children exactly match the specified list in order, including nested children
+
+    <ul>  <li>Feature A</li>  <li>Feature B</li>  <li>Feature C</li></ul>
+
+_aria snapshot will fail due to Feature C not being in the template_
+
+    - list  - /children: equal  - listitem: Feature A  - listitem: Feature B
+
 ### Matching with regular expressions[​](#matching-with-regular-expressions "Direct link to Matching with regular expressions")
 
 Regular expressions allow flexible matching for elements with dynamic or variable text. Accessible names and text can support regex patterns.
@@ -11268,7 +11396,7 @@ The way source code is updated can be changed using the `--update-source-method`
 *   **"3way"**: Generates merge conflict markers in your source code, allowing you to choose whether to accept changes.
 *   **"overwrite"**: Overwrites the source code with the new snapshot values.
 
-    npx playwright test --update-snapshots --update-source-mode=3way
+    npx playwright test --update-snapshots --update-source-method=3way
 
 #### Snapshots as separate files[​](#snapshots-as-separate-files "Direct link to Snapshots as separate files")
 
@@ -12470,7 +12598,7 @@ This Docker image is intended to be used for testing and development purposes on
 
 ### Pull the image[​](#pull-the-image "Direct link to Pull the image")
 
-    docker pull mcr.microsoft.com/playwright:v1.51.1-noble
+    docker pull mcr.microsoft.com/playwright:v1.52.0-noble
 
 ### Run the image[​](#run-the-image "Direct link to Run the image")
 
@@ -12480,21 +12608,25 @@ By default, the Docker image will use the `root` user to run the browsers. This 
 
 On trusted websites, you can avoid creating a separate user and use root for it since you trust the code which will run on the browsers.
 
-    docker run -it --rm --ipc=host mcr.microsoft.com/playwright:v1.51.1-noble /bin/bash
+    docker run -it --rm --ipc=host mcr.microsoft.com/playwright:v1.52.0-noble /bin/bash
 
 #### Crawling and scraping[​](#crawling-and-scraping "Direct link to Crawling and scraping")
 
 On untrusted websites, it's recommended to use a separate user for launching the browsers in combination with the seccomp profile. Inside the container or if you are using the Docker image as a base image you have to use `adduser` for it.
 
-    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright:v1.51.1-noble /bin/bash
+    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright:v1.52.0-noble /bin/bash
 
 [`seccomp_profile.json`](https://github.com/microsoft/playwright/blob/main/utils/docker/seccomp_profile.json) is needed to run Chromium with sandbox. This is a [default Docker seccomp profile](https://github.com/docker/engine/blob/d0d99b04cf6e00ed3fc27e81fc3d94e7eda70af3/profiles/seccomp/default.json) with extra user namespace cloning permissions:
 
     {  "comment": "Allow create user namespaces",  "names": [    "clone",    "setns",    "unshare"  ],  "action": "SCMP_ACT_ALLOW",  "args": [],  "includes": {},  "excludes": {}}
 
-note
+### Recommended Docker Configuration[​](#recommended-docker-configuration "Direct link to Recommended Docker Configuration")
 
-Using `--ipc=host` is recommended when using Chrome ([Docker docs](https://docs.docker.com/engine/reference/run/#ipc-settings---ipc)). Chrome can run out of memory without this flag.
+When running Playwright in Docker, the following configuration is recommended:
+
+1.  **Using [`--init`](https://docs.docker.com/reference/cli/docker/container/run/#init)** Docker flag is recommended to avoid special treatment for processes with PID=1. This is a common reason for zombie processes.
+2.  **Using `--ipc=host`** is recommended when using Chromium. Without it, Chromium can run out of memory and crash. Learn more about this option in [Docker docs](https://docs.docker.com/reference/cli/docker/container/run/#ipc).
+3.  **If seeing weird errors when launching Chromium**, try running your container with `docker run --cap-add=SYS_ADMIN` when developing locally.
 
 ### Using on CI[​](#using-on-ci "Direct link to Using on CI")
 
@@ -12508,7 +12640,7 @@ You can run Playwright Server in Docker while keeping your tests running on the 
 
 Start the Playwright Server in Docker:
 
-    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.51.1-noble /bin/sh -c "npx -y playwright@1.51.1 run-server --port 3000 --host 0.0.0.0"
+    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.52.0-noble /bin/sh -c "npx -y playwright@1.52.0 run-server --port 3000 --host 0.0.0.0"
 
 #### Connecting to the Server[​](#connecting-to-the-server "Direct link to Connecting to the Server")
 
@@ -12526,7 +12658,7 @@ There are two ways to connect to the remote Playwright server:
 
 If you need to access local servers from within the Docker container:
 
-    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.51.1-noble /bin/sh -c "npx -y playwright@1.51.1 run-server --port 3000 --host 0.0.0.0"
+    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.52.0-noble /bin/sh -c "npx -y playwright@1.52.0 run-server --port 3000 --host 0.0.0.0"
 
 This makes `hostmachine` point to the host's localhost. Your tests should use `hostmachine` instead of `localhost` when accessing local servers.
 
@@ -12541,9 +12673,9 @@ See [all available image tags](https://mcr.microsoft.com/en-us/product/playwrigh
 
 We currently publish images with the following tags:
 
-*   `:v1.51.1` - Playwright v1.51.1 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.51.1-noble` - Playwright v1.51.1 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.51.1-jammy` - Playwright v1.51.1 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
+*   `:v1.52.0` - Playwright v1.52.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.52.0-noble` - Playwright v1.52.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.52.0-jammy` - Playwright v1.52.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
 
 note
 
@@ -12565,7 +12697,7 @@ Build your own image[​](#build-your-own-image "Direct link to Build your own i
 
 To run Playwright inside Docker, you need to have Node.js, [Playwright browsers](/docs/browsers#install-browsers) and [browser system dependencies](/docs/browsers#install-system-dependencies) installed. See the following Dockerfile:
 
-    FROM node:20-bookwormRUN npx -y playwright@1.51.1 install --with-deps
+    FROM node:20-bookwormRUN npx -y playwright@1.52.0 install --with-deps
 
 # Continuous Integration
 
@@ -12624,7 +12756,7 @@ GitHub Actions support [running jobs in a container](https://docs.github.com/en/
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright:v1.51.1-noble      options: --user 1001    steps:      - uses: actions/checkout@v4      - uses: actions/setup-node@v4        with:          node-version: lts/*      - name: Install dependencies        run: npm ci      - name: Run your tests        run: npx playwright test
+    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright:v1.52.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v4      - uses: actions/setup-node@v4        with:          node-version: lts/*      - name: Install dependencies        run: npm ci      - name: Run your tests        run: npx playwright test
 
 #### On deployment[​](#on-deployment "Direct link to On deployment")
 
@@ -12644,13 +12776,7 @@ Large test suites can take very long to execute. By executing a preliminary test
 
 ### Docker[​](#docker "Direct link to Docker")
 
-We have a [pre-built Docker image](/docs/docker) which can either be used directly or as a reference to update your existing Docker definitions.
-
-Suggested configuration
-
-1.  Using `--ipc=host` is also recommended when using Chromium. Without it Chromium can run out of memory and crash. Learn more about this option in [Docker docs](https://docs.docker.com/reference/cli/docker/container/run/#ipc).
-2.  Seeing other weird errors when launching Chromium? Try running your container with `docker run --cap-add=SYS_ADMIN` when developing locally.
-3.  Using `--init` Docker flag or [dumb-init](https://github.com/Yelp/dumb-init) is recommended to avoid special treatment for processes with PID=1. This is a common reason for zombie processes.
+We have a [pre-built Docker image](/docs/docker) which can either be used directly or as a reference to update your existing Docker definitions. Make sure to follow the [Recommended Docker Configuration](/docs/docker#recommended-docker-configuration) to ensure the best performance.
 
 ### Azure Pipelines[​](#azure-pipelines "Direct link to Azure Pipelines")
 
@@ -12680,13 +12806,13 @@ in `playwright.config.ts`.
 
 #### Azure Pipelines (containerized)[​](#azure-pipelines-containerized "Direct link to Azure Pipelines (containerized)")
 
-    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright:v1.51.1-noblesteps:- task: NodeTool@0  inputs:    versionSpec: '18'  displayName: 'Install Node.js'- script: npm ci  displayName: 'npm ci'- script: npx playwright test  displayName: 'Run Playwright tests'  env:    CI: 'true'
+    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright:v1.52.0-noblesteps:- task: NodeTool@0  inputs:    versionSpec: '18'  displayName: 'Install Node.js'- script: npm ci  displayName: 'npm ci'- script: npx playwright test  displayName: 'Run Playwright tests'  env:    CI: 'true'
 
 ### CircleCI[​](#circleci "Direct link to CircleCI")
 
 Running Playwright on CircleCI is very similar to running on GitHub Actions. In order to specify the pre-built Playwright [Docker image](/docs/docker), simply modify the agent definition with `docker:` in your config like so:
 
-    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright:v1.51.1-noble
+    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright:v1.52.0-noble
 
 Note: When using the docker agent definition, you are specifying the resource class of where playwright runs to the 'medium' tier [here](https://circleci.com/docs/configuration-reference?#docker-execution-environment). The default behavior of Playwright is to set the number of workers to the detected core count (2 in the case of the medium tier). Overriding the number of workers to greater than this number will cause unnecessary timeouts and failures.
 
@@ -12700,41 +12826,41 @@ Sharding in CircleCI is indexed with 0 which means that you will need to overrid
 
 Jenkins supports Docker agents for pipelines. Use the [Playwright Docker image](/docs/docker) to run tests on Jenkins.
 
-    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright:v1.51.1-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'npm ci'            sh 'npx playwright test'         }      }   }}
+    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright:v1.52.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'npm ci'            sh 'npx playwright test'         }      }   }}
 
 ### Bitbucket Pipelines[​](#bitbucket-pipelines "Direct link to Bitbucket Pipelines")
 
 Bitbucket Pipelines can use public [Docker images as build environments](https://confluence.atlassian.com/bitbucket/use-docker-images-as-build-environments-792298897.html). To run Playwright tests on Bitbucket, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    image: mcr.microsoft.com/playwright:v1.51.1-noble
+    image: mcr.microsoft.com/playwright:v1.52.0-noble
 
 ### GitLab CI[​](#gitlab-ci "Direct link to GitLab CI")
 
 To run Playwright tests on GitLab, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.51.1-noble  script:  ...
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.52.0-noble  script:  ...
 
 #### Sharding[​](#sharding "Direct link to Sharding")
 
 GitLab CI supports [sharding tests between multiple jobs](https://docs.gitlab.com/ee/ci/jobs/job_control.html#parallelize-large-jobs) using the [parallel](https://docs.gitlab.com/ee/ci/yaml/index.html#parallel) keyword. The test job will be split into multiple smaller jobs that run in parallel. Parallel jobs are named sequentially from `job_name 1/N` to `job_name N/N`.
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.51.1-noble  parallel: 7  script:    - npm ci    - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.52.0-noble  parallel: 7  script:    - npm ci    - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
 GitLab CI also supports sharding tests between multiple jobs using the [parallel:matrix](https://docs.gitlab.com/ee/ci/yaml/index.html#parallelmatrix) option. The test job will run multiple times in parallel in a single pipeline, but with different variable values for each instance of the job. In the example below, we have 2 `PROJECT` values and 10 `SHARD` values, resulting in a total of 20 jobs to be run.
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.51.1-noble  parallel:    matrix:      - PROJECT: ['chromium', 'webkit']        SHARD: ['1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10']  script:    - npm ci    - npx playwright test --project=$PROJECT --shard=$SHARD
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.52.0-noble  parallel:    matrix:      - PROJECT: ['chromium', 'webkit']        SHARD: ['1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10']  script:    - npm ci    - npx playwright test --project=$PROJECT --shard=$SHARD
 
 ### Google Cloud Build[​](#google-cloud-build "Direct link to Google Cloud Build")
 
 To run Playwright tests on Google Cloud Build, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    steps:- name: mcr.microsoft.com/playwright:v1.51.1-noble  script:   ...  env:  - 'CI=true'
+    steps:- name: mcr.microsoft.com/playwright:v1.52.0-noble  script:   ...  env:  - 'CI=true'
 
 ### Drone[​](#drone "Direct link to Drone")
 
 To run Playwright tests on Drone, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    kind: pipelinename: defaulttype: dockersteps:  - name: test    image: mcr.microsoft.com/playwright:v1.51.1-noble    commands:      - npx playwright test
+    kind: pipelinename: defaulttype: dockersteps:  - name: test    image: mcr.microsoft.com/playwright:v1.52.0-noble    commands:      - npx playwright test
 
 Caching browsers[​](#caching-browsers "Direct link to Caching browsers")
 ------------------------------------------------------------------------
@@ -12777,7 +12903,7 @@ More details
 
 Internally, Playwright connects to the browser using [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/) websocket. Selenium 4 currently exposes this capability. However, this [might not be the case in the future](https://github.com/SeleniumHQ/selenium/issues/11590#issuecomment-1436113950). If Selenium drops this capability, Playwright will stop working with it.
 
-Before connecting Playwright to your Selenium Grid, make sure that grid works with [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/). For example, run [one of the examples](https://github.com/SeleniumHQ/selenium/tree/trunk/javascript/node/selenium-webdriver/example) and pass `SELENIUM_REMOTE_URL` environment variable. If webdriver example does not work, look for any errors at your Selenium hub/node/standalone output and search [Selenium issues](https://github.com/SeleniumHQ/selenium/issues) for a possible solution.
+Before connecting Playwright to your Selenium Grid, make sure that grid works with [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/). For example, run [one of the examples](https://github.com/SeleniumHQ/selenium/tree/trunk/javascript/selenium-webdriver/example) and pass `SELENIUM_REMOTE_URL` environment variable. If webdriver example does not work, look for any errors at your Selenium hub/node/standalone output and search [Selenium issues](https://github.com/SeleniumHQ/selenium/issues) for a possible solution.
 
 Starting Selenium Grid[​](#starting-selenium-grid "Direct link to Starting Selenium Grid")
 ------------------------------------------------------------------------------------------
@@ -13189,7 +13315,13 @@ Learn more about the execution modes [here](/docs/test-parallel).
     
         // Run all the tests in the file concurrently using parallel workers.test.describe.configure({ mode: 'parallel' });test('runs in parallel 1', async ({ page }) => {});test('runs in parallel 2', async ({ page }) => {});
     
-*   Running tests serially, retrying from the start.
+*   Running tests in order, retrying each failed test independetly.
+    
+    This is the default mode. It can be useful to set it explicitly to override project configuration that uses `fullyParallel`.
+    
+        // Tests in this file run in order. Retries, if any, run independently.test.describe.configure({ mode: 'default' });test('runs first', async ({ page }) => {});test('runs second', async ({ page }) => {});
+    
+*   Running tests serially, retrying from the start. If one of the serial tests fails, all subsequent tests are skipped.
     
     note
     
@@ -14413,6 +14545,10 @@ Creates new instances of [APIRequestContext](/docs/api/class-apirequestcontext "
         
         Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.
         
+    *   `maxRedirects` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_ Added in: v1.52[#](#api-request-new-context-option-max-redirects)
+        
+        Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects. This can be overwritten for each request individually.
+        
     *   `proxy` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_[#](#api-request-new-context-option-proxy)
         
         *   `server` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
@@ -15384,7 +15520,7 @@ An example of logging the focused node's name:
 *   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null "null") | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>[#](#accessibility-snapshot-return)
     *   `role` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
         
-        The [role](https://www.w3.org/TR/wai-aria/#usage_intro).
+        The [role](https://www.w3.org/TR/wai-aria/#usage).
         
     *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
         
@@ -16946,7 +17082,7 @@ Enabling routing disables http cache.
 
 *   `url` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp "RegExp") | [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function")([URL](https://nodejs.org/api/url.html "URL")):[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean")[#](#browser-context-route-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://nodejs.org/api/url.html "URL") to match while routing. When a [baseURL](/docs/api/class-browser#browser-new-context-option-base-url) via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
+    A glob pattern, regex pattern, or predicate that receives a [URL](https://nodejs.org/api/url.html "URL") to match during routing. If [baseURL](/docs/api/class-browser#browser-new-context-option-base-url) is set in the context options and the provided URL is a string that does not start with `*`, it is resolved using the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
     
 *   `handler` [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function")([Route](/docs/api/class-route "Route"), [Request](/docs/api/class-request "Request")):[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\> | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")[#](#browser-context-route-option-handler)
     
@@ -17219,10 +17355,6 @@ Returns storage state for this browser context, contains current cookies, local 
     *   `indexedDB` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_ Added in: v1.51[#](#browser-context-storage-state-option-indexed-db)
         
         Set to `true` to include [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) in the storage state snapshot. If your application uses IndexedDB to store authentication tokens, like Firebase Authentication, enable this.
-        
-        note
-        
-        IndexedDBs with typed arrays are currently not supported.
         
     *   `path` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_[#](#browser-context-storage-state-option-path)
         
@@ -17963,7 +18095,7 @@ You can use [ignoreDefaultArgs](/docs/api/class-browsertype#browser-type-launch-
         
     *   `headless` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#browser-type-launch-option-headless)
         
-        Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+        Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
         
     *   `ignoreDefaultArgs` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")\> _(optional)_[#](#browser-type-launch-option-ignore-default-args)
         
@@ -18029,7 +18161,11 @@ Launches browser that uses persistent storage located at [userDataDir](/docs/api
 
 *   `userDataDir` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")[#](#browser-type-launch-persistent-context-option-user-data-dir)
     
-    Path to a User Data Directory, which stores browser session data like cookies and local storage. More details for [Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options#User_Profile). Note that Chromium's user data directory is the **parent** directory of the "Profile Path" seen at `chrome://version`. Pass an empty string to use a temporary directory instead.
+    Path to a User Data Directory, which stores browser session data like cookies and local storage. Pass an empty string to create a temporary directory.
+    
+    More details for [Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and [Firefox](https://wiki.mozilla.org/Firefox/CommandLineOptions#User_profile). Chromium's user data directory is the **parent** directory of the "Profile Path" seen at `chrome://version`.
+    
+    Note that browsers do not allow launching multiple instances with the same User Data Directory.
     
 *   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
     
@@ -18189,7 +18325,7 @@ Launches browser that uses persistent storage located at [userDataDir](/docs/api
         
     *   `headless` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#browser-type-launch-persistent-context-option-headless)
         
-        Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+        Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
         
     *   `httpCredentials` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_[#](#browser-type-launch-persistent-context-option-http-credentials)
         
@@ -18472,7 +18608,7 @@ Launches browser server that client can connect to. An example of launching a br
         
     *   `headless` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#browser-type-launch-server-option-headless)
         
-        Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+        Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
         
     *   `host` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_ Added in: v1.45[#](#browser-type-launch-server-option-host)
         
@@ -24599,6 +24735,10 @@ Captures the aria snapshot of the given element. Read more about [aria snapshots
 **Arguments**
 
 *   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+    *   `ref` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_ Added in: v1.52[#](#locator-aria-snapshot-option-ref)
+        
+        Generate symbolic reference for each element. One can use `aria-ref=<ref>` locator immediately after capturing the snapshot to perform actions on the element.
+        
     *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#locator-aria-snapshot-option-timeout)
         
         Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout` option in the config, or by using the [browserContext.setDefaultTimeout()](/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.setDefaultTimeout()](/docs/api/class-page#page-set-default-timeout) methods.
@@ -25149,7 +25289,7 @@ Execute JavaScript code in the page, taking the matching element as an argument.
     
     *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#locator-evaluate-option-timeout)
         
-        Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout` option in the config, or by using the [browserContext.setDefaultTimeout()](/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.setDefaultTimeout()](/docs/api/class-page#page-set-default-timeout) methods.
+        Maximum time in milliseconds to wait for the locator before evaluating. Note that after locator is resolved, evaluation itself is not limited by the timeout. Defaults to `0` - no timeout.
         
 
 **Returns**
@@ -25225,7 +25365,7 @@ Execute JavaScript code in the page, taking the matching element as an argument,
     
     *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#locator-evaluate-handle-option-timeout)
         
-        Maximum time in milliseconds. Defaults to `0` - no timeout. The default value can be changed via `actionTimeout` option in the config, or by using the [browserContext.setDefaultTimeout()](/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.setDefaultTimeout()](/docs/api/class-page#page-set-default-timeout) methods.
+        Maximum time in milliseconds to wait for the locator before evaluating. Note that after locator is resolved, evaluation itself is not limited by the timeout. Defaults to `0` - no timeout.
         
 
 **Returns**
@@ -28697,7 +28837,7 @@ Enabling routing disables http cache.
 
 *   `url` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp "RegExp") | [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function")([URL](https://nodejs.org/api/url.html "URL")):[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean")[#](#page-route-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://nodejs.org/api/url.html "URL") to match while routing. When a [baseURL](/docs/api/class-browser#browser-new-context-option-base-url) via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
+    A glob pattern, regex pattern, or predicate that receives a [URL](https://nodejs.org/api/url.html "URL") to match during routing. If [baseURL](/docs/api/class-browser#browser-new-context-option-base-url) is set in the context options and the provided URL is a string that does not start with `*`, it is resolved using the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
     
 *   `handler` [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function")([Route](/docs/api/class-route "Route"), [Request](/docs/api/class-request "Request")):[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\> | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")[#](#page-route-option-handler)
     
@@ -32356,6 +32496,10 @@ The [headers](/docs/api/class-route#route-continue-option-headers) option applie
 
 [route.continue()](/docs/api/class-route#route-continue) will immediately send the request to the network, other matching handlers won't be invoked. Use [route.fallback()](/docs/api/class-route#route-fallback) If you want next matching handler in the chain to be invoked.
 
+warning
+
+The `Cookie` header cannot be overridden using this method. If a value is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browserContext.addCookies()](/docs/api/class-browsercontext#browser-context-add-cookies).
+
 * * *
 
 ### fallback[​](#route-fallback "Direct link to fallback")
@@ -34349,6 +34493,43 @@ To check that at least one element from the list is visible, use [locator.first(
 
 * * *
 
+### toContainClass[​](#locator-assertions-to-contain-class "Direct link to toContainClass")
+
+Added in: v1.52 locatorAssertions.toContainClass
+
+Ensures the [Locator](/docs/api/class-locator "Locator") points to an element with given CSS classes. All classes from the asserted value, separated by spaces, must be present in the [Element.classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) in any order.
+
+**Usage**
+
+    <div class='middle selected row' id='component'></div>
+
+    const locator = page.locator('#component');await expect(locator).toContainClass('middle selected row');await expect(locator).toContainClass('selected');await expect(locator).toContainClass('row middle');
+
+When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class lists. Each element's class attribute is matched against the corresponding class in the array:
+
+    <div class='list'></div>  <div class='component inactive'></div>  <div class='component active'></div>  <div class='component inactive'></div></div>
+
+    const locator = page.locator('list > .component');await expect(locator).toContainClass(['inactive', 'active', 'inactive']);
+
+**Arguments**
+
+*   `expected` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")\>[#](#locator-assertions-to-contain-class-option-expected)
+    
+    A string containing expected class names, separated by spaces, or a list of such strings to assert multiple elements.
+    
+*   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+    
+    *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#locator-assertions-to-contain-class-option-timeout)
+        
+        Time to retry the assertion for in milliseconds. Defaults to `timeout` in `TestConfig.expect`.
+        
+
+**Returns**
+
+*   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[void](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined "void")\>[#](#locator-assertions-to-contain-class-return)
+
+* * *
+
 ### toContainText[​](#locator-assertions-to-contain-text "Direct link to toContainText")
 
 Added in: v1.20 locatorAssertions.toContainText
@@ -34576,7 +34757,7 @@ Ensures the [Locator](/docs/api/class-locator "Locator") points to an element wi
 
 Added in: v1.20 locatorAssertions.toHaveClass
 
-Ensures the [Locator](/docs/api/class-locator "Locator") points to an element with given CSS classes. When a string is provided, it must fully match the element's `class` attribute. To match individual classes or perform partial matches, use a regular expression:
+Ensures the [Locator](/docs/api/class-locator "Locator") points to an element with given CSS classes. When a string is provided, it must fully match the element's `class` attribute. To match individual classes use [expect(locator).toContainClass()](/docs/api/class-locatorassertions#locator-assertions-to-contain-class).
 
 **Usage**
 
@@ -36469,6 +36650,26 @@ playwright.config.ts
 
 * * *
 
+### failOnFlakyTests[​](#test-config-fail-on-flaky-tests "Direct link to failOnFlakyTests")
+
+Added in: v1.52 testConfig.failOnFlakyTests
+
+Whether to exit with an error if any tests are marked as flaky. Useful on CI.
+
+Also available in the [command line](/docs/test-cli) with the `--fail-on-flaky-tests` option.
+
+**Usage**
+
+playwright.config.ts
+
+    import { defineConfig } from '@playwright/test';export default defineConfig({  failOnFlakyTests: !!process.env.CI,});
+
+**Type**
+
+*   [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean")
+
+* * *
+
 ### forbidOnly[​](#test-config-forbid-only "Direct link to forbidOnly")
 
 Added in: v1.10 testConfig.forbidOnly
@@ -37159,7 +37360,7 @@ Multiple web servers (or background processes) can be launched:
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:3000',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:3000',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:3000',      name: 'Frontend',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      name: 'Backend',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:3000',  },});
 
 **Type**
 
@@ -37176,9 +37377,22 @@ playwright.config.ts
         
         Environment variables to set for the command, `process.env` by default.
         
+    *   `gracefulShutdown` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+        
+        *   `signal` "SIGINT" | "SIGTERM"
+            
+        *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number")
+            
+        
+        How to shut down the process. If unspecified, the process group is forcefully `SIGKILL`ed. If set to `{ signal: 'SIGTERM', timeout: 500 }`, the process group is sent a `SIGTERM` signal, followed by `SIGKILL` if it doesn't exit within 500ms. You can also use `SIGINT` as the signal instead. A `0` timeout means no `SIGKILL` will be sent. Windows doesn't support `SIGTERM` and `SIGINT` signals, so this option is ignored on Windows. Note that shutting down a Docker container requires `SIGTERM`.
+        
     *   `ignoreHTTPSErrors` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_
         
         Whether to ignore HTTPS errors when fetching the `url`. Defaults to `false`.
+        
+    *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_
+        
+        Specifies a custom name for the web server. This name will be prefixed to log messages. Defaults to `[WebServer]`.
         
     *   `port` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_
         
@@ -37188,26 +37402,17 @@ playwright.config.ts
         
         If true, it will re-use an existing server on the `port` or `url` when available. If no server is running on that `port` or `url`, it will run the command to start a new server. If `false`, it will throw if an existing process is listening on the `port` or `url`. This should be commonly set to `!process.env.CI` to allow the local dev server when running tests locally.
         
-    *   `stdout` "pipe" | "ignore" _(optional)_
-        
-        If `"pipe"`, it will pipe the stdout of the command to the process stdout. If `"ignore"`, it will ignore the stdout of the command. Default to `"ignore"`.
-        
     *   `stderr` "pipe" | "ignore" _(optional)_
         
         Whether to pipe the stderr of the command to the process stderr or ignore it. Defaults to `"pipe"`.
         
+    *   `stdout` "pipe" | "ignore" _(optional)_
+        
+        If `"pipe"`, it will pipe the stdout of the command to the process stdout. If `"ignore"`, it will ignore the stdout of the command. Default to `"ignore"`.
+        
     *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_
         
         How long to wait for the process to start up and be available in milliseconds. Defaults to 60000.
-        
-    *   `gracefulShutdown` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
-        
-        *   `signal` "SIGINT" | "SIGTERM"
-            
-        *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number")
-            
-        
-        How to shut down the process. If unspecified, the process group is forcefully `SIGKILL`ed. If set to `{ signal: 'SIGTERM', timeout: 500 }`, the process group is sent a `SIGTERM` signal, followed by `SIGKILL` if it doesn't exit within 500ms. You can also use `SIGINT` as the signal instead. A `0` timeout means no `SIGKILL` will be sent. Windows doesn't support `SIGTERM` and `SIGINT` signals, so this option is ignored on Windows. Note that shutting down a Docker container requires `SIGTERM`.
         
     *   `url` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_
         
@@ -38447,7 +38652,7 @@ playwright.config.ts
 
 Added in: v1.10 testOptions.headless
 
-Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
 
 **Usage**
 
@@ -39509,6 +39714,30 @@ Use [testConfig.use](/docs/api/class-testconfig#test-config-use) to change this 
 
 *   [TestOptions](/docs/api/class-testoptions "TestOptions")
 
+* * *
+
+### workers[​](#test-project-workers "Direct link to workers")
+
+Added in: v1.52 testProject.workers
+
+The maximum number of concurrent worker processes to use for parallelizing tests from this project. Can also be set as percentage of logical CPU cores, e.g. `'50%'.`
+
+This could be useful, for example, when all tests from a project share a single resource like a test account, and therefore cannot be executed in parallel. Limiting workers to one for such a project will prevent simultaneous use of the shared resource.
+
+Note that the global [testConfig.workers](/docs/api/class-testconfig#test-config-workers) limit applies to the total number of worker processes. However, Playwright will limit the number of workers used for this project by the value of [testProject.workers](/docs/api/class-testproject#test-project-workers).
+
+By default, there is no limit per project. See [testConfig.workers](/docs/api/class-testconfig#test-config-workers) for the default of the total worker limit.
+
+**Usage**
+
+playwright.config.ts
+
+    import { defineConfig } from '@playwright/test';export default defineConfig({  workers: 10,  // total workers limit  projects: [    {      name: 'runs in parallel',    },    {      name: 'one at a time',      workers: 1,  // workers limit for this project    },  ],});
+
+**Type**
+
+*   [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") | [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
+
 # TestStepInfo
 
 TestStepInfo
@@ -40263,15 +40492,7 @@ Properties[​](#properties "Direct link to Properties")
 
 Added in: v1.10 testCase.annotations
 
-The list of annotations applicable to the current test. Includes:
-
-*   annotations defined on the test or suite via [test()](/docs/api/class-test#test-call) and [test.describe()](/docs/api/class-test#test-describe);
-*   annotations implicitly added by methods [test.skip()](/docs/api/class-test#test-skip), [test.fixme()](/docs/api/class-test#test-fixme) and [test.fail()](/docs/api/class-test#test-fail);
-*   annotations appended to [testInfo.annotations](/docs/api/class-testinfo#test-info-annotations) during the test execution.
-
-Annotations are available during test execution through [testInfo.annotations](/docs/api/class-testinfo#test-info-annotations).
-
-Learn more about [test annotations](/docs/test-annotations).
+[testResult.annotations](/docs/api/class-testresult#test-result-annotations) of the last test run.
 
 **Usage**
 
@@ -40592,6 +40813,38 @@ A result of a single [TestCase](/docs/api/class-testcase "TestCase") run.
 
 Properties[​](#properties "Direct link to Properties")
 ------------------------------------------------------
+
+### annotations[​](#test-result-annotations "Direct link to annotations")
+
+Added in: v1.52 testResult.annotations
+
+The list of annotations applicable to the current test. Includes:
+
+*   annotations defined on the test or suite via [test()](/docs/api/class-test#test-call) and [test.describe()](/docs/api/class-test#test-describe);
+*   annotations implicitly added by methods [test.skip()](/docs/api/class-test#test-skip), [test.fixme()](/docs/api/class-test#test-fixme) and [test.fail()](/docs/api/class-test#test-fail);
+*   annotations appended to [testInfo.annotations](/docs/api/class-testinfo#test-info-annotations) during the test execution.
+
+Annotations are available during test execution through [testInfo.annotations](/docs/api/class-testinfo#test-info-annotations).
+
+Learn more about [test annotations](/docs/test-annotations).
+
+**Usage**
+
+    testResult.annotations
+
+**Type**
+
+*   [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+    *   `type` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
+        
+        Annotation type, for example `'skip'` or `'fail'`.
+        
+    *   `description` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_
+        
+        Optional description.
+        
+
+* * *
 
 ### attachments[​](#test-result-attachments "Direct link to attachments")
 

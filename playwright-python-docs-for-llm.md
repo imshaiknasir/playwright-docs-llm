@@ -29,11 +29,11 @@ Usage[​](#usage "Direct link to Usage")
 
 Once installed, you can `import` Playwright in a Python script, and launch any of the 3 browsers (`chromium`, `firefox` and `webkit`).
 
-    from playwright.sync_api import sync_playwrightwith sync_playwright() as p:    browser = p.chromium.launch()    page = browser.new_page()    page.goto("http://playwright.dev")    print(page.title())    browser.close()
+    from playwright.sync_api import sync_playwrightwith sync_playwright() as p:    browser = p.chromium.launch()    page = browser.new_page()    page.goto("https://playwright.dev")    print(page.title())    browser.close()
 
 Playwright supports two variations of the API: synchronous and asynchronous. If your modern project uses [asyncio](https://docs.python.org/3/library/asyncio.html), you should use async API:
 
-    import asynciofrom playwright.async_api import async_playwrightasync def main():    async with async_playwright() as p:        browser = await p.chromium.launch()        page = await browser.new_page()        await page.goto("http://playwright.dev")        print(await page.title())        await browser.close()asyncio.run(main())
+    import asynciofrom playwright.async_api import async_playwrightasync def main():    async with async_playwright() as p:        browser = await p.chromium.launch()        page = await browser.new_page()        await page.goto("https://playwright.dev")        print(await page.title())        await browser.close()asyncio.run(main())
 
 First script[​](#first-script "Direct link to First script")
 ------------------------------------------------------------
@@ -110,10 +110,48 @@ Playwright's API is not thread-safe. If you are using Playwright in a multi-thre
 Release notes
 =============
 
-Version 1.51[​](#version-151 "Direct link to Version 1.51")
+Version 1.52[​](#version-152 "Direct link to Version 1.52")
 -----------------------------------------------------------
 
 ### Highlights[​](#highlights "Direct link to Highlights")
+
+*   New method [expect(locator).to\_contain\_class()](/python/docs/api/class-locatorassertions#locator-assertions-to-contain-class) to ergonomically assert individual class names on the element.
+    
+          expect(page.get_by_role('listitem', name='Ship v1.52')).to_contain_class('done')
+    
+*   [Aria Snapshots](/python/docs/aria-snapshots) got two new properties: [`/children`](/python/docs/aria-snapshots#strict-matching) for strict matching and `/url` for links.
+    
+        expect(locator).to_match_aria_snapshot("""  - list    - /children: equal    - listitem: Feature A    - listitem:      - link "Feature B":        - /url: "https://playwright.dev"""")
+    
+
+### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+
+*   New option [max\_redirects](/python/docs/api/class-apirequest#api-request-new-context-option-max-redirects) in [api\_request.new\_context()](/python/docs/api/class-apirequest#api-request-new-context) to control the maximum number of redirects.
+*   New option [ref](/python/docs/api/class-locator#locator-aria-snapshot-option-ref) in [locator.aria\_snapshot()](/python/docs/api/class-locator#locator-aria-snapshot) to generate reference for each element in the snapshot which can later be used to locate the element.
+*   HTML reporter now supports _NOT filtering_ via `!@my-tag` or `!my-file.spec.ts` or `!p:my-project`.
+
+### Breaking Changes[​](#breaking-changes "Direct link to Breaking Changes")
+
+*   Base URL matching is not supported in [page.frame()](/python/docs/api/class-page#page-frame) anymore. We recommend migrating to [page.frame\_locator()](/python/docs/api/class-page#page-frame-locator) instead for having a more convenient API.
+*   Glob URL patterns in methods like [page.route()](/python/docs/api/class-page#page-route) do not support `?` and `[]` anymore. We recommend using regular expressions instead.
+*   Method [route.continue\_()](/python/docs/api/class-route#route-continue) does not allow to override the `Cookie` header anymore. If a `Cookie` header is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browser\_context.add\_cookies()](/python/docs/api/class-browsercontext#browser-context-add-cookies).
+*   macOS 13 is now deprecated and will no longer receive WebKit updates. Please upgrade to a more recent macOS version to continue benefiting from the latest WebKit improvements.
+
+### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+
+*   Chromium 136.0.7103.25
+*   Mozilla Firefox 137.0
+*   WebKit 18.4
+
+This version was also tested against the following stable channels:
+
+*   Google Chrome 135
+*   Microsoft Edge 135
+
+Version 1.51[​](#version-151 "Direct link to Version 1.51")
+-----------------------------------------------------------
+
+### Highlights[​](#highlights-1 "Direct link to Highlights")
 
 *   New option [indexed\_db](/python/docs/api/class-browsercontext#browser-context-storage-state-option-indexed-db) for [browser\_context.storage\_state()](/python/docs/api/class-browsercontext#browser-context-storage-state) allows to save and restore IndexedDB contents. Useful when your application uses [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) to store authentication tokens, like Firebase Authentication.
     
@@ -130,7 +168,7 @@ Version 1.51[​](#version-151 "Direct link to Version 1.51")
 *   New option [fail\_on\_status\_code](/python/docs/api/class-apirequest#api-request-new-context-option-fail-on-status-code) makes all fetch requests made through the [APIRequestContext](/python/docs/api/class-apirequestcontext "APIRequestContext") throw on response codes other than 2xx and 3xx.
     
 
-### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
 
 *   Chromium 134.0.6998.35
 *   Mozilla Firefox 135.0
@@ -148,7 +186,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 
 *   [Playwright's Pytest plugin](/python/docs/test-runners) now has support for [Async Fixtures](https://playwright.dev/python/docs/test-runners#async-fixtures).
 
-### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
 
 *   Added method [expect(locator).to\_have\_accessible\_error\_message()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-accessible-error-message) to assert the Locator points to an element with a given [aria errormessage](https://w3c.github.io/aria/#aria-errormessage).
 
@@ -163,7 +201,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 
 *   [expect(locator).to\_be\_editable()](/python/docs/api/class-locatorassertions#locator-assertions-to-be-editable) and [locator.is\_editable()](/python/docs/api/class-locator#locator-is-editable) now throw if the target element is not `<input>`, `<select>`, or a number of other editable elements.
 
-### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
 
 *   Chromium 133.0.6943.16
 *   Mozilla Firefox 134.0
@@ -212,13 +250,13 @@ See [issue #33566](https://github.com/microsoft/playwright/issues/33566) for the
 
     pytest test_login.py --browser-channel chromium
 
-### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
 
 *   There will be no more updates for WebKit on Ubuntu 20.04 and Debian 11. We recommend updating your OS to a later version.
 *   `<canvas>` elements inside a snapshot now draw a preview.
 *   Python 3.8 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
 
 *   Chromium 131.0.6778.33
 *   Mozilla Firefox 132.0
@@ -246,12 +284,12 @@ See [WebSocketRoute](/python/docs/api/class-websocketroute "WebSocketRoute") for
 *   Route method calls like [route.fulfill()](/python/docs/api/class-route#route-fulfill) are not shown in the report and trace viewer anymore. You can see which network requests were routed in the network tab instead.
 *   New "Copy as cURL" and "Copy as fetch" buttons for requests in the network tab.
 
-### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
 
 *   New method [page.request\_gc()](/python/docs/api/class-page#page-request-gc) may help detect memory leaks.
 *   Requests made by [APIRequestContext](/python/docs/api/class-apirequestcontext "APIRequestContext") now record detailed timing and security information in the HAR.
 
-### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
 
 *   Chromium 130.0.6723.19
 *   Mozilla Firefox 130.0
@@ -275,7 +313,7 @@ The Network tab in the trace viewer has several nice improvements:
 
 ![Network tab now has filters](https://github.com/user-attachments/assets/4bd1b67d-90bd-438b-a227-00b9e86872e2)
 
-### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
 
 *   The `mcr.microsoft.com/playwright/python:v1.47.0` now serves a Playwright image based on Ubuntu 24.04 Noble. To use the 22.04 jammy-based image, please use `mcr.microsoft.com/playwright/python:v1.47.0-jammy` instead.
 *   The `:latest`/`:focal`/`:jammy` tag for Playwright Docker images is no longer being published. Pin to a specific version for better stability and reproducibility.
@@ -283,7 +321,7 @@ The Network tab in the trace viewer has several nice improvements:
 *   [no\_wait\_after](/python/docs/api/class-locator#locator-select-option-option-no-wait-after) in [locator.select\_option()](/python/docs/api/class-locator#locator-select-option) was deprecated.
 *   We've seen reports of WebGL in Webkit misbehaving on GitHub Actions `macos-13`. We recommend upgrading GitHub Actions to `macos-14`.
 
-### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
 
 *   Chromium 129.0.6668.29
 *   Mozilla Firefox 130.0
@@ -313,11 +351,11 @@ You can provide client certificates as a parameter of [browser.new\_context()](/
 *   New button to copy source file location to clipboard.
 *   Metadata pane now displays the `base_url`.
 
-### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
 
 *   New `maxRetries` option in [api\_request\_context.fetch()](/python/docs/api/class-apirequestcontext#api-request-context-fetch) which retries on the `ECONNRESET` network error.
 
-### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
 
 *   Chromium 128.0.6613.18
 *   Mozilla Firefox 128.0
@@ -344,7 +382,7 @@ Utilizing the new [Clock](/python/docs/api/class-clock "Clock") API allows to ma
 
 See [the clock guide](/python/docs/clock) for more details.
 
-### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
 
 *   Method [locator.set\_input\_files()](/python/docs/api/class-locator#locator-set-input-files) now supports uploading a directory for `<input type=file webkitdirectory>` elements.
     
@@ -361,7 +399,7 @@ See [the clock guide](/python/docs/clock) for more details.
 *   v1.45 is the last release to receive WebKit update for macOS 12 Monterey. Please update macOS to keep using the latest WebKit.
     
 
-### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
 
 *   Chromium 127.0.6533.5
 *   Mozilla Firefox 127.0
@@ -405,7 +443,7 @@ Version 1.44[​](#version-144 "Direct link to Version 1.44")
 
 *   [expect(page).to\_have\_url()](/python/docs/api/class-pageassertions#page-assertions-to-have-url) now supports `ignore_case` [option](/python/docs/api/class-pageassertions#page-assertions-to-have-url-option-ignore-case).
 
-### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
 
 *   Chromium 125.0.6422.14
 *   Mozilla Firefox 125.0.1
@@ -436,7 +474,7 @@ Version 1.43[​](#version-143 "Direct link to Version 1.43")
 *   Conda builds are now published for macOS-arm64 and Linux-arm64.
     
 
-### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
 
 *   Chromium 124.0.6367.8
 *   Mozilla Firefox 124.0
@@ -464,7 +502,7 @@ New method [page.add\_locator\_handler()](/python/docs/api/class-page#page-add-l
 
 *   ⚠️ Ubuntu 18 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
 
 *   Chromium 123.0.6312.4
 *   Mozilla Firefox 123.0
@@ -484,7 +522,7 @@ Version 1.41[​](#version-141 "Direct link to Version 1.41")
 *   New method [browser\_context.unroute\_all()](/python/docs/api/class-browsercontext#browser-context-unroute-all) removes all routes registered by [browser\_context.route()](/python/docs/api/class-browsercontext#browser-context-route) and [browser\_context.route\_from\_har()](/python/docs/api/class-browsercontext#browser-context-route-from-har). Optionally allows to wait for ongoing routes to finish, or ignore any errors from them.
 *   New options [style](/python/docs/api/class-page#page-screenshot-option-style) in [page.screenshot()](/python/docs/api/class-page#page-screenshot) and [style](/python/docs/api/class-locator#locator-screenshot-option-style) in [locator.screenshot()](/python/docs/api/class-locator#locator-screenshot) to add custom CSS to the page before taking a screenshot.
 
-### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
 
 *   Chromium 121.0.6167.57
 *   Mozilla Firefox 121.0
@@ -521,7 +559,7 @@ Here is an example of a generated test with assertions:
 
 *   Method [download.path()](/python/docs/api/class-download#download-path) throws an error for failed and cancelled downloads.
 
-### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
 
 *   Chromium 120.0.6099.28
 *   Mozilla Firefox 119.0
@@ -537,7 +575,7 @@ Version 1.39[​](#version-139 "Direct link to Version 1.39")
 
 Evergreen browsers update.
 
-### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
 
 *   Chromium 119.0.6045.9
 *   Mozilla Firefox 118.0.1
@@ -567,7 +605,7 @@ Version 1.38[​](#version-138 "Direct link to Version 1.38")
 
 *   The following methods were deprecated: [page.type()](/python/docs/api/class-page#page-type), [frame.type()](/python/docs/api/class-frame#frame-type), [locator.type()](/python/docs/api/class-locator#locator-type) and [element\_handle.type()](/python/docs/api/class-elementhandle#element-handle-type). Please use [locator.fill()](/python/docs/api/class-locator#locator-fill) instead which is much faster. Use [locator.press\_sequentially()](/python/docs/api/class-locator#locator-press-sequentially) only if there is a special keyboard handling on the page, and you need to press keys one-by-one.
 
-### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
 
 *   Chromium 117.0.5938.62
 *   Mozilla Firefox 117.0
@@ -581,7 +619,7 @@ This version was also tested against the following stable channels:
 Version 1.37[​](#version-137 "Direct link to Version 1.37")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-1 "Direct link to Highlights")
+### Highlights[​](#highlights-2 "Direct link to Highlights")
 
 *   New [\--full-page-screenshot](/python/docs/test-runners#cli-arguments) command line flag allows taking a full page screenshot on failure.
 *   It is now possible to override the context options for a single test by using the [browser\_context\_args](/python/docs/test-runners#fixtures) marker.
@@ -631,7 +669,7 @@ Firefox
 
 ✅
 
-### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
 
 *   Chromium 116.0.5845.82
 *   Mozilla Firefox 115.0
@@ -647,7 +685,7 @@ Version 1.36[​](#version-136 "Direct link to Version 1.36")
 
 🏝️ Summer maintenance release.
 
-### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.75
 *   Mozilla Firefox 115.0
@@ -661,7 +699,7 @@ This version was also tested against the following stable channels:
 Version 1.35[​](#version-135 "Direct link to Version 1.35")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-2 "Direct link to Highlights")
+### Highlights[​](#highlights-3 "Direct link to Highlights")
 
 *   New option `mask_color` for methods [page.screenshot()](/python/docs/api/class-page#page-screenshot) and [locator.screenshot()](/python/docs/api/class-locator#locator-screenshot) to change default masking color.
     
@@ -670,7 +708,7 @@ Version 1.35[​](#version-135 "Direct link to Version 1.35")
         $ playwright uninstall # remove browsers installed by this installation$ playwright uninstall --all # remove all ever-install Playwright browsers
     
 
-### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.13
 *   Mozilla Firefox 113.0
@@ -684,7 +722,7 @@ This version was also tested against the following stable channels:
 Version 1.34[​](#version-134 "Direct link to Version 1.34")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-3 "Direct link to Highlights")
+### Highlights[​](#highlights-4 "Direct link to Highlights")
 
 *   New [locator.and\_()](/python/docs/api/class-locator#locator-and) to create a locator that matches both locators.
     
@@ -693,7 +731,7 @@ Version 1.34[​](#version-134 "Direct link to Version 1.34")
 *   New events [browser\_context.on("console")](/python/docs/api/class-browsercontext#browser-context-event-console) and [browser\_context.on("dialog")](/python/docs/api/class-browsercontext#browser-context-event-dialog) to subscribe to any dialogs and console messages from any page from the given browser context. Use the new methods [console\_message.page](/python/docs/api/class-consolemessage#console-message-page) and [dialog.page](/python/docs/api/class-dialog#dialog-page) to pin-point event source.
     
 
-### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
 
 *   Chromium 114.0.5735.26
 *   Mozilla Firefox 113.0
@@ -732,7 +770,7 @@ Version 1.33[​](#version-133 "Direct link to Version 1.33")
 
 *   The `mcr.microsoft.com/playwright/python:v1.33.0` now serves a Playwright image based on Ubuntu Jammy. To use the focal-based image, please use `mcr.microsoft.com/playwright/python:v1.33.0-focal` instead.
 
-### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
 
 *   Chromium 113.0.5672.53
 *   Mozilla Firefox 112.0
@@ -753,7 +791,7 @@ Version 1.32[​](#version-132 "Direct link to Version 1.32")
 *   Chaining existing locator objects, see [locator docs](/python/docs/locators#matching-inside-a-locator) for details.
 *   New option [name](/python/docs/api/class-tracing#tracing-start-chunk-option-name) in method [tracing.start\_chunk()](/python/docs/api/class-tracing#tracing-start-chunk).
 
-### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
 
 *   Chromium 112.0.5615.29
 *   Mozilla Firefox 111.0
@@ -774,14 +812,14 @@ Version 1.31[​](#version-131 "Direct link to Version 1.31")
         from playwright.sync_api import expectlocator = page.get_by_role("button")# Make sure at least some part of element intersects viewport.expect(locator).to_be_in_viewport()# Make sure element is fully outside of viewport.expect(locator).not_to_be_in_viewport()# Make sure that at least half of the element intersects viewport.expect(locator).to_be_in_viewport(ratio=0.5)
     
 
-### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
 
 *   DOM snapshots in trace viewer can be now opened in a separate window.
 *   New option [max\_redirects](/python/docs/api/class-route#route-fetch-option-max-redirects) for method [route.fetch()](/python/docs/api/class-route#route-fetch).
 *   Playwright now supports Debian 11 arm64.
 *   Official [docker images](/python/docs/docker) now include Node 18 instead of Node 16.
 
-### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
 
 *   Chromium 111.0.5563.19
 *   Mozilla Firefox 109.0
@@ -795,7 +833,7 @@ This version was also tested against the following stable channels:
 Version 1.30[​](#version-130 "Direct link to Version 1.30")
 -----------------------------------------------------------
 
-### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
 
 *   Chromium 110.0.5481.38
 *   Mozilla Firefox 108.0.2
@@ -826,11 +864,11 @@ Version 1.29[​](#version-129 "Direct link to Version 1.29")
         element.select_option("Red")
     
 
-### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
 
 *   Option `postData` in method [route.continue\_()](/python/docs/api/class-route#route-continue) now supports [Serializable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Description "Serializable") values.
 
-### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
 
 *   Chromium 109.0.5414.46
 *   Mozilla Firefox 107.0
@@ -855,7 +893,7 @@ Version 1.28[​](#version-128 "Direct link to Version 1.28")
 *   [locator.blur()](/python/docs/api/class-locator#locator-blur)
 *   [locator.clear()](/python/docs/api/class-locator#locator-clear)
 
-### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
 
 *   Chromium 108.0.5359.29
 *   Mozilla Firefox 106.0
@@ -896,7 +934,7 @@ All the same methods are also available on [Locator](/python/docs/api/class-loca
         expect(page.get_by_role("button")).to_have_attribute("disabled", "")
     
 
-### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
 
 *   Chromium 107.0.5304.18
 *   Mozilla Firefox 105.0.1
@@ -932,7 +970,7 @@ Prior to 1.26, this would wait for all iframes to fire the `DOMContentLoaded` ev
 
 To align with web specification, the `'domcontentloaded'` value only waits for the target frame to fire the `'DOMContentLoaded'` event. Use `wait_until="load"` to wait for all iframes.
 
-### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
 
 *   Chromium 106.0.5249.30
 *   Mozilla Firefox 104.0
@@ -952,7 +990,7 @@ Version 1.25[​](#version-125 "Direct link to Version 1.25")
 *   🪦 This is the last release with macOS 10.15 support (deprecated as of 1.21).
 *   ⚠️ Ubuntu 18 is now deprecated and will not be supported as of Dec 2022.
 
-### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
 
 *   Chromium 105.0.5195.19
 *   Mozilla Firefox 103.0
@@ -1029,7 +1067,7 @@ Note that the new methods [page.route\_from\_har()](/python/docs/api/class-page#
 *   New method [expect(locator).to\_have\_values()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-values) that asserts all selected values of `<select multiple>` element.
 *   Methods [expect(locator).to\_contain\_text()](/python/docs/api/class-locatorassertions#locator-assertions-to-contain-text) and [expect(locator).to\_have\_text()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-text) now accept `ignore_case` option.
 
-### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
 
 *   If there's a service worker that's in your way, you can now easily disable it with a new context option `service_workers`:
     
@@ -1064,7 +1102,7 @@ Note that the new methods [page.route\_from\_har()](/python/docs/api/class-page#
 Version 1.22[​](#version-122 "Direct link to Version 1.22")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-4 "Direct link to Highlights")
+### Highlights[​](#highlights-5 "Direct link to Highlights")
 
 *   Role selectors that allow selecting elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles), [ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and [accessible name](https://w3c.github.io/accname/#dfn-accessible-name).
     
@@ -1084,7 +1122,7 @@ Version 1.22[​](#version-122 "Direct link to Version 1.22")
 Version 1.21[​](#version-121 "Direct link to Version 1.21")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-5 "Direct link to Highlights")
+### Highlights[​](#highlights-6 "Direct link to Highlights")
 
 *   New role selectors that allow selecting elements by their [ARIA role](https://www.w3.org/TR/wai-aria-1.2/#roles), [ARIA attributes](https://www.w3.org/TR/wai-aria-1.2/#aria-attributes) and [accessible name](https://w3c.github.io/accname/#dfn-accessible-name).
     
@@ -1107,7 +1145,7 @@ Version 1.21[​](#version-121 "Direct link to Version 1.21")
 *   The `mcr.microsoft.com/playwright` docker image no longer contains Python. Please use `mcr.microsoft.com/playwright/python` as a Playwright-ready docker image with pre-installed Python.
 *   Playwright now supports large file uploads (100s of MBs) via [locator.set\_input\_files()](/python/docs/api/class-locator#locator-set-input-files) API.
 
-### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4951.26
 *   Mozilla Firefox 98.0.2
@@ -1121,7 +1159,7 @@ This version was also tested against the following stable channels:
 Version 1.20[​](#version-120 "Direct link to Version 1.20")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-6 "Direct link to Highlights")
+### Highlights[​](#highlights-7 "Direct link to Highlights")
 
 *   New options for methods [page.screenshot()](/python/docs/api/class-page#page-screenshot), [locator.screenshot()](/python/docs/api/class-locator#locator-screenshot) and [element\_handle.screenshot()](/python/docs/api/class-elementhandle#element-handle-screenshot):
     *   Option `animations: "disabled"` rewinds all CSS animations and transitions to a consistent state
@@ -1134,7 +1172,7 @@ Version 1.20[​](#version-120 "Direct link to Version 1.20")
 *   We now ship a designated Python docker image `mcr.microsoft.com/playwright/python`. Please switch over to it if you use Python. This is the last release that includes Python inside our javascript `mcr.microsoft.com/playwright` docker image.
 *   v1.20 is the last release to receive WebKit update for macOS 10.15 Catalina. Please update macOS to keep using latest & greatest WebKit!
 
-### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4921.0
 *   Mozilla Firefox 97.0.1
@@ -1148,7 +1186,7 @@ This version was also tested against the following stable channels:
 Version 1.19[​](#version-119 "Direct link to Version 1.19")
 -----------------------------------------------------------
 
-### Highlights[​](#highlights-7 "Direct link to Highlights")
+### Highlights[​](#highlights-8 "Direct link to Highlights")
 
 *   Locator now supports a `has` option that makes sure it contains another locator inside:
     
@@ -1168,7 +1206,7 @@ Version 1.19[​](#version-119 "Direct link to Version 1.19")
 *   Playwright Codegen now generates locators and frame locators
     
 
-### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
 
 *   Chromium 100.0.4863.0
 *   Mozilla Firefox 96.0.1
@@ -1239,7 +1277,7 @@ Read more in [our documentation](/python/docs/test-assertions).
 *   [`accept_downloads`](/python/docs/api/class-browser#browser-new-context-option-accept-downloads) option now defaults to `True`.
 *   [`sources`](/python/docs/api/class-tracing#tracing-start-option-sources) option to embed sources into traces.
 
-### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
 
 *   Chromium 99.0.4812.0
 *   Mozilla Firefox 95.0
@@ -1327,7 +1365,7 @@ Read more about [Docker integration](/python/docs/docker).
 
 Read more about [Trace Viewer](/python/docs/trace-viewer).
 
-### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
 
 *   Chromium 97.0.4666.0
 *   Mozilla Firefox 93.0
@@ -1369,7 +1407,7 @@ Its now possible to emulate the `forced-colors` CSS media feature by passing it 
 *   [tracing.start\_chunk()](/python/docs/api/class-tracing#tracing-start-chunk) - Start a new trace chunk.
 *   [tracing.stop\_chunk()](/python/docs/api/class-tracing#tracing-stop-chunk) - Stops a new trace chunk.
 
-### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
 
 *   Chromium 96.0.4641.0
 *   Mozilla Firefox 92.0
@@ -1413,7 +1451,7 @@ Learn more in the [react selectors documentation](/python/docs/other-locators#re
 
     # select the first button among all buttonsbutton.click("button >> nth=0")# or if you are using locators, you can use first, nth() and lastpage.locator("button").first.click()# click a visible buttonbutton.click("button >> visible=true")
 
-### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
 
 *   Chromium 94.0.4595.0
 *   Mozilla Firefox 91.0
@@ -1437,7 +1475,7 @@ Version 1.13[​](#version-113 "Direct link to Version 1.13")
 *   [Authentication](/python/docs/auth)
 *   [Chrome Extensions](/python/docs/chrome-extensions)
 
-#### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4576.0
 *   Mozilla Firefox 90.0
@@ -1478,7 +1516,7 @@ That will open the following GUI:
 
 👉 Read more in [trace viewer documentation](/python/docs/trace-viewer).
 
-#### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4530.0
 *   Mozilla Firefox 89.0
@@ -1510,7 +1548,7 @@ Version 1.11[​](#version-111 "Direct link to Version 1.11")
 *   Did live demos with new features ✨
 *   **Special thanks** to [applitools](http://applitools.com/) for hosting the event and inviting us!
 
-#### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
 
 *   Chromium 92.0.4498.0
 *   Mozilla Firefox 89.0b6
@@ -1563,7 +1601,7 @@ Version 1.9[​](#version-19 "Direct link to Version 1.9")
 *   **Page dialogs are now auto-dismissed** during execution, unless a listener for `dialog` event is configured. [Learn more](/python/docs/dialogs) about this.
 *   [Playwright for Python](https://github.com/microsoft/playwright-python) is **now stable** with an idiomatic snake case API and pre-built [Docker image](/python/docs/docker) to run tests in CI/CD.
 
-#### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4421.0
 *   Mozilla Firefox 86.0b10
@@ -1603,7 +1641,7 @@ Version 1.8[​](#version-18 "Direct link to Version 1.8")
 *   [page.is\_visible()](/python/docs/api/class-page#page-is-visible).
 *   New option `'editable'` in [element\_handle.wait\_for\_element\_state()](/python/docs/api/class-elementhandle#element-handle-wait-for-element-state).
 
-#### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4392.0
 *   Mozilla Firefox 85.0b5
@@ -1623,7 +1661,7 @@ Version 1.7[​](#version-17 "Direct link to Version 1.7")
 *   [browser\_context.storage\_state()](/python/docs/api/class-browsercontext#browser-context-storage-state) to get current state for later reuse.
 *   `storageState` option in [browser.new\_context()](/python/docs/api/class-browser#browser-new-context) and [browser.new\_page()](/python/docs/api/class-browser#browser-new-page) to setup browser context state.
 
-#### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
 
 *   Chromium 89.0.4344.0
 *   Mozilla Firefox 84.0b9
@@ -1740,7 +1778,7 @@ System requirements[​](#system-requirements "Direct link to System requirement
 
 *   Python 3.8 or higher.
 *   Windows 10+, Windows Server 2016+ or Windows Subsystem for Linux (WSL).
-*   macOS 13 Ventura, or later.
+*   macOS 14 Ventura, or later.
 *   Debian 12, Ubuntu 22.04, Ubuntu 24.04, on x86-64 and arm64 architecture.
 
 What's next[​](#whats-next "Direct link to What's next")
@@ -2201,7 +2239,11 @@ To learn more about this, see ["Understanding GitHub Actions"](https://docs.gith
 
 Looking at the list of steps in `jobs.test.steps`, you can see that the workflow performs these steps:
 
-1.  Clone your repository 2. Install language dependencies 3. Install project dependencies and build 4. Install Playwright Browsers 5. Run tests
+1.  Clone your repository
+2.  Install language dependencies
+3.  Install project dependencies and build
+4.  Install Playwright Browsers
+5.  Run tests
 
 Create a Repo and Push to GitHub[​](#create-a-repo-and-push-to-github "Direct link to Create a Repo and Push to GitHub")
 ------------------------------------------------------------------------------------------------------------------------
@@ -2416,7 +2458,9 @@ See the [guides for CI providers](/python/docs/ci) to deploy your tests to CI/CD
 Async Fixtures[​](#async-fixtures "Direct link to Async Fixtures")
 ------------------------------------------------------------------
 
-If you want to use async fixtures, you can use the [`pytest-playwright-asyncio`](https://pypi.org/project/pytest-playwright-asyncio/) plugin. Make sure to use `pytest-asyncio>=0.24.0` and make your tests use of [`loop_scope=session`](https://pytest-asyncio.readthedocs.io/en/latest/how-to-guides/run_session_tests_in_same_loop.html).
+To use async fixtures, install [`pytest-playwright-asyncio`](https://pypi.org/project/pytest-playwright-asyncio/).
+
+Ensure you are using `pytest-asyncio>=0.26.0` and set [`asyncio_default_test_loop_scope = session`](https://pytest-asyncio.readthedocs.io/en/v0.26.0/how-to-guides/change_default_test_loop.html) in your configuration (`pytest.ini/pyproject.toml/setup.cfg`).
 
     import pytestfrom playwright.async_api import Page@pytest.mark.asyncio(loop_scope="session")async def test_foo(page: Page):    await page.goto("https://github.com")    # ...
 
@@ -3124,7 +3168,7 @@ Now that we initialized request object we can add a few tests that will create n
 
 ### Setup and teardown[​](#setup-and-teardown "Direct link to Setup and teardown")
 
-These tests assume that repository exists. You probably want to create a new one before running tests and delete it afterwards. Use a [session fixture](https://docs.pytest.org/en/stable/fixture.html#fixture-scopes) for that. The part before `yield` is the before all and after is the after all.
+These tests assume that repository exists. You probably want to create a new one before running tests and delete it afterwards. Use a [session fixture](https://docs.pytest.org/en/stable/how-to/fixtures.html#fixture-scopes) for that. The part before `yield` is the before all and after is the after all.
 
     # ...@pytest.fixture(scope="session", autouse=True)def create_test_repository(    api_request_context: APIRequestContext,) -> Generator[None, None, None]:    # Before all    new_repo = api_request_context.post("/user/repos", data={"name": GITHUB_REPO})    assert new_repo.ok    yield    # After all    deleted_repo = api_request_context.delete(f"/repos/{GITHUB_USER}/{GITHUB_REPO}")    assert deleted_repo.ok
 
@@ -3318,6 +3362,10 @@ Regardless of the authentication strategy you choose, you are likely to store au
 
 We recommend to create `playwright/.auth` directory and add it to your `.gitignore`. Your authentication routine will produce authenticated browser state and save it to a file in this `playwright/.auth` directory. Later on, tests will reuse this state and start already authenticated.
 
+danger
+
+The browser state file may contain sensitive cookies and headers that could be used to impersonate you or your test account. We strongly discourage checking them into private or public repositories.
+
 *   Bash
 *   PowerShell
 *   Batch
@@ -3487,7 +3535,7 @@ Google Chrome and Microsoft Edge have switched to a [new headless mode](https://
 
 Alternatively when using the library directly, you can specify the browser [channel](/python/docs/api/class-browsertype#browser-type-launch-option-channel) when launching the browser:
 
-    from playwright.sync_api import sync_playwrightwith sync_playwright() as p:    # Channel can be "chrome", "msedge", "chrome-beta", "msedge-beta" or "msedge-dev".    browser = p.chromium.launch(channel="msedge")    page = browser.new_page()    page.goto("http://playwright.dev")    print(page.title())    browser.close()
+    from playwright.sync_api import sync_playwrightwith sync_playwright() as p:    # Channel can be "chrome", "msedge", "chrome-beta", "msedge-beta" or "msedge-dev".    browser = p.chromium.launch(channel="msedge")    page = browser.new_page()    page.goto("https://playwright.dev")    print(page.title())    browser.close()
 
 #### Installing Google Chrome & Microsoft Edge[​](#installing-google-chrome--microsoft-edge "Direct link to Installing Google Chrome & Microsoft Edge")
 
@@ -3875,8 +3923,6 @@ Trace Viewer[​](#trace-viewer "Direct link to Trace Viewer")
 
 Playwright [Trace Viewer](/python/docs/trace-viewer) is a GUI tool that lets you explore recorded Playwright traces of your tests. You can go back and forward through each action on the left side, and visually see what was happening during the action. In the middle of the screen, you can see a DOM snapshot for the action. On the right side you can see action details, such as time, parameters, return value and log. You can also explore console messages, network requests and the source code.
 
- Your browser does not support the video tag.
-
 To learn more about how to record traces and use the Trace Viewer, check out the [Trace Viewer](/python/docs/trace-viewer) guide.
 
 Browser Developer Tools[​](#browser-developer-tools "Direct link to Browser Developer Tools")
@@ -4146,7 +4192,7 @@ Whether the meta viewport tag is taken into account and touch events are enabled
 Locale & Timezone[​](#locale--timezone "Direct link to Locale & Timezone")
 --------------------------------------------------------------------------
 
-Emulate the user Locale and Timezone which can be set globally for all tests in the config and then overridden for particular tests.
+Emulate the browser Locale and Timezone which can be set globally for all tests in the config and then overridden for particular tests.
 
 *   Sync
 *   Async
@@ -5781,16 +5827,14 @@ Playwright uses simplified glob patterns for URL matching in network interceptio
 1.  Asterisks:
     *   A single `*` matches any characters except `/`
     *   A double `**` matches any characters including `/`
-2.  Question mark `?` matches any single character except `/`
+2.  Question mark `?` matches only question mark `?`. If you want to match any character, use `*` instead.
 3.  Curly braces `{}` can be used to match a list of options separated by commas `,`
-4.  Square brackets `[]` can be used to match a set of characters
-5.  Backslash `\` can be used to escape any of special characters (note to escape backslash itself as `\\`)
+4.  Backslash `\` can be used to escape any of special characters (note to escape backslash itself as `\\`)
 
 Examples:
 
 *   `https://example.com/*.js` matches `https://example.com/file.js` but not `https://example.com/path/file.js`
-*   `https://example.com/\\?page=1` matches `https://example.com/?page=1` but not `https://example.com`
-*   `**/v[0-9]*` matches `https://example.com/v1/` but not `https://example.com/vote/`
+*   `https://example.com/?page=1` matches `https://example.com/?page=1` but not `https://example.com`
 *   `**/*.js` matches both `https://example.com/file.js` and `https://example.com/path/file.js`
 *   `**/*.{png,jpg,jpeg}` matches all image requests
 
@@ -6579,7 +6623,7 @@ Each accessible element in the tree is represented as a YAML node:
 *   **"name"**: Accessible name of the element. Quoted strings indicate exact values, `/patterns/` are used for regular expression.
 *   **\[attribute=value\]**: Attributes and values, in square brackets, represent specific ARIA attributes, such as `checked`, `disabled`, `expanded`, `level`, `pressed`, or `selected`.
 
-These values are derived from ARIA attributes or calculated based on HTML semantics. To inspect the accessibility tree structure of a page, use the [Chrome DevTools Accessibility Pane](https://developer.chrome.com/docs/devtools/accessibility/reference#pane).
+These values are derived from ARIA attributes or calculated based on HTML semantics. To inspect the accessibility tree structure of a page, use the [Chrome DevTools Accessibility Tab](https://developer.chrome.com/docs/devtools/accessibility/reference#tab).
 
 Snapshot matching[​](#snapshot-matching "Direct link to Snapshot matching")
 ---------------------------------------------------------------------------
@@ -6640,6 +6684,28 @@ _aria snapshot for partial match_
     - list  - listitem: Feature B
 
 Partial matches let you create flexible snapshot tests that verify essential page structure without enforcing specific content or attributes.
+
+### Strict matching[​](#strict-matching "Direct link to Strict matching")
+
+By default, a template containing the subset of children will be matched:
+
+    <ul>  <li>Feature A</li>  <li>Feature B</li>  <li>Feature C</li></ul>
+
+_aria snapshot for partial match_
+
+    - list  - listitem: Feature B
+
+The `/children` property can be used to control how child elements are matched:
+
+*   `contain` (default): Matches if all specified children are present in order
+*   `equal`: Matches if the children exactly match the specified list in order
+*   `deep-equal`: Matches if the children exactly match the specified list in order, including nested children
+
+    <ul>  <li>Feature A</li>  <li>Feature B</li>  <li>Feature C</li></ul>
+
+_aria snapshot will fail due to Feature C not being in the template_
+
+    - list  - /children: equal  - listitem: Feature A  - listitem: Feature B
 
 ### Matching with regular expressions[​](#matching-with-regular-expressions "Direct link to Matching with regular expressions")
 
@@ -7242,9 +7308,13 @@ On untrusted websites, it's recommended to use a separate user for launching the
 
     {  "comment": "Allow create user namespaces",  "names": [    "clone",    "setns",    "unshare"  ],  "action": "SCMP_ACT_ALLOW",  "args": [],  "includes": {},  "excludes": {}}
 
-note
+### Recommended Docker Configuration[​](#recommended-docker-configuration "Direct link to Recommended Docker Configuration")
 
-Using `--ipc=host` is recommended when using Chrome ([Docker docs](https://docs.docker.com/engine/reference/run/#ipc-settings---ipc)). Chrome can run out of memory without this flag.
+When running Playwright in Docker, the following configuration is recommended:
+
+1.  **Using [`--init`](https://docs.docker.com/reference/cli/docker/container/run/#init)** Docker flag is recommended to avoid special treatment for processes with PID=1. This is a common reason for zombie processes.
+2.  **Using `--ipc=host`** is recommended when using Chromium. Without it, Chromium can run out of memory and crash. Learn more about this option in [Docker docs](https://docs.docker.com/reference/cli/docker/container/run/#ipc).
+3.  **If seeing weird errors when launching Chromium**, try running your container with `docker run --cap-add=SYS_ADMIN` when developing locally.
 
 ### Using on CI[​](#using-on-ci "Direct link to Using on CI")
 
@@ -7370,13 +7440,7 @@ This will start the tests after a [GitHub Deployment](https://developer.github.c
 
 ### Docker[​](#docker "Direct link to Docker")
 
-We have a [pre-built Docker image](/python/docs/docker) which can either be used directly or as a reference to update your existing Docker definitions.
-
-Suggested configuration
-
-1.  Using `--ipc=host` is also recommended when using Chromium. Without it Chromium can run out of memory and crash. Learn more about this option in [Docker docs](https://docs.docker.com/reference/cli/docker/container/run/#ipc).
-2.  Seeing other weird errors when launching Chromium? Try running your container with `docker run --cap-add=SYS_ADMIN` when developing locally.
-3.  Using `--init` Docker flag or [dumb-init](https://github.com/Yelp/dumb-init) is recommended to avoid special treatment for processes with PID=1. This is a common reason for zombie processes.
+We have a [pre-built Docker image](/python/docs/docker) which can either be used directly or as a reference to update your existing Docker definitions. Make sure to follow the [Recommended Docker Configuration](/python/docs/docker#recommended-docker-configuration) to ensure the best performance.
 
 ### Azure Pipelines[​](#azure-pipelines "Direct link to Azure Pipelines")
 
@@ -7459,7 +7523,7 @@ More details
 
 Internally, Playwright connects to the browser using [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/) websocket. Selenium 4 currently exposes this capability. However, this [might not be the case in the future](https://github.com/SeleniumHQ/selenium/issues/11590#issuecomment-1436113950). If Selenium drops this capability, Playwright will stop working with it.
 
-Before connecting Playwright to your Selenium Grid, make sure that grid works with [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/). For example, run [one of the examples](https://github.com/SeleniumHQ/selenium/tree/trunk/javascript/node/selenium-webdriver/example) and pass `SELENIUM_REMOTE_URL` environment variable. If webdriver example does not work, look for any errors at your Selenium hub/node/standalone output and search [Selenium issues](https://github.com/SeleniumHQ/selenium/issues) for a possible solution.
+Before connecting Playwright to your Selenium Grid, make sure that grid works with [Selenium WebDriver](https://www.selenium.dev/documentation/webdriver/). For example, run [one of the examples](https://github.com/SeleniumHQ/selenium/tree/trunk/javascript/selenium-webdriver/example) and pass `SELENIUM_REMOTE_URL` environment variable. If webdriver example does not work, look for any errors at your Selenium hub/node/standalone output and search [Selenium issues](https://github.com/SeleniumHQ/selenium/issues) for a possible solution.
 
 Starting Selenium Grid[​](#starting-selenium-grid "Direct link to Starting Selenium Grid")
 ------------------------------------------------------------------------------------------
@@ -7778,6 +7842,10 @@ Creates new instances of [APIRequestContext](/python/docs/api/class-apirequestco
 *   `ignore_https_errors` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#api-request-new-context-option-ignore-https-errors)
     
     Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.
+    
+*   `max_redirects` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_ Added in: v1.52[#](#api-request-new-context-option-max-redirects)
+    
+    Maximum number of request redirects that will be followed automatically. An error will be thrown if the number is exceeded. Defaults to `20`. Pass `0` to not follow redirects. This can be overwritten for each request individually.
     
 *   `proxy` [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict") _(optional)_[#](#api-request-new-context-option-proxy)
     
@@ -8514,7 +8582,7 @@ APIResponse
 
     from playwright.sync_api import sync_playwrightwith sync_playwright() as p:    context = playwright.request.new_context()    response = context.get("https://example.com/user/repos")    assert response.ok    assert response.status == 200    assert response.headers["content-type"] == "application/json; charset=utf-8"    assert response.json()["name"] == "foobar"    assert response.body() == '{"status": "ok"}'
 
-    import asynciofrom playwright.async_api import async_playwright, Playwrightasync def run(playwright: Playwright):    context = await playwright.request.new_context()    response = await context.get("https://example.com/user/repos")    assert response.ok    assert response.status == 200    assert response.headers["content-type"] == "application/json; charset=utf-8"    assert response.json()["name"] == "foobar"    assert await response.body() == '{"status": "ok"}'async def main():    async with async_playwright() as playwright:        await run(playwright)asyncio.run(main())
+    import asynciofrom playwright.async_api import async_playwright, Playwrightasync def run(playwright: Playwright):    context = await playwright.request.new_context()    response = await context.get("https://example.com/user/repos")    assert response.ok    assert response.status == 200    assert response.headers["content-type"] == "application/json; charset=utf-8"    json_data = await response.json()    assert json_data["name"] == "foobar"    assert await response.body() == '{"status": "ok"}'async def main():    async with async_playwright() as playwright:        await run(playwright)asyncio.run(main())
 
 * * *
 
@@ -8760,7 +8828,7 @@ An example of logging the focused node's name:
 *   [NoneType](https://docs.python.org/3/library/constants.html#None "None") | [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#accessibility-snapshot-return)
     *   `role` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
         
-        The [role](https://www.w3.org/TR/wai-aria/#usage_intro).
+        The [role](https://www.w3.org/TR/wai-aria/#usage).
         
     *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
         
@@ -10285,7 +10353,7 @@ Enabling routing disables http cache.
 
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool")[#](#browser-context-route-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while routing. When a [base\_url](/python/docs/api/class-browser#browser-new-context-option-base-url) via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
+    A glob pattern, regex pattern, or predicate that receives a [URL](https://en.wikipedia.org/wiki/URL "URL") to match during routing. If [base\_url](/python/docs/api/class-browser#browser-new-context-option-base-url) is set in the context options and the provided URL is a string that does not start with `*`, it is resolved using the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
     
 *   `handler` [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[Route](/python/docs/api/class-route "Route"), [Request](/python/docs/api/class-request "Request")\]:[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")\[[Any](https://docs.python.org/3/library/typing.html#typing.Any "Any")\] | [Any](https://docs.python.org/3/library/typing.html#typing.Any "Any")[#](#browser-context-route-option-handler)
     
@@ -10543,10 +10611,6 @@ Returns storage state for this browser context, contains current cookies, local 
 *   `indexed_db` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_ Added in: v1.51[#](#browser-context-storage-state-option-indexed-db)
     
     Set to `true` to include [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) in the storage state snapshot. If your application uses IndexedDB to store authentication tokens, like Firebase Authentication, enable this.
-    
-    note
-    
-    IndexedDBs with typed arrays are currently not supported.
     
 *   `path` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] _(optional)_[#](#browser-context-storage-state-option-path)
     
@@ -11228,7 +11292,7 @@ You can use [ignore\_default\_args](/python/docs/api/class-browsertype#browser-t
     
 *   `headless` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#browser-type-launch-option-headless)
     
-    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode). Defaults to `true` unless the [devtools](/python/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/python/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
     
 *   `ignore_default_args` [bool](https://docs.python.org/3/library/stdtypes.html "bool") | [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")\] _(optional)_[#](#browser-type-launch-option-ignore-default-args)
     
@@ -11290,7 +11354,11 @@ Launches browser that uses persistent storage located at [user\_data\_dir](/pyth
 
 *   `user_data_dir` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\][#](#browser-type-launch-persistent-context-option-user-data-dir)
     
-    Path to a User Data Directory, which stores browser session data like cookies and local storage. More details for [Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options#User_Profile). Note that Chromium's user data directory is the **parent** directory of the "Profile Path" seen at `chrome://version`. Pass an empty string to use a temporary directory instead.
+    Path to a User Data Directory, which stores browser session data like cookies and local storage. Pass an empty string to create a temporary directory.
+    
+    More details for [Chromium](https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md#introduction) and [Firefox](https://wiki.mozilla.org/Firefox/CommandLineOptions#User_profile). Chromium's user data directory is the **parent** directory of the "Profile Path" seen at `chrome://version`.
+    
+    Note that browsers do not allow launching multiple instances with the same User Data Directory.
     
 *   `accept_downloads` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#browser-type-launch-persistent-context-option-accept-downloads)
     
@@ -11448,7 +11516,7 @@ Launches browser that uses persistent storage located at [user\_data\_dir](/pyth
     
 *   `headless` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#browser-type-launch-persistent-context-option-headless)
     
-    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode). Defaults to `true` unless the [devtools](/python/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/python/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
     
 *   `http_credentials` [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict") _(optional)_[#](#browser-type-launch-persistent-context-option-http-credentials)
     
@@ -17837,6 +17905,10 @@ Captures the aria snapshot of the given element. Read more about [aria snapshots
 
 **Arguments**
 
+*   `ref` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_ Added in: v1.52[#](#locator-aria-snapshot-option-ref)
+    
+    Generate symbolic reference for each element. One can use `aria-ref=<ref>` locator immediately after capturing the snapshot to perform actions on the element.
+    
 *   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#locator-aria-snapshot-option-timeout)
     
     Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can be changed by using the [browser\_context.set\_default\_timeout()](/python/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.set\_default\_timeout()](/python/docs/api/class-page#page-set-default-timeout) methods.
@@ -18400,7 +18472,7 @@ Execute JavaScript code in the page, taking the matching element as an argument.
     
 *   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#locator-evaluate-option-timeout)
     
-    Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can be changed by using the [browser\_context.set\_default\_timeout()](/python/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.set\_default\_timeout()](/python/docs/api/class-page#page-set-default-timeout) methods.
+    Maximum time in milliseconds to wait for the locator before evaluating. Note that after locator is resolved, evaluation itself is not limited by the timeout. Defaults to `30000` (30 seconds). Pass `0` to disable timeout.
     
 
 **Returns**
@@ -18479,7 +18551,7 @@ Execute JavaScript code in the page, taking the matching element as an argument,
     
 *   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#locator-evaluate-handle-option-timeout)
     
-    Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can be changed by using the [browser\_context.set\_default\_timeout()](/python/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.set\_default\_timeout()](/python/docs/api/class-page#page-set-default-timeout) methods.
+    Maximum time in milliseconds to wait for the locator before evaluating. Note that after locator is resolved, evaluation itself is not limited by the timeout. Defaults to `30000` (30 seconds). Pass `0` to disable timeout.
     
 
 **Returns**
@@ -22309,7 +22381,7 @@ Enabling routing disables http cache.
 
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool")[#](#page-route-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while routing. When a [base\_url](/python/docs/api/class-browser#browser-new-context-option-base-url) via the context options was provided and the passed URL is a path, it gets merged via the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
+    A glob pattern, regex pattern, or predicate that receives a [URL](https://en.wikipedia.org/wiki/URL "URL") to match during routing. If [base\_url](/python/docs/api/class-browser#browser-new-context-option-base-url) is set in the context options and the provided URL is a string that does not start with `*`, it is resolved using the [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
     
 *   `handler` [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[Route](/python/docs/api/class-route "Route"), [Request](/python/docs/api/class-request "Request")\]:[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")\[[Any](https://docs.python.org/3/library/typing.html#typing.Any "Any")\] | [Any](https://docs.python.org/3/library/typing.html#typing.Any "Any")[#](#page-route-option-handler)
     
@@ -25972,6 +26044,10 @@ The [headers](/python/docs/api/class-route#route-continue-option-headers) option
 
 [route.continue\_()](/python/docs/api/class-route#route-continue) will immediately send the request to the network, other matching handlers won't be invoked. Use [route.fallback()](/python/docs/api/class-route#route-fallback) If you want next matching handler in the chain to be invoked.
 
+warning
+
+The `Cookie` header cannot be overridden using this method. If a value is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browser\_context.add\_cookies()](/python/docs/api/class-browsercontext#browser-context-add-cookies).
+
 * * *
 
 ### fallback[​](#route-fallback "Direct link to fallback")
@@ -27421,6 +27497,33 @@ The opposite of [expect(locator).to\_be\_visible()](/python/docs/api/class-locat
 
 * * *
 
+### not\_to\_contain\_class[​](#locator-assertions-not-to-contain-class "Direct link to not_to_contain_class")
+
+Added in: v1.52 locatorAssertions.not\_to\_contain\_class
+
+The opposite of [expect(locator).to\_contain\_class()](/python/docs/api/class-locatorassertions#locator-assertions-to-contain-class).
+
+**Usage**
+
+    expect(locator).not_to_contain_class(expected)expect(locator).not_to_contain_class(expected, **kwargs)
+
+**Arguments**
+
+*   `expected` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")\][#](#locator-assertions-not-to-contain-class-option-expected)
+    
+    Expected class or RegExp or a list of those.
+    
+*   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#locator-assertions-not-to-contain-class-option-timeout)
+    
+    Time to retry the assertion for in milliseconds. Defaults to `5000`.
+    
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#locator-assertions-not-to-contain-class-return)
+
+* * *
+
 ### not\_to\_contain\_text[​](#locator-assertions-not-to-contain-text "Direct link to not_to_contain_text")
 
 Added in: v1.20 locatorAssertions.not\_to\_contain\_text
@@ -28170,6 +28273,51 @@ To check that at least one element from the list is visible, use [locator.first]
 
 * * *
 
+### to\_contain\_class[​](#locator-assertions-to-contain-class "Direct link to to_contain_class")
+
+Added in: v1.52 locatorAssertions.to\_contain\_class
+
+Ensures the [Locator](/python/docs/api/class-locator "Locator") points to an element with given CSS classes. All classes from the asserted value, separated by spaces, must be present in the [Element.classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) in any order.
+
+**Usage**
+
+    <div class='middle selected row' id='component'></div>
+
+*   Sync
+*   Async
+
+    from playwright.sync_api import expectlocator = page.locator("#component")expect(locator).to_contain_class("middle selected row")expect(locator).to_contain_class("selected")expect(locator).to_contain_class("row middle")
+
+    from playwright.async_api import expectlocator = page.locator("#component")await expect(locator).to_contain_class("middle selected row")await expect(locator).to_contain_class("selected")await expect(locator).to_contain_class("row middle")
+
+When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class lists. Each element's class attribute is matched against the corresponding class in the array:
+
+    <div class='list'></div>  <div class='component inactive'></div>  <div class='component active'></div>  <div class='component inactive'></div></div>
+
+*   Sync
+*   Async
+
+    from playwright.sync_api import expectlocator = page.locator("list > .component")await expect(locator).to_contain_class(["inactive", "active", "inactive"])
+
+    from playwright.async_api import expectlocator = page.locator("list > .component")await expect(locator).to_contain_class(["inactive", "active", "inactive"])
+
+**Arguments**
+
+*   `expected` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")\][#](#locator-assertions-to-contain-class-option-expected)
+    
+    A string containing expected class names, separated by spaces, or a list of such strings to assert multiple elements.
+    
+*   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#locator-assertions-to-contain-class-option-timeout)
+    
+    Time to retry the assertion for in milliseconds. Defaults to `5000`.
+    
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#locator-assertions-to-contain-class-return)
+
+* * *
+
 ### to\_contain\_text[​](#locator-assertions-to-contain-text "Direct link to to_contain_text")
 
 Added in: v1.20 locatorAssertions.to\_contain\_text
@@ -28386,7 +28534,7 @@ Ensures the [Locator](/python/docs/api/class-locator "Locator") points to an ele
 
 Added in: v1.20 locatorAssertions.to\_have\_class
 
-Ensures the [Locator](/python/docs/api/class-locator "Locator") points to an element with given CSS classes. When a string is provided, it must fully match the element's `class` attribute. To match individual classes or perform partial matches, use a regular expression:
+Ensures the [Locator](/python/docs/api/class-locator "Locator") points to an element with given CSS classes. When a string is provided, it must fully match the element's `class` attribute. To match individual classes use [expect(locator).to\_contain\_class()](/python/docs/api/class-locatorassertions#locator-assertions-to-contain-class).
 
 **Usage**
 
@@ -28395,9 +28543,9 @@ Ensures the [Locator](/python/docs/api/class-locator "Locator") points to an ele
 *   Sync
 *   Async
 
-    from playwright.sync_api import expectlocator = page.locator("#component")expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))expect(locator).to_have_class("middle selected row")
+    from playwright.sync_api import expectlocator = page.locator("#component")expect(locator).to_have_class("middle selected row")expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
 
-    from playwright.async_api import expectlocator = page.locator("#component")await expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))await expect(locator).to_have_class("middle selected row")
+    from playwright.async_api import expectlocator = page.locator("#component")await expect(locator).to_have_class("middle selected row")await expect(locator).to_have_class(re.compile(r"(^|\\s)selected(\\s|$)"))
 
 When an array is passed, the method asserts that the list of elements located matches the corresponding list of expected class values. Each element's class attribute is matched against the corresponding string or regular expression in the array:
 
