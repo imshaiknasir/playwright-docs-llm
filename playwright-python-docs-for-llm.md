@@ -128,11 +128,9 @@ Version 1.52[​](#version-152 "Direct link to Version 1.52")
 
 *   New option [max\_redirects](/python/docs/api/class-apirequest#api-request-new-context-option-max-redirects) in [api\_request.new\_context()](/python/docs/api/class-apirequest#api-request-new-context) to control the maximum number of redirects.
 *   New option [ref](/python/docs/api/class-locator#locator-aria-snapshot-option-ref) in [locator.aria\_snapshot()](/python/docs/api/class-locator#locator-aria-snapshot) to generate reference for each element in the snapshot which can later be used to locate the element.
-*   HTML reporter now supports _NOT filtering_ via `!@my-tag` or `!my-file.spec.ts` or `!p:my-project`.
 
 ### Breaking Changes[​](#breaking-changes "Direct link to Breaking Changes")
 
-*   Base URL matching is not supported in [page.frame()](/python/docs/api/class-page#page-frame) anymore. We recommend migrating to [page.frame\_locator()](/python/docs/api/class-page#page-frame-locator) instead for having a more convenient API.
 *   Glob URL patterns in methods like [page.route()](/python/docs/api/class-page#page-route) do not support `?` and `[]` anymore. We recommend using regular expressions instead.
 *   Method [route.continue\_()](/python/docs/api/class-route#route-continue) does not allow to override the `Cookie` header anymore. If a `Cookie` header is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browser\_context.add\_cookies()](/python/docs/api/class-browsercontext#browser-context-add-cookies).
 *   macOS 13 is now deprecated and will no longer receive WebKit updates. Please upgrade to a more recent macOS version to continue benefiting from the latest WebKit improvements.
