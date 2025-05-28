@@ -7869,6 +7869,7 @@ Creates new instances of [APIRequestContext](/python/docs/api/class-apirequestco
 *   `storage_state` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] | [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict") _(optional)_[#](#api-request-new-context-option-storage-state)
     
     *   `cookies` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `value` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
@@ -7888,6 +7889,7 @@ Creates new instances of [APIRequestContext](/python/docs/api/class-apirequestco
         *   `sameSite` "Strict" | "Lax" | "None"
             
     *   `origins` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `localStorage` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
@@ -8541,6 +8543,7 @@ Returns storage state for this request context, contains current cookies and loc
 
 *   [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#api-request-context-storage-state-return)
     *   `cookies` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `value` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
@@ -8560,6 +8563,7 @@ Returns storage state for this request context, contains current cookies and loc
         *   `sameSite` "Strict" | "Lax" | "None"
             
     *   `origins` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `localStorage` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
@@ -9244,6 +9248,7 @@ If directly using this method to create [BrowserContext](/python/docs/api/class-
 *   `storage_state` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] | [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict") _(optional)_[#](#browser-new-context-option-storage-state)
     
     *   `cookies` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `value` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
@@ -9267,8 +9272,12 @@ If directly using this method to create [BrowserContext](/python/docs/api/class-
         *   `sameSite` "Strict" | "Lax" | "None"
             
             sameSite flag
-            Cookies to set for context
+            
+        
+        Cookies to set for context
+        
     *   `origins` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `localStorage` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
@@ -9556,6 +9565,7 @@ This is a convenience API that should only be used for the single-page scenarios
 *   `storage_state` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] | [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict") _(optional)_[#](#browser-new-page-option-storage-state)
     
     *   `cookies` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `value` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
@@ -9579,8 +9589,12 @@ This is a convenience API that should only be used for the single-page scenarios
         *   `sameSite` "Strict" | "Lax" | "None"
             
             sameSite flag
-            Cookies to set for context
+            
+        
+        Cookies to set for context
+        
     *   `origins` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `localStorage` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
@@ -10619,6 +10633,7 @@ Returns storage state for this browser context, contains current cookies, local 
 
 *   [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#browser-context-storage-state-return)
     *   `cookies` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `value` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
@@ -10638,6 +10653,7 @@ Returns storage state for this browser context, contains current cookies, local 
         *   `sameSite` "Strict" | "Lax" | "None"
             
     *   `origins` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
         *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
             
         *   `localStorage` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]

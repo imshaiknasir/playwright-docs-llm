@@ -2090,7 +2090,7 @@ Version 1.15[​](#version-115 "Direct link to Version 1.15")
 
 ### 🎭 Playwright Library[​](#-playwright-library-1 "Direct link to 🎭 Playwright Library")
 
-#### 🖱️ Mouse Wheel[​](#️-mouse-wheel "Direct link to 🖱��️ Mouse Wheel")
+#### 🖱️ Mouse Wheel[​](#️-mouse-wheel "Direct link to 🖱️ Mouse Wheel")
 
 By using [mouse.wheel()](/docs/api/class-mouse#mouse-wheel) you are now able to scroll vertically or horizontally.
 
@@ -14573,6 +14573,7 @@ Creates new instances of [APIRequestContext](/docs/api/class-apirequestcontext "
     *   `storageState` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_[#](#api-request-new-context-option-storage-state)
         
         *   `cookies` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+            
             *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
                 
             *   `value` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
@@ -14592,6 +14593,7 @@ Creates new instances of [APIRequestContext](/docs/api/class-apirequestcontext "
             *   `sameSite` "Strict" | "Lax" | "None"
                 
         *   `origins` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+            
             *   `origin` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
                 
             *   `localStorage` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
@@ -15254,6 +15256,7 @@ Returns storage state for this request context, contains current cookies and loc
 
 *   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>[#](#api-request-context-storage-state-return)
     *   `cookies` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+        
         *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
             
         *   `value` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
@@ -15273,6 +15276,7 @@ Returns storage state for this request context, contains current cookies and loc
         *   `sameSite` "Strict" | "Lax" | "None"
             
     *   `origins` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+        
         *   `origin` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
             
         *   `localStorage` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
@@ -15990,6 +15994,7 @@ If directly using this method to create [BrowserContext](/docs/api/class-browser
     *   `storageState` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_[#](#browser-new-context-option-storage-state)
         
         *   `cookies` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+            
             *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
                 
             *   `value` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
@@ -16013,8 +16018,12 @@ If directly using this method to create [BrowserContext](/docs/api/class-browser
             *   `sameSite` "Strict" | "Lax" | "None"
                 
                 sameSite flag
-                Cookies to set for context
+                
+            
+            Cookies to set for context
+            
         *   `origins` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+            
             *   `origin` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
                 
             *   `localStorage` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
@@ -16339,6 +16348,7 @@ This is a convenience API that should only be used for the single-page scenarios
     *   `storageState` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_[#](#browser-new-page-option-storage-state)
         
         *   `cookies` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+            
             *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
                 
             *   `value` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
@@ -16362,8 +16372,12 @@ This is a convenience API that should only be used for the single-page scenarios
             *   `sameSite` "Strict" | "Lax" | "None"
                 
                 sameSite flag
-                Cookies to set for context
+                
+            
+            Cookies to set for context
+            
         *   `origins` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+            
             *   `origin` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
                 
             *   `localStorage` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
@@ -17365,6 +17379,7 @@ Returns storage state for this browser context, contains current cookies, local 
 
 *   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>[#](#browser-context-storage-state-return)
     *   `cookies` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+        
         *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
             
         *   `value` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
@@ -17384,6 +17399,7 @@ Returns storage state for this browser context, contains current cookies, local 
         *   `sameSite` "Strict" | "Lax" | "None"
             
     *   `origins` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+        
         *   `origin` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
             
         *   `localStorage` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
@@ -20594,7 +20610,9 @@ Triggers a `change` and `input` event once all the provided options have been se
         
     
     Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the first option matching one of the passed options is selected. String values are matching both values and labels. Option is considered matching if all specified properties match.
+    
 *   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+    
     *   `force` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_ Added in: v1.13[#](#element-handle-select-option-option-force)
         
         Whether to bypass the [actionability](/docs/actionability) checks. Defaults to `false`.
@@ -26598,7 +26616,9 @@ Selects option or options in `<select>`.
         
     
     Options to select. If the `<select>` has the `multiple` attribute, all matching options are selected, otherwise only the first option matching one of the passed options is selected. String values are matching both values and labels. Option is considered matching if all specified properties match.
+    
 *   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+    
     *   `force` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#locator-select-option-option-force)
         
         Whether to bypass the [actionability](/docs/actionability) checks. Defaults to `false`.
@@ -27940,6 +27960,7 @@ Returns frame matching the specified criteria. Either `name` or `url` must be sp
 **Arguments**
 
 *   `frameSelector` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")[#](#page-frame-option-frame-selector)
+    
     *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_
         
         Frame name specified in the `iframe`'s `name` attribute. Optional.
@@ -27947,7 +27968,10 @@ Returns frame matching the specified criteria. Either `name` or `url` must be sp
     *   `url` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp "RegExp") | [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function")([URL](https://nodejs.org/api/url.html "URL")):[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_
         
         A glob pattern, regex pattern or predicate receiving frame's `url` as a [URL](https://nodejs.org/api/url.html "URL") object. Optional.
-        Frame name or other frame lookup options.
+        
+    
+    Frame name or other frame lookup options.
+    
 
 **Returns**
 
@@ -32844,6 +32868,7 @@ Creates a new group within the trace, assigning any subsequent API calls to this
             
         
         Specifies a custom location for the group to be shown in the trace viewer. Defaults to the location of the [tracing.group()](/docs/api/class-tracing#tracing-group) call.
+        
 
 **Returns**
 
@@ -38958,6 +38983,7 @@ playwright.config.ts
 
 *   [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")
     *   `cookies` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+        
         *   `name` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
             
         *   `value` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
@@ -38981,8 +39007,12 @@ playwright.config.ts
         *   `sameSite` "Strict" | "Lax" | "None"
             
             sameSite flag
-            Cookies to set for context
+            
+        
+        Cookies to set for context
+        
     *   `origins` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
+        
         *   `origin` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
             
         *   `localStorage` [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>
@@ -40012,6 +40042,7 @@ Called after all tests have been run, or testing has been interrupted. Note that
         
     
     Result of the full test run, `status` can be one of:
+    
     *   `'passed'` - Everything went as expected.
     *   `'failed'` - Any test has failed.
     *   `'timedout'` - The [testConfig.globalTimeout](/docs/api/class-testconfig#test-config-global-timeout) has been reached.
@@ -40021,7 +40052,6 @@ Called after all tests have been run, or testing has been interrupted. Note that
 
 *   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")\>[#](#reporter-on-end-return)
     *   `status` "passed" | "failed" | "timedout" | "interrupted" _(optional)_
-        
 
 * * *
 
@@ -42613,10 +42643,14 @@ Taps at the specified [point](/docs/api/class-androidinput#android-input-tap-opt
 **Arguments**
 
 *   `point` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")[#](#android-input-tap-option-point)
+    
     *   `x` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number")
         
     *   `y` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number")
-        The point to tap at.
+        
+    
+    The point to tap at.
+    
 
 **Returns**
 
