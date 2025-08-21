@@ -10,211 +10,136 @@ Getting started - VS Code
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright Test was created specifically to accommodate the needs of end-to-end testing. Playwright supports all modern rendering engines including Chromium, WebKit, and Firefox. Test on Windows, Linux, and macOS, locally or on CI, headless or headed with native mobile emulation of Google Chrome for Android and Mobile Safari.
+The Playwright VS Code extension brings the power of Playwright Test directly into your editor, allowing you to run, debug, and generate tests with a seamless UI-driven experience. This guide will walk you through setting up the extension and using its core features to supercharge your end-to-end testing workflow.
 
-Get started by installing Playwright and generating a test to see it in action. Alternatively you can also get started and run your tests using the [CLI](/docs/intro).
-
-Installation[​](#installation "Direct link to Installation")
-------------------------------------------------------------
-
-Playwright has a VS Code extension which is available when testing with Node.js. Install [it from the VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) or from the extensions tab in VS Code.
-
-![VS Code extension for Playwright](https://github.com/microsoft/playwright/assets/13063165/cab54568-3168-4b3f-bf3d-854976594903)
-
-Once installed, open the command panel and type:
-
-    Install Playwright
-
-![install playwright](https://github.com/microsoft/playwright/assets/13063165/14e91050-24ab-4ff1-a37b-57d7c15e5c35)
-
-Select **Test: Install Playwright** and Choose the browsers you would like to run your tests on. These can be later configured in the [playwright.config](/docs/test-configuration) file. You can also choose if you would like to have a GitHub Actions setup to [run your tests on CI](/docs/ci-intro).
-
-![choose browsers](https://github.com/microsoft/playwright/assets/13063165/c9e8a25a-e9e8-4419-aeb5-1b8ba58bd71d)
-
-### Opening the testing sidebar[​](#opening-the-testing-sidebar "Direct link to Opening the testing sidebar")
-
-The testing sidebar can be opened by clicking on the testing icon in the activity bar. This will give you access to the test explorer, which will show you all the tests in your project as well as the Playwright sidebar which includes projects, settings, tools and setup.
-
-![Testing Sidebar](https://github.com/microsoft/playwright/assets/13063165/d203fe83-6015-4e7a-b816-35d373906b24)
-
-Running tests[​](#running-tests "Direct link to Running tests")
+Prerequisites[​](#prerequisites "Direct link to Prerequisites")
 ---------------------------------------------------------------
 
-You can run a single test by clicking the green triangle next to your test block to run your test. Playwright will run through each line of the test and when it finishes you will see a green tick next to your test block as well as the time it took to run the test.
+Before you begin, make sure you have the following installed:
 
-![run a single test](https://github.com/microsoft/playwright/assets/13063165/69dbccfc-4e9f-40e7-bcdf-7d5c5a11f988)
+*   [Node.js](https://nodejs.org/) (LTS version recommended)
+*   [Visual Studio Code](https://code.visualstudio.com/)
 
-### Run tests and show browsers[​](#run-tests-and-show-browsers "Direct link to Run tests and show browsers")
-
-You can also run your tests and show the browsers by selecting the option **Show Browsers** in the testing sidebar. Then when you click the green triangle to run your test the browser will open and you will visually see it run through your test. Leave this selected if you want browsers open for all your tests or uncheck it if you prefer your tests to run in headless mode with no browser open.
-
-![show browsers while running tests](https://github.com/microsoft/playwright/assets/13063165/9f231530-0c43-466a-b944-8cf5102f714a)
-
-Use the **Close all browsers** button to close all browsers.
-
-### View and run all tests[​](#view-and-run-all-tests "Direct link to View and run all tests")
-
-View all tests in the testing sidebar and extend the tests by clicking on each test. Tests that have not been run will not have the green check next to them. Run all tests by clicking on the white triangle as you hover over the tests in the testing sidebar.
-
-![run all tests](https://github.com/microsoft/playwright/assets/13063165/348e18ff-f819-4caa-8f7e-f16c20724f56)
-
-### Running tests on multiple browsers[​](#running-tests-on-multiple-browsers "Direct link to Running tests on multiple browsers")
-
-The first section in the Playwright sidebar is the projects section. Here you can see all your projects as defined in your Playwright config file. The default config when installing Playwright gives you 3 projects, Chromium, Firefox and WebKit. The first project is selected by default.
-
-![Projects section in VS Code extension](https://github.com/microsoft/playwright/assets/13063165/58fedea6-a2b9-4942-b2c7-2f3d482210cf)
-
-To run tests on multiple projects, select each project by checking the checkboxes next to the project name. Then when you run your tests from the sidebar or by pressing the play button next to the test name, the tests will run on all the selected projects.
-
-![Selecting projects to run tests on](https://github.com/microsoft/playwright/assets/13063165/6dc86ef4-6097-481c-9cab-b6e053ec7ea6)
-
-You can also individually run a test on a specific project by clicking the grey play button next to the project name of the test.
-
-![Running a test on a specific project](https://github.com/microsoft/playwright/assets/13063165/d29a27ab-07b5-4ca6-b4d7-1ad6d44bf222)
-
-### Run tests with trace viewer[​](#run-tests-with-trace-viewer "Direct link to Run tests with trace viewer")
-
-For a better developer experience you can run your tests with the **Show Trace Viewer** option.
-
-![run tests with trace viewer](https://github.com/microsoft/playwright/assets/13063165/fab8efa6-d5ef-496d-876d-c99e94e6a6b3)
-
-This will open up a full trace of your test where you can step through each action of your tests, explore the timeline, source code and more.
-
-![trace viewer](https://github.com/microsoft/playwright/assets/13063165/ee31a4fe-c786-4d4b-887e-2dcecacfba2c)
-
-To learn more about the trace viewer see our [Trace Viewer guide](/docs/trace-viewer).
-
-Debugging tests[​](#debugging-tests "Direct link to Debugging tests")
+Getting Started[​](#getting-started "Direct link to Getting Started")
 ---------------------------------------------------------------------
 
-With the VS Code extension you can debug your tests right in VS Code see error messages, create breakpoints and live debug your tests.
+### Installation & Setup[​](#installation--setup "Direct link to Installation & Setup")
 
-### Error messages[​](#error-messages "Direct link to Error messages")
+1.  **Install the Extension**: Open the Extensions view in VS Code (`Ctrl+Shift+X` or `Cmd+Shift+X`) and search for "Playwright". [Install the official extension from Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright).
 
-If your test fails VS Code will show you error messages right in the editor showing what was expected, what was received as well as a complete call log.
+1.  **Install Playwright**: Once the extension is installed, open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and run the **Test: Install Playwright** command.
 
-![error messaging in vs code](https://github.com/microsoft/playwright/assets/13063165/3b8af12a-4805-4573-9d38-92055a0a7e75)
+3.  **Select Browsers**: Choose the browsers you want for your tests (e.g., Chromium, Firefox, WebKit). You can also add a GitHub Actions workflow to run tests in CI. These settings can be changed later in your `playwright.config.ts` file.
 
-### Live debugging[​](#live-debugging "Direct link to Live debugging")
+### Opening the Testing Sidebar[​](#opening-the-testing-sidebar "Direct link to Opening the Testing Sidebar")
 
-You can debug your test live in VS Code. After running a test with the `Show Browser` option checked, click on any of the locators in VS Code and it will be highlighted in the Browser window. Playwright will highlight it if it exists and show you if there is more than one result
+Click the **Testing icon** in the VS Code Activity Bar to open the Test Explorer. Here, you'll find your tests, as well as the Playwright sidebar for managing projects, tools, and settings.
 
-![live debugging in vs code](https://github.com/microsoft/playwright/assets/13063165/7d236ebb-3d2d-4384-b73d-32a2b4e33b9e)
+Core Features[​](#core-features "Direct link to Core Features")
+---------------------------------------------------------------
 
-You can also edit the locators in VS Code and Playwright will show you the changes live in the browser window.
+### Running Your Tests[​](#running-your-tests "Direct link to Running Your Tests")
 
-### Run in debug mode[​](#run-in-debug-mode "Direct link to Run in debug mode")
+*   **Run a Single Test**: Click the green "play" icon next to any test to run it. The play button will change to a green checkmark if the test passes or a red X if the test fails. You'll be able to see how long the test took to run displayed next to the test name. Additionally, the Test Results panel will automatically open at the bottom of VS Code, showing a summary of the test execution including how many tests ran, how many passed, failed, or were skipped, along with the total execution time.
 
-To set a breakpoint click next to the line number where you want the breakpoint to be until a red dot appears. Run the tests in debug mode by right clicking on the line next to the test you want to run.
+*   **Run All Tests**: You can run all tests at different levels. Click the play icon next to a specific test file to run all tests within that file, or click the play icon at the very top of the Test Explorer to run all tests across your entire project.
 
-![setting debug mode](https://github.com/microsoft/playwright/assets/13063165/31640629-efac-4cc7-b8b0-80ae18a3af83)
+*   **Run on Multiple Browsers**: In the Playwright sidebar, check the boxes for the projects (browsers) you want to test against. Projects in Playwright represent different browser configurations - each project typically corresponds to a specific browser (like Chromium, Firefox, or WebKit) with its own settings such as viewport size, device emulation, or other browser-specific options. When you run a test, it will execute across all selected projects, allowing you to verify your application works consistently across different browsers and configurations.
 
-A browser window will open and the test will run and pause at where the breakpoint is set. You can step through the tests, pause the test and rerun the tests from the menu in VS Code.
+*   **Show Browser**: To watch your tests execute in a live browser window, enable the **Show Browser** option in the sidebar. Disable it to run in headless mode (where tests run in the background without opening a visible browser window).
 
-![running in debug mode](https://github.com/microsoft/playwright/assets/13063165/b96a9f50-0f4d-49f9-a3d8-f093980a5673)
+### Debugging Your Tests[​](#debugging-your-tests "Direct link to Debugging Your Tests")
 
-![choosing a profile for debugging](https://github.com/microsoft/playwright/assets/13063165/48c1b428-8dd2-4229-9eb5-24f7168db834)
+The VS Code extension provides powerful debugging tools to help you identify and fix issues in your tests. You can set breakpoints, inspect variables, view detailed error messages, get AI-powered suggestions to resolve test failures, and use the comprehensive trace viewer to analyze test execution step-by-step.
 
-To learn more about debugging, see [Debugging in Visual Studio Code](https://code.visualstudio.com/docs/editor/debugging).
+*   **Using Breakpoints**: Set a breakpoint by clicking in the gutter next to a line number. Right-click the test and select **Debug Test**. The test will pause at your breakpoint, allowing you to inspect variables and step through the code.
 
-### Debug with trace viewer[​](#debug-with-trace-viewer "Direct link to Debug with trace viewer")
+*   **Live Debugging**: With **Show Browsers** enabled, click on a locator in your code. Playwright will highlight the corresponding element in the browser, making it easy to verify locators.
 
-For a better developer experience you can debug your tests with the **Show Trace Viewer** option.
+*   **Viewing Error Messages**: If a test fails, the extension displays detailed error messages, including the expected vs. received values and a full call log, directly in the editor.
 
-![run tests with trace viewer](https://github.com/microsoft/playwright/assets/13063165/fab8efa6-d5ef-496d-876d-c99e94e6a6b3)
+*   **Fix with AI**: When a test fails, click the sparkle icon next to the error to get an AI-powered fix suggestion from Copilot. Copilot analyzes the error and suggests a code change to resolve the issue.
 
-This will open up a full trace of your test where you can step through each action and see what happened before and after the action. You can also inspect the DOM snapshot, see console logs, network requests, the source code and more.
+*   **Debugging with Trace Viewer**: For comprehensive debugging, enable the **Show Trace Viewer** option in the Playwright sidebar. When your test finishes, a detailed trace will automatically open, providing you with a complete timeline of your test execution. The trace viewer is particularly useful for:
+*   **Step-by-step analysis**: Navigate through each action your test performed with precise timestamps
+*   **DOM inspection**: View DOM snapshots at any point during test execution to see exactly what the page looked like
+*   **Network monitoring**: Examine all network requests and responses that occurred during the test
+*   **Console logs**: Access all console messages and errors from the browser
+*   **Source mapping**: Jump directly to the source code that executed each action
+*   **Visual debugging**: See screenshots and understand what the user would have seen at each step
 
-![trace viewer](https://github.com/microsoft/playwright/assets/13063165/ee31a4fe-c786-4d4b-887e-2dcecacfba2c)
+The trace viewer is especially valuable when debugging flaky tests or understanding complex user interactions.
 
-To learn more about the trace viewer see our [Trace Viewer guide](/docs/trace-viewer).
+To learn more, see our [Trace Viewer guide](/docs/trace-viewer).
 
-Generating tests[​](#generating-tests "Direct link to Generating tests")
-------------------------------------------------------------------------
+### Generating Tests with CodeGen[​](#generating-tests-with-codegen "Direct link to Generating Tests with CodeGen")
 
-CodeGen will auto generate your tests for you as you perform actions in the browser and is a great way to quickly get started. The viewport for the browser window is set to a specific width and height. See the [configuration guide](/docs/test-configuration) to change the viewport or emulate different environments.
+CodeGen is Playwright's powerful test generation tool that automatically creates test code by recording your interactions with a web page. Instead of writing tests from scratch, you can simply navigate through your application while CodeGen captures your actions and converts them into reliable test code with proper locators and assertions.
 
-### Record a new test[​](#record-a-new-test "Direct link to Record a new test")
+*   **Record a New Test**: Click **Record new** in the sidebar. A browser window will open. As you interact with the page, Playwright will automatically generate the test code. You can also generate assertions from the recording toolbar.
 
-To record a test click on the **Record new** button from the Testing sidebar. This will create a `test-1.spec.ts` file as well as open up a browser window. In the browser go to the URL you wish to test and start clicking around. Playwright will record your actions and generate the test code directly in VS Code. You can also generate assertions by choosing one of the icons in the toolbar and then clicking on an element on the page to assert against. The following assertions can be generated:
+*   **Record at Cursor**: Place your cursor inside an existing test and click **Record at cursor** to add new actions at that specific point.
 
-*   `'assert visibility'` to assert that an element is visible
-*   `'assert text'` to assert that an element contains specific text
-*   `'assert value'` to assert that an element has a specific value
+*   **Pick a Locator**: Use the **Pick locator** tool to click on any element in the opened browser. Playwright will determine the best locator and copy it to your clipboard, ready to be pasted into your code.
 
-Once you are done recording click the **cancel** button or close the browser window. You can then inspect your `test-1.spec.ts` file and see your generated test.
+To learn more, see our [CodeGen guide](/docs/codegen).
 
-![record a new test](https://github.com/microsoft/playwright/assets/13063165/0407f112-e1cd-41e7-a05d-ae64e24d27ed)
+Advanced Features[​](#advanced-features "Direct link to Advanced Features")
+---------------------------------------------------------------------------
 
-### Record at cursor[​](#record-at-cursor "Direct link to Record at cursor")
+### Project Dependencies[​](#project-dependencies "Direct link to Project Dependencies")
 
-To record from a specific point in your test file click the **Record at cursor** button from the Testing sidebar. This generates actions into the existing test at the current cursor position. You can run the test, position the cursor at the end of the test and continue generating the test.
+Use [project dependencies](/docs/test-projects) to define setup tests that run before other tests. For example, you can create a login test that runs first, then reuse that authenticated state across multiple tests without having to log in again for each test. In VS Code, you can see these setup tests in the Test Explorer and run them independently when needed.
 
-![record at cursor](https://github.com/microsoft/playwright/assets/13063165/96933ea1-4c84-453a-acd7-22b4d3bde185)
+To learn more, see our [Project Dependencies guide](/docs/test-projects).
 
-### Picking a locator[​](#picking-a-locator "Direct link to Picking a locator")
+### Global Setup[​](#global-setup "Direct link to Global Setup")
 
-Pick a [locator](/docs/locators) and copy it into your test file by clicking the **Pick locator** button form the testing sidebar. Then in the browser click the element you require and it will now show up in the **Pick locator** box in VS Code. Press 'enter' on your keyboard to copy the locator into the clipboard and then paste anywhere in your code. Or press 'escape' if you want to cancel.
+For tasks that need to run only once before all tests (like seeding a database), use **Global Setup**. You can trigger the global setup and teardown manually from the Playwright sidebar.
 
-![pick locators](https://github.com/microsoft/playwright/assets/13063165/9a1b2da9-9ac7-4def-a9e0-f94770364fc2)
+### Multiple Configurations[​](#multiple-configurations "Direct link to Multiple Configurations")
 
-Playwright will look at your page and figure out the best locator, prioritizing [role, text and test id locators](/docs/locators). If the generator finds multiple elements matching the locator, it will improve the locator to make it resilient and uniquely identify the target element, so you don't have to worry about failing tests due to locators.
+If you have multiple `playwright.config.ts` files, you can switch between them using the gear icon in the Playwright sidebar. This allows you to easily work with different test suites or environments.
 
-Project Dependencies[​](#project-dependencies "Direct link to Project Dependencies")
-------------------------------------------------------------------------------------
+Quick Reference[​](#quick-reference "Direct link to Quick Reference")
+---------------------------------------------------------------------
 
-You can use [project dependencies](/docs/test-projects) to run tests that depend on other tests. This is useful for **setup** tests such as logging in to a website.
+Action
 
-### Running setup tests[​](#running-setup-tests "Direct link to Running setup tests")
+How to do it in VS Code
 
-To run your setup tests select the **setup** project, as defined in your configuration file, from the project section in the Playwright sidebar. This will give you access to the **setup** tests in the test explorer.
+**Install Playwright**
 
-![setup tests in vscode](https://github.com/microsoft/playwright/assets/13063165/7a9eccd5-a5b3-431f-9eff-9b2971501e07)
+Command Palette → `Test: Install Playwright`
 
-When you run a test that depends on the **setup** tests, the **setup** test will run first. Each time you run the test, the **setup** test will run again.
+**Run a Test**
 
-![running setup tests in vscode](https://github.com/microsoft/playwright/assets/13063165/a54b3868-3f9f-4e74-8d42-a93443f099fc)
+Click the "play" icon next to the test
 
-### Running setup tests only once[​](#running-setup-tests-only-once "Direct link to Running setup tests only once")
+**Debug a Test**
 
-To run the **setup** test only once, deselect it from the projects section in the Playwright sidebar. The **setup** test is now removed from the test explorer. When you run a test that depends on the **setup** test, it will no longer run the **setup** test, making it much faster and therefore a much better developer experience.
+Set a breakpoint, right-click the test → `Debug Test`
 
-![deselecting setup tests in vscode](https://github.com/microsoft/playwright/assets/13063165/ebc50e38-c98d-4538-82fe-ec08491f8487)
+**Show Live Browser**
 
-Global Setup[​](#global-setup "Direct link to Global Setup")
-------------------------------------------------------------
+Enable `Show Browsers` in the Playwright sidebar
 
-**Global setup** runs when you execute your first test. It runs only once and is useful for setting up a database or starting a server. You can manually run **global setup** by clicking the `Run global setup` option from the **Setup** section in the Playwright sidebar. **Global teardown** does not run by default; you need to manually initiate it by clicking the `Run global teardown` option.
+**Record a New Test**
 
-Global setup will re-run when you debug tests as this ensures an isolated environment and dedicated setup for the test.
+Click `Record new` in the Playwright sidebar
 
-![running global setup](https://github.com/microsoft/playwright/assets/13063165/bcf5fec7-2d7d-4cb9-a277-5f41e19b8d52)
+**Pick a Locator**
 
-Multiple configurations[​](#multiple-configurations "Direct link to Multiple configurations")
----------------------------------------------------------------------------------------------
+Click `Pick locator` in the Playwright sidebar
 
-If your project contains more than one playwright configuration file, you can switch between them by first clicking on the gear icon in the top right corner of the Playwright sidebar. This will show you all the configuration files in your project. Select the configuration files you want to use by checking the checkbox next to each one and clicking on the 'ok' button.
+**View Test Trace**
 
-![Selecting a configuration file](https://github.com/microsoft/playwright/assets/13063165/ff9ff838-d27a-403d-b939-94e6c295e1d7)
+Enable `Show Trace Viewer` in the Playwright sidebar
 
-You will now have access to all your tests in the test explorer. To run a test click on the grey triangle next to the file or project name.
-
-![Switching between configuration files](https://github.com/microsoft/playwright/assets/13063165/70930de5-0a0c-45e0-a6ee-b51f727f0e35)
-
-To run all tests from all configurations click on the grey triangle at the top of the test explorer.
-
-![Running all tests from all configurations](https://github.com/microsoft/playwright/assets/13063165/b3de4ce1-d311-4527-b2c7-b3e2f179a685)
-
-To choose a configuration file to work with simply toggle between them by clicking on the configuration file name in the Playwright sidebar. Now when you use the tools, such as Record a test, it will record a test for the selected configuration file.
-
-![Recording a test for a specific configuration file](https://github.com/microsoft/playwright/assets/13063165/a8ecbcd1-fab8-4012-bdaa-428951f233a2)
-
-You can easily toggle back and forth between configurations by clicking on the configuration file name in the Playwright sidebar.
-
-What's next[​](#whats-next "Direct link to What's next")
+What's Next[​](#whats-next "Direct link to What's Next")
 --------------------------------------------------------
 
-*   [Write tests using web first assertions, page fixtures and locators](/docs/writing-tests)
+*   [Write tests using web-first assertions, page fixtures, and locators](/docs/writing-tests)
 *   [Run your tests on CI](/docs/ci-intro)
 *   [Learn more about the Trace Viewer](/docs/trace-viewer)
 
@@ -222,6 +147,36 @@ What's next[​](#whats-next "Direct link to What's next")
 
 Release notes
 =============
+
+Version 1.55[​](#version-155 "Direct link to Version 1.55")
+-----------------------------------------------------------
+
+### New APIs[​](#new-apis "Direct link to New APIs")
+
+*   New Property [testStepInfo.titlePath](/docs/api/class-teststepinfo#test-step-info-title-path) Returns the full title path starting from the test file, including test and step titles.
+
+### Codegen[​](#codegen "Direct link to Codegen")
+
+*   Automatic `toBeVisible()` assertions: Codegen can now generate automatic `toBeVisible()` assertions for common UI interactions. This feature can be enabled in the Codegen settings UI.
+
+### Breaking Changes[​](#breaking-changes "Direct link to Breaking Changes")
+
+*   ⚠️ Dropped support for Chromium extension manifest v2.
+
+### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+
+*   Added support for Debian 13 "Trixie".
+
+### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+
+*   Chromium 140.0.7339.16
+*   Mozilla Firefox 141.0
+*   WebKit 26.0
+
+This version was also tested against the following stable channels:
+
+*   Google Chrome 139
+*   Microsoft Edge 139
 
 Version 1.54[​](#version-154 "Direct link to Version 1.54")
 -----------------------------------------------------------
@@ -248,12 +203,12 @@ Version 1.54[​](#version-154 "Direct link to Version 1.54")
 *   `npx playwright open` does not open the test recorder anymore. Use `npx playwright codegen` instead.
     
 
-### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
 
 *   Support for Node.js 16 has been removed.
 *   Support for Node.js 18 has been deprecated, and will be removed in the future.
 
-### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
 
 *   Chromium 139.0.7258.5
 *   Mozilla Firefox 140.0.2
@@ -276,7 +231,7 @@ Version 1.53[​](#version-153 "Direct link to Version 1.53")
         import { defineConfig } from '@playwright/test';export default defineConfig({  reporter: [['html', { title: 'Custom test run #1028' }]]});
     
 
-### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
 
 *   New option [kind](/docs/api/class-testinfo#test-info-snapshot-path-option-kind) in [testInfo.snapshotPath()](/docs/api/class-testinfo#test-info-snapshot-path) controls which snapshot path template is used.
     
@@ -287,7 +242,7 @@ Version 1.53[​](#version-153 "Direct link to Version 1.53")
 *   `npx playwright install --list` will now list all installed browsers, versions and locations.
     
 
-### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
 
 *   Chromium 138.0.7204.4
 *   Mozilla Firefox 139.0
@@ -318,19 +273,18 @@ Version 1.52[​](#version-152 "Direct link to Version 1.52")
 *   New [testConfig.failOnFlakyTests](/docs/api/class-testconfig#test-config-fail-on-flaky-tests) option to fail the test run if any flaky tests are detected, similarly to `--fail-on-flaky-tests`. This is useful for CI/CD environments where you want to ensure that all tests are stable before deploying.
 *   New property [testResult.annotations](/docs/api/class-testresult#test-result-annotations) contains annotations for each test retry.
 
-### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
 
 *   New option [maxRedirects](/docs/api/class-apirequest#api-request-new-context-option-max-redirects) in [apiRequest.newContext()](/docs/api/class-apirequest#api-request-new-context) to control the maximum number of redirects.
-*   New option `ref` in [locator.ariaSnapshot()](/docs/api/class-locator#locator-aria-snapshot) to generate reference for each element in the snapshot which can later be used to locate the element.
 *   HTML reporter now supports _NOT filtering_ via `!@my-tag` or `!my-file.spec.ts` or `!p:my-project`.
 
-### Breaking Changes[​](#breaking-changes "Direct link to Breaking Changes")
+### Breaking Changes[​](#breaking-changes-1 "Direct link to Breaking Changes")
 
 *   Glob URL patterns in methods like [page.route()](/docs/api/class-page#page-route) do not support `?` and `[]` anymore. We recommend using regular expressions instead.
 *   Method [route.continue()](/docs/api/class-route#route-continue) does not allow to override the `Cookie` header anymore. If a `Cookie` header is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browserContext.addCookies()](/docs/api/class-browsercontext#browser-context-add-cookies).
 *   macOS 13 is now deprecated and will no longer receive WebKit updates. Please upgrade to a more recent macOS version to continue benefiting from the latest WebKit improvements.
 
-### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
 
 *   Chromium 136.0.7103.25
 *   Mozilla Firefox 137.0
@@ -387,13 +341,13 @@ A new [TestStepInfo](/docs/api/class-teststepinfo "TestStepInfo") object is now 
 
     test('some test', async ({ page, isMobile }) => {  // Note the new "step" argument:  await test.step('here is my step', async step => {    step.skip(isMobile, 'not relevant on mobile layouts');    // ...    await step.attach('my attachment', { body: 'some text' });    // ...  });});
 
-### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
 
 *   New option `contrast` for methods [page.emulateMedia()](/docs/api/class-page#page-emulate-media) and [browser.newContext()](/docs/api/class-browser#browser-new-context) allows to emulate the `prefers-contrast` media feature.
 *   New option [failOnStatusCode](/docs/api/class-apirequest#api-request-new-context-option-fail-on-status-code) makes all fetch requests made through the [APIRequestContext](/docs/api/class-apirequestcontext "APIRequestContext") throw on response codes other than 2xx and 3xx.
 *   Assertion [expect(page).toHaveURL()](/docs/api/class-pageassertions#page-assertions-to-have-url) now supports a predicate.
 
-### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
 
 *   Chromium 134.0.6998.35
 *   Mozilla Firefox 135.0
@@ -447,7 +401,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 *   [expect(locator).toBeEditable()](/docs/api/class-locatorassertions#locator-assertions-to-be-editable) and [locator.isEditable()](/docs/api/class-locator#locator-is-editable) now throw if the target element is not `<input>`, `<select>`, or a number of other editable elements.
 *   Option [testConfig.updateSnapshots](/docs/api/class-testconfig#test-config-update-snapshots) now updates all snapshots when set to `all`, rather than only the failed/changed snapshots. Use the new enum `changed` to keep the old functionality of only updating the changed snapshots.
 
-### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
 
 *   Chromium 133.0.6943.16
 *   Mozilla Firefox 134.0
@@ -507,13 +461,13 @@ See [issue #33566](https://github.com/microsoft/playwright/issues/33566) for the
 
     import { defineConfig, devices } from '@playwright/test';export default defineConfig({  projects: [    {      name: 'chromium',      use: { ...devices['Desktop Chrome'], channel: 'chromium' },    },  ],});
 
-### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
 
 *   `<canvas>` elements inside a snapshot now draw a preview.
 *   New method [tracing.group()](/docs/api/class-tracing#tracing-group) to visually group actions in the trace.
 *   Playwright docker images switched from Node.js v20 to Node.js v22 LTS.
 
-### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
 
 *   Chromium 131.0.6778.33
 *   Mozilla Firefox 132.0
@@ -541,14 +495,14 @@ See [WebSocketRoute](/docs/api/class-websocketroute "WebSocketRoute") for more d
 *   Route method calls like [route.fulfill()](/docs/api/class-route#route-fulfill) are not shown in the report and trace viewer anymore. You can see which network requests were routed in the network tab instead.
 *   New "Copy as cURL" and "Copy as fetch" buttons for requests in the network tab.
 
-### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
 
 *   Option [form](/docs/api/class-apirequestcontext#api-request-context-fetch-option-form) and similar ones now accept [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData).
 *   New method [page.requestGC()](/docs/api/class-page#page-request-gc) may help detect memory leaks.
 *   New option [location](/docs/api/class-test#test-step-option-location) to pass custom step location.
 *   Requests made by [APIRequestContext](/docs/api/class-apirequestcontext "APIRequestContext") now record detailed timing and security information in the HAR.
 
-### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
 
 *   Chromium 130.0.6723.19
 *   Mozilla Firefox 130.0
@@ -584,7 +538,7 @@ You can now pass [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/We
 
     test('query params', async ({ request }) => {  const searchParams = new URLSearchParams();  searchParams.set('userId', 1);  const response = await request.get(      'https://jsonplaceholder.typicode.com/posts',      {        params: searchParams // or as a string: 'userId=1'      }  );  // ...});
 
-### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
 
 *   The `mcr.microsoft.com/playwright:v1.47.0` now serves a Playwright image based on Ubuntu 24.04 Noble. To use the 22.04 jammy-based image, please use `mcr.microsoft.com/playwright:v1.47.0-jammy` instead.
 *   New options [behavior](/docs/api/class-page#page-remove-all-listeners-option-behavior), [behavior](/docs/api/class-browser#browser-remove-all-listeners-option-behavior) and [behavior](/docs/api/class-browsercontext#browser-context-remove-all-listeners-option-behavior) to wait for ongoing listeners to complete.
@@ -593,7 +547,7 @@ You can now pass [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/We
 *   [noWaitAfter](/docs/api/class-locator#locator-select-option-option-no-wait-after) option in [locator.selectOption()](/docs/api/class-locator#locator-select-option) was deprecated.
 *   We've seen reports of WebGL in Webkit misbehaving on GitHub Actions `macos-13`. We recommend upgrading GitHub Actions to `macos-14`.
 
-### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
 
 *   Chromium 129.0.6668.29
 *   Mozilla Firefox 130.0
@@ -645,13 +599,13 @@ This fixture is only available in [component tests](/docs/test-components#handli
 *   New button to copy source file location to clipboard.
 *   Metadata pane now displays the `baseURL`.
 
-### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
 
 *   New `maxRetries` option in [apiRequestContext.fetch()](/docs/api/class-apirequestcontext#api-request-context-fetch) which retries on the `ECONNRESET` network error.
 *   New option to [box a fixture](/docs/test-fixtures#box-fixtures) to minimize the fixture exposure in test reports and error messages.
 *   New option to provide a [custom fixture title](/docs/test-fixtures#custom-fixture-title) to be used in test reports and error messages.
 
-### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
 
 *   Chromium 128.0.6613.18
 *   Mozilla Firefox 128.0
@@ -693,7 +647,7 @@ See [the clock guide](/docs/clock) for more details.
         import { expect as baseExpect } from '@playwright/test';export const expect = baseExpect.extend({  async toHaveAmount(locator: Locator, expected: number, options?: { timeout?: number }) {    // When no timeout option is specified, use the config timeout.    const timeout = options?.timeout ?? this.timeout;    // ... implement the assertion ...  },});
     
 
-### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
 
 *   Method [locator.setInputFiles()](/docs/api/class-locator#locator-set-input-files) now supports uploading a directory for `<input type=file webkitdirectory>` elements.
     
@@ -714,7 +668,7 @@ See [the clock guide](/docs/clock) for more details.
 *   v1.45 is the last release to receive WebKit update for macOS 12 Monterey. Please update macOS to keep using the latest WebKit.
     
 
-### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
 
 *   Chromium 127.0.6533.5
 *   Mozilla Firefox 127.0
@@ -728,7 +682,7 @@ This version was also tested against the following stable channels:
 Version 1.44[​](#version-144 "Direct link to Version 1.44")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis "Direct link to New APIs")
+### New APIs[​](#new-apis-1 "Direct link to New APIs")
 
 **Accessibility assertions**
 
@@ -786,7 +740,7 @@ Version 1.44[​](#version-144 "Direct link to Version 1.44")
         $ npx playwright test --last-failedRunning 2 tests using 2 workers  2 passed (1.2s)
     
 
-### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
 
 *   Chromium 125.0.6422.14
 *   Mozilla Firefox 125.0.1
@@ -800,7 +754,7 @@ This version was also tested against the following stable channels:
 Version 1.43[​](#version-143 "Direct link to Version 1.43")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-1 "Direct link to New APIs")
+### New APIs[​](#new-apis-2 "Direct link to New APIs")
 
 *   Method [browserContext.clearCookies()](/docs/api/class-browsercontext#browser-context-clear-cookies) now supports filters to remove only some cookies.
     
@@ -834,7 +788,7 @@ Version 1.43[​](#version-143 "Direct link to Version 1.43")
     *   "Shift F5" to stop running tests.
     *   "Ctrl \`" to toggle test output.
 
-### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
 
 *   Chromium 124.0.6367.8
 *   Mozilla Firefox 124.0
@@ -848,7 +802,7 @@ This version was also tested against the following stable channels:
 Version 1.42[​](#version-142 "Direct link to Version 1.42")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-2 "Direct link to New APIs")
+### New APIs[​](#new-apis-3 "Direct link to New APIs")
 
 *   New method [page.addLocatorHandler()](/docs/api/class-page#page-add-locator-handler) registers a callback that will be invoked when specified element becomes visible and may block Playwright actions. The callback can get rid of the overlay. Here is an example that closes a cookie dialog when it appears:
 
@@ -881,7 +835,7 @@ Use `--grep` command line option to run only tests with certain tags.
 
 *   ⚠️ Ubuntu 18 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
 
 *   Chromium 123.0.6312.4
 *   Mozilla Firefox 123.0
@@ -895,7 +849,7 @@ This version was also tested against the following stable channels:
 Version 1.41[​](#version-141 "Direct link to Version 1.41")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-3 "Direct link to New APIs")
+### New APIs[​](#new-apis-4 "Direct link to New APIs")
 
 *   New method [page.unrouteAll()](/docs/api/class-page#page-unroute-all) removes all routes registered by [page.route()](/docs/api/class-page#page-route) and [page.routeFromHAR()](/docs/api/class-page#page-route-from-har). Optionally allows to wait for ongoing routes to finish, or ignore any errors from them.
 *   New method [browserContext.unrouteAll()](/docs/api/class-browsercontext#browser-context-unroute-all) removes all routes registered by [browserContext.route()](/docs/api/class-browsercontext#browser-context-route) and [browserContext.routeFromHAR()](/docs/api/class-browsercontext#browser-context-route-from-har). Optionally allows to wait for ongoing routes to finish, or ignore any errors from them.
@@ -903,7 +857,7 @@ Version 1.41[​](#version-141 "Direct link to Version 1.41")
 *   New option `stylePath` for methods [expect(page).toHaveScreenshot()](/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1) and [expect(locator).toHaveScreenshot()](/docs/api/class-locatorassertions#locator-assertions-to-have-screenshot-1) to apply a custom stylesheet while making the screenshot.
 *   New `fileName` option for [Blob reporter](/docs/test-reporters#blob-reporter), to specify the name of the report to be created.
 
-### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
 
 *   Chromium 121.0.6167.57
 *   Mozilla Firefox 121.0
@@ -931,7 +885,7 @@ Here is an example of a generated test with assertions:
 
     import { test, expect } from '@playwright/test';test('test', async ({ page }) => {  await page.goto('https://playwright.dev/');  await page.getByRole('link', { name: 'Get started' }).click();  await expect(page.getByLabel('Breadcrumbs').getByRole('list')).toContainText('Installation');  await expect(page.getByLabel('Search')).toBeVisible();  await page.getByLabel('Search').click();  await page.getByPlaceholder('Search docs').fill('locator');  await expect(page.getByPlaceholder('Search docs')).toHaveValue('locator');});
 
-### New APIs[​](#new-apis-4 "Direct link to New APIs")
+### New APIs[​](#new-apis-5 "Direct link to New APIs")
 
 *   Options [reason](/docs/api/class-page#page-close-option-reason) in [page.close()](/docs/api/class-page#page-close), [reason](/docs/api/class-browsercontext#browser-context-close-option-reason) in [browserContext.close()](/docs/api/class-browsercontext#browser-context-close) and [reason](/docs/api/class-browser#browser-close-option-reason) in [browser.close()](/docs/api/class-browser#browser-close). Close reason is reported for all operations interrupted by the closure.
 *   Option [firefoxUserPrefs](/docs/api/class-browsertype#browser-type-launch-persistent-context-option-firefox-user-prefs) in [browserType.launchPersistentContext()](/docs/api/class-browsertype#browser-type-launch-persistent-context).
@@ -941,7 +895,7 @@ Here is an example of a generated test with assertions:
 *   Methods [download.path()](/docs/api/class-download#download-path) and [download.createReadStream()](/docs/api/class-download#download-create-read-stream) throw an error for failed and cancelled downloads.
 *   Playwright [docker image](/docs/docker) now comes with Node.js v20.
 
-### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
 
 *   Chromium 120.0.6099.28
 *   Mozilla Firefox 119.0
@@ -999,11 +953,11 @@ You can mark a [test.step()](/docs/api/class-test#test-step) as "boxed" so that 
 
 See [test.step()](/docs/api/class-test#test-step) documentation for a full example.
 
-### New APIs[​](#new-apis-5 "Direct link to New APIs")
+### New APIs[​](#new-apis-6 "Direct link to New APIs")
 
 *   [expect(locator).toHaveAttribute()](/docs/api/class-locatorassertions#locator-assertions-to-have-attribute-2)
 
-### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
 
 *   Chromium 119.0.6045.9
 *   Mozilla Firefox 118.0.1
@@ -1024,7 +978,7 @@ Version 1.38[​](#version-138 "Direct link to Version 1.38")
 1.  Zoom into time range.
 2.  Network panel redesign.
 
-### New APIs[​](#new-apis-6 "Direct link to New APIs")
+### New APIs[​](#new-apis-7 "Direct link to New APIs")
 
 *   [browserContext.on('weberror')](/docs/api/class-browsercontext#browser-context-event-web-error)
 *   [locator.pressSequentially()](/docs/api/class-locator#locator-press-sequentially)
@@ -1062,7 +1016,7 @@ Add `@playwright/browser-chromium`, `@playwright/browser-firefox` and `@playwrig
 
     // package.json{  "devDependencies": {    "playwright": "1.38.0",    "@playwright/browser-chromium": "1.38.0",    "@playwright/browser-firefox": "1.38.0",    "@playwright/browser-webkit": "1.38.0"  }}
 
-### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
 
 *   Chromium 117.0.5938.62
 *   Mozilla Firefox 117.0
@@ -1146,7 +1100,7 @@ Firefox
 *   UI Mode now respects project dependencies. You can control which dependencies to respect by checking/unchecking them in a projects list.
 *   Console logs from the test are now displayed in the Console tab.
 
-### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
 
 *   Chromium 116.0.5845.82
 *   Mozilla Firefox 115.0
@@ -1162,7 +1116,7 @@ Version 1.36[​](#version-136 "Direct link to Version 1.36")
 
 🏝️ Summer maintenance release.
 
-### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.75
 *   Mozilla Firefox 115.0
@@ -1208,7 +1162,7 @@ Version 1.35[​](#version-135 "Direct link to Version 1.35")
     This change **does not** affect `@playwright/test` and `playwright` package users.
     
 
-### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.13
 *   Mozilla Firefox 113.0
@@ -1262,7 +1216,7 @@ Version 1.34[​](#version-134 "Direct link to Version 1.34")
 *   Node.js 14 is no longer supported since it [reached its end-of-life](https://nodejs.dev/en/about/releases/) on April 30, 2023.
     
 
-### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
 
 *   Chromium 114.0.5735.26
 *   Mozilla Firefox 113.0
@@ -1289,7 +1243,7 @@ Version 1.33[​](#version-133 "Direct link to Version 1.33")
 *   Use new web-first assertion [expect(locator).toBeAttached()](/docs/api/class-locatorassertions#locator-assertions-to-be-attached) to ensure that the element is present in the page's DOM. Do not confuse with the [expect(locator).toBeVisible()](/docs/api/class-locatorassertions#locator-assertions-to-be-visible) that ensures that element is both attached & visible.
     
 
-### New APIs[​](#new-apis-7 "Direct link to New APIs")
+### New APIs[​](#new-apis-8 "Direct link to New APIs")
 
 *   [locator.or()](/docs/api/class-locator#locator-or)
 *   New option [hasNot](/docs/api/class-locator#locator-filter-option-has-not) in [locator.filter()](/docs/api/class-locator#locator-filter)
@@ -1302,7 +1256,7 @@ Version 1.33[​](#version-133 "Direct link to Version 1.33")
 
 *   The `mcr.microsoft.com/playwright:v1.33.0` now serves a Playwright image based on Ubuntu Jammy. To use the focal-based image, please use `mcr.microsoft.com/playwright:v1.33.0-focal` instead.
 
-### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
 
 *   Chromium 113.0.5672.53
 *   Mozilla Firefox 112.0
@@ -1326,7 +1280,7 @@ Engage with a new flag `--ui`:
 
     npx playwright test --ui
 
-### New APIs[​](#new-apis-8 "Direct link to New APIs")
+### New APIs[​](#new-apis-9 "Direct link to New APIs")
 
 *   New options [updateMode](/docs/api/class-page#page-route-from-har-option-update-mode) and [updateContent](/docs/api/class-page#page-route-from-har-option-update-content) in [page.routeFromHAR()](/docs/api/class-page#page-route-from-har) and [browserContext.routeFromHAR()](/docs/api/class-browsercontext#browser-context-route-from-har).
 *   Chaining existing locator objects, see [locator docs](/docs/locators#matching-inside-a-locator) for details.
@@ -1340,7 +1294,7 @@ Note: **component tests only**, does not affect end-to-end tests.
 *   `@playwright/experimental-ct-react` now supports **React 18 only**.
 *   If you're running component tests with React 16 or 17, please replace `@playwright/experimental-ct-react` with `@playwright/experimental-ct-react17`.
 
-### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
 
 *   Chromium 112.0.5615.29
 *   Mozilla Firefox 111.0
@@ -1354,7 +1308,7 @@ This version was also tested against the following stable channels:
 Version 1.31[​](#version-131 "Direct link to Version 1.31")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-9 "Direct link to New APIs")
+### New APIs[​](#new-apis-10 "Direct link to New APIs")
 
 *   New property [testProject.dependencies](/docs/api/class-testproject#test-project-dependencies) to configure dependencies between projects.
     
@@ -1369,7 +1323,7 @@ Version 1.31[​](#version-131 "Direct link to Version 1.31")
         const button = page.getByRole('button');// Make sure at least some part of element intersects viewport.await expect(button).toBeInViewport();// Make sure element is fully outside of viewport.await expect(button).not.toBeInViewport();// Make sure that at least half of the element intersects viewport.await expect(button).toBeInViewport({ ratio: 0.5 });
     
 
-### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-10 "Direct link to Miscellaneous")
 
 *   DOM snapshots in trace viewer can be now opened in a separate window.
 *   New method `defineConfig` to be used in `playwright.config`.
@@ -1389,7 +1343,7 @@ Replace `config` variable definition with `defineConfig` call:
 
     // Afterimport { defineConfig, devices } from '@playwright/experimental-ct-react';export default defineConfig({  // ... config goes here ...});
 
-### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
 
 *   Chromium 111.0.5563.19
 *   Mozilla Firefox 109.0
@@ -1403,7 +1357,7 @@ This version was also tested against the following stable channels:
 Version 1.30[​](#version-130 "Direct link to Version 1.30")
 -----------------------------------------------------------
 
-### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
 
 *   Chromium 110.0.5481.38
 *   Mozilla Firefox 108.0.2
@@ -1417,7 +1371,7 @@ This version was also tested against the following stable channels:
 Version 1.29[​](#version-129 "Direct link to Version 1.29")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-10 "Direct link to New APIs")
+### New APIs[​](#new-apis-11 "Direct link to New APIs")
 
 *   New method [route.fetch()](/docs/api/class-route#route-fetch) and new option `json` for [route.fulfill()](/docs/api/class-route#route-fulfill):
     
@@ -1446,13 +1400,13 @@ Version 1.29[​](#version-129 "Direct link to Version 1.29")
         import { defineConfig } from '@playwright/test';export default defineConfig({  use: {    screenshot: {      mode: 'only-on-failure',      fullPage: true,    }  }});
     
 
-### Miscellaneous[​](#miscellaneous-10 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-11 "Direct link to Miscellaneous")
 
 *   Playwright Test now respects [`jsconfig.json`](https://code.visualstudio.com/docs/languages/jsconfig).
 *   New options `args` and `proxy` for [androidDevice.launchBrowser()](/docs/api/class-androiddevice#android-device-launch-browser).
 *   Option `postData` in method [route.continue()](/docs/api/class-route#route-continue) now supports [Serializable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Description "Serializable") values.
 
-### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
 
 *   Chromium 109.0.5414.46
 *   Mozilla Firefox 107.0
@@ -1494,14 +1448,14 @@ Version 1.28[​](#version-128 "Direct link to Version 1.28")
         import { defineConfig } from '@playwright/test';export default defineConfig({  testDir: './tests',  snapshotPathTemplate: '{testDir}/__screenshots__/{testFilePath}/{arg}{ext}',});
     
 
-### New APIs[​](#new-apis-11 "Direct link to New APIs")
+### New APIs[​](#new-apis-12 "Direct link to New APIs")
 
 *   [locator.blur()](/docs/api/class-locator#locator-blur)
 *   [locator.clear()](/docs/api/class-locator#locator-clear)
 *   [android.launchServer()](/docs/api/class-android#android-launch-server) and [android.connect()](/docs/api/class-android#android-connect)
 *   [androidDevice.on('close')](/docs/api/class-androiddevice#android-device-event-close)
 
-### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
 
 *   Chromium 108.0.5359.29
 *   Mozilla Firefox 106.0
@@ -1555,7 +1509,7 @@ All the same methods are also available on [Locator](/docs/api/class-locator "Lo
 *   Command line options `--grep` and `--grep-invert` previously incorrectly ignored `grep` and `grepInvert` options specified in the config. Now all of them are applied together.
     
 
-### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
 
 *   Chromium 107.0.5304.18
 *   Mozilla Firefox 105.0.1
@@ -1592,7 +1546,7 @@ Prior to 1.26, this would wait for all iframes to fire the `DOMContentLoaded` ev
 
 To align with web specification, the `'domcontentloaded'` value only waits for the target frame to fire the `'DOMContentLoaded'` event. Use `waitUntil: 'load'` to wait for all iframes.
 
-### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
 
 *   Chromium 106.0.5249.30
 *   Mozilla Firefox 104.0
@@ -1634,7 +1588,7 @@ Version 1.25[​](#version-125 "Direct link to Version 1.25")
 *   🪦 This is the last release with Node.js 12 support, we recommend upgrading to Node.js LTS (16).
 *   ⚠️ Ubuntu 18 is now deprecated and will not be supported as of Dec 2022.
 
-### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
 
 *   Chromium 105.0.5195.19
 *   Mozilla Firefox 103.0
@@ -1737,7 +1691,7 @@ Note that the new methods [page.routeFromHAR()](/docs/api/class-page#page-route-
 
 Read more about [component testing with Playwright](/docs/test-components).
 
-### Miscellaneous[​](#miscellaneous-11 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-12 "Direct link to Miscellaneous")
 
 *   If there's a service worker that's in your way, you can now easily disable it with a new context option `serviceWorkers`:
     
@@ -1831,7 +1785,7 @@ Version 1.21[​](#version-121 "Direct link to Version 1.21")
 *   The `mcr.microsoft.com/playwright` docker image no longer contains Python. Please use `mcr.microsoft.com/playwright/python` as a Playwright-ready docker image with pre-installed Python.
 *   Playwright now supports large file uploads (100s of MBs) via [locator.setInputFiles()](/docs/api/class-locator#locator-set-input-files) API.
 
-### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4951.26
 *   Mozilla Firefox 98.0.2
@@ -1883,7 +1837,7 @@ Version 1.20[​](#version-120 "Direct link to Version 1.20")
 *   We now ship a designated Python docker image `mcr.microsoft.com/playwright/python`. Please switch over to it if you use Python. This is the last release that includes Python inside our javascript `mcr.microsoft.com/playwright` docker image.
 *   v1.20 is the last release to receive WebKit update for macOS 10.15 Catalina. Please update macOS to keep using latest & greatest WebKit!
 
-### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4921.0
 *   Mozilla Firefox 97.0.1
@@ -1945,7 +1899,7 @@ It is unlikely that this change will affect you, no action is required if your t
 
 We've noticed that in rare cases, the set of tests to be executed was configured in the global setup by means of the environment variables. We also noticed some applications that were post processing the reporters' output in the global teardown. If you are doing one of the two, [learn more](https://github.com/microsoft/playwright/issues/12018)
 
-### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
 
 *   Chromium 100.0.4863.0
 *   Mozilla Firefox 96.0.1
@@ -2010,7 +1964,7 @@ The proper way to make a fixture parametrized in the config file is to specify `
 
     // CORRECT: THIS SNIPPET WORKS SINCE v1.18.// fixtures.jsconst test = base.extend({  // Fixtures marked as "option: true" will get a value specified in the config,  // or fallback to the default value.  myParameter: ['default', { option: true }],});// playwright.config.jsmodule.exports = {  use: {    myParameter: 'value',  },};
 
-### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
 
 *   Chromium 99.0.4812.0
 *   Mozilla Firefox 95.0
@@ -2065,7 +2019,7 @@ Playwright Trace Viewer is now **available online** at [https://trace.playwright
         npx playwright install msedge
     
 
-### New APIs[​](#new-apis-12 "Direct link to New APIs")
+### New APIs[​](#new-apis-13 "Direct link to New APIs")
 
 *   Tracing now supports a [`'title'`](/docs/api/class-tracing#tracing-start-option-title) option
 *   Page navigations support a new [`'commit'`](/docs/api/class-page#page-goto) waiting option
@@ -2149,7 +2103,7 @@ Read more about [Docker integration](/docs/docker).
 
 Read more about [Trace Viewer](/docs/trace-viewer).
 
-### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
 
 *   Chromium 97.0.4666.0
 *   Mozilla Firefox 93.0
@@ -2185,7 +2139,7 @@ Previously it was not possible to get multiple header values of a response. This
 
 Its now possible to emulate the `forced-colors` CSS media feature by passing it in the [browser.newContext()](/docs/api/class-browser#browser-new-context) or calling [page.emulateMedia()](/docs/api/class-page#page-emulate-media).
 
-#### New APIs[​](#new-apis-13 "Direct link to New APIs")
+#### New APIs[​](#new-apis-14 "Direct link to New APIs")
 
 *   [page.route()](/docs/api/class-page#page-route) accepts new `times` option to specify how many times this route should be matched.
 *   [page.setChecked()](/docs/api/class-page#page-set-checked) and [locator.setChecked()](/docs/api/class-locator#locator-set-checked) were introduced to set the checked state of a checkbox.
@@ -2205,7 +2159,7 @@ By default, tests in a single file are run in order. If you have many independen
 
 By using `npx playwright test --debug` it will enable the [Playwright Inspector](/docs/debug#playwright-inspector) for you to debug your tests.
 
-### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
 
 *   Chromium 96.0.4641.0
 *   Mozilla Firefox 92.0
@@ -2313,7 +2267,7 @@ playwright.config.ts
 
 Learn more in the [documentation](/docs/test-webserver).
 
-### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
 
 *   Chromium 94.0.4595.0
 *   Mozilla Firefox 91.0
@@ -2346,7 +2300,7 @@ Version 1.13[​](#version-113 "Direct link to Version 1.13")
 *   [Playwright Test Configuration](/docs/test-configuration)
 *   [Playwright Test Fixtures](/docs/test-fixtures)
 
-#### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4576.0
 *   Mozilla Firefox 90.0
@@ -2411,7 +2365,7 @@ That will open the following GUI:
 
 👉 Read more in [trace viewer documentation](/docs/trace-viewer).
 
-#### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4530.0
 *   Mozilla Firefox 89.0
@@ -2422,7 +2376,7 @@ This version of Playwright was also tested against the following stable channels
 *   Google Chrome 91
 *   Microsoft Edge 91
 
-#### New APIs[​](#new-apis-14 "Direct link to New APIs")
+#### New APIs[​](#new-apis-15 "Direct link to New APIs")
 
 *   `reducedMotion` option in [page.emulateMedia()](/docs/api/class-page#page-emulate-media), [browserType.launchPersistentContext()](/docs/api/class-browsertype#browser-type-launch-persistent-context), [browser.newContext()](/docs/api/class-browser#browser-new-context) and [browser.newPage()](/docs/api/class-browser#browser-new-page)
 *   [browserContext.on('request')](/docs/api/class-browsercontext#browser-context-event-request)
@@ -2443,13 +2397,13 @@ Version 1.11[​](#version-111 "Direct link to Version 1.11")
 *   Did live demos with new features ✨
 *   **Special thanks** to [applitools](http://applitools.com/) for hosting the event and inviting us!
 
-#### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
 
 *   Chromium 92.0.4498.0
 *   Mozilla Firefox 89.0b6
 *   WebKit 14.2
 
-#### New APIs[​](#new-apis-15 "Direct link to New APIs")
+#### New APIs[​](#new-apis-16 "Direct link to New APIs")
 
 *   support for **async predicates** across the API in methods such as [page.waitForRequest()](/docs/api/class-page#page-wait-for-request) and others
 *   new **emulation devices**: Galaxy S8, Galaxy S9+, Galaxy Tab S4, Pixel 3, Pixel 4
@@ -2479,7 +2433,7 @@ This version of Playwright was also tested against the following stable channels
 *   Google Chrome 89
 *   Microsoft Edge 89
 
-#### New APIs[​](#new-apis-16 "Direct link to New APIs")
+#### New APIs[​](#new-apis-17 "Direct link to New APIs")
 
 *   [browserType.launch()](/docs/api/class-browsertype#browser-type-launch) now accepts the new `'channel'` option. Read more in [our documentation](/docs/browsers).
 
@@ -2496,13 +2450,13 @@ Version 1.9[​](#version-19 "Direct link to Version 1.9")
 *   **Page dialogs are now auto-dismissed** during execution, unless a listener for `dialog` event is configured. [Learn more](/docs/dialogs) about this.
 *   [Playwright for Python](https://github.com/microsoft/playwright-python) is **now stable** with an idiomatic snake case API and pre-built [Docker image](/docs/docker) to run tests in CI/CD.
 
-#### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-41 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4421.0
 *   Mozilla Firefox 86.0b10
 *   WebKit 14.1
 
-#### New APIs[​](#new-apis-17 "Direct link to New APIs")
+#### New APIs[​](#new-apis-18 "Direct link to New APIs")
 
 *   [page.pause()](/docs/api/class-page#page-pause).
 
@@ -2520,7 +2474,7 @@ Version 1.8[​](#version-18 "Direct link to Version 1.8")
 *   New methods to [assert element state](/docs/actionability#assertions) like [page.isEditable()](/docs/api/class-page#page-is-editable).
     
 
-#### New APIs[​](#new-apis-18 "Direct link to New APIs")
+#### New APIs[​](#new-apis-19 "Direct link to New APIs")
 
 *   [elementHandle.isChecked()](/docs/api/class-elementhandle#element-handle-is-checked).
 *   [elementHandle.isDisabled()](/docs/api/class-elementhandle#element-handle-is-disabled).
@@ -2536,7 +2490,7 @@ Version 1.8[​](#version-18 "Direct link to Version 1.8")
 *   [page.isVisible()](/docs/api/class-page#page-is-visible).
 *   New option `'editable'` in [elementHandle.waitForElementState()](/docs/api/class-elementhandle#element-handle-wait-for-element-state).
 
-#### Browser Versions[​](#browser-versions-41 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-42 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4392.0
 *   Mozilla Firefox 85.0b5
@@ -2551,12 +2505,12 @@ Version 1.7[​](#version-17 "Direct link to Version 1.7")
 *   **New website**: The docs website at [playwright.dev](https://playwright.dev/) has been updated and is now built with [Docusaurus](https://v2.docusaurus.io/).
 *   **Support for Apple Silicon**: Playwright browser binaries for WebKit and Chromium are now built for Apple Silicon.
 
-#### New APIs[​](#new-apis-19 "Direct link to New APIs")
+#### New APIs[​](#new-apis-20 "Direct link to New APIs")
 
 *   [browserContext.storageState()](/docs/api/class-browsercontext#browser-context-storage-state) to get current state for later reuse.
 *   `storageState` option in [browser.newContext()](/docs/api/class-browser#browser-new-context) and [browser.newPage()](/docs/api/class-browser#browser-new-page) to setup browser context state.
 
-#### Browser Versions[​](#browser-versions-42 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-43 "Direct link to Browser Versions")
 
 *   Chromium 89.0.4344.0
 *   Mozilla Firefox 84.0b9
@@ -2640,7 +2594,7 @@ You can choose any testing framework such as JUnit or TestNG based on your proje
 .NET[​](#net "Direct link to .NET")
 -----------------------------------
 
-Playwright for .NET comes with MSTest, NUnit, and xUnit [base classes](https://playwright.dev/dotnet/docs/test-runners) for writing end-to-end tests.
+Playwright for .NET comes with MSTest, NUnit, xUnit, and xUnit v3 [base classes](https://playwright.dev/dotnet/docs/test-runners) for writing end-to-end tests.
 
 *   [Documentation](https://playwright.dev/dotnet/docs/intro)
 *   [GitHub repo](https://github.com/microsoft/playwright-dotnet)
@@ -2653,12 +2607,12 @@ Installation
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright Test was created specifically to accommodate the needs of end-to-end testing. Playwright supports all modern rendering engines including Chromium, WebKit, and Firefox. Test on Windows, Linux, and macOS, locally or on CI, headless or headed with native mobile emulation of Google Chrome for Android and Mobile Safari.
+Playwright Test is an end-to-end test framework for modern web apps. It bundles test runner, assertions, isolation, parallelization and rich tooling. Playwright supports Chromium, WebKit and Firefox on Windows, Linux and macOS, locally or in CI, headless or headed, with native mobile emulation for Chrome (Android) and Mobile Safari.
 
 **You will learn**
 
 *   [How to install Playwright](/docs/intro#installing-playwright)
-*   [What's Installed](/docs/intro#whats-installed)
+*   [What's installed](/docs/intro#whats-installed)
 *   [How to run the example test](/docs/intro#running-the-example-test)
 *   [How to open the HTML test report](/docs/intro#html-test-reports)
 
@@ -2669,7 +2623,7 @@ Get started by installing Playwright using one of the following methods.
 
 ### Using npm, yarn or pnpm[​](#using-npm-yarn-or-pnpm "Direct link to Using npm, yarn or pnpm")
 
-The command below either initializes a new project with Playwright, or adds Playwright setup to your current project.
+The command below either initializes a new project or adds Playwright to an existing one.
 
 *   npm
 *   yarn
@@ -2681,32 +2635,34 @@ The command below either initializes a new project with Playwright, or adds Play
 
     pnpm create playwright
 
-Run the install command and select the following to get started:
+When prompted, choose / confirm:
 
-*   Choose between TypeScript or JavaScript (default is TypeScript)
-*   Name of your Tests folder (default is `tests`, or `e2e` if you already have a `tests` folder in your project)
-*   Add a GitHub Actions workflow to easily run tests on CI
-*   Install Playwright browsers (default is true)
+*   TypeScript or JavaScript (default: TypeScript)
+*   Tests folder name (default: `tests`, or `e2e` if `tests` already exists)
+*   Add a GitHub Actions workflow (recommended for CI)
+*   Install Playwright browsers (default: yes)
+
+You can re-run the command later; it does not overwrite existing tests.
 
 ### Using the VS Code Extension[​](#using-the-vs-code-extension "Direct link to Using the VS Code Extension")
 
-Alternatively you can also get started and run your tests using the [VS Code Extension](/docs/getting-started-vscode).
+You can also create and run tests with the [VS Code Extension](/docs/getting-started-vscode).
 
 What's Installed[​](#whats-installed "Direct link to What's Installed")
 -----------------------------------------------------------------------
 
-Playwright will download the browsers needed as well as create the following files.
+Playwright downloads required browser binaries and creates the scaffold below.
 
-    playwright.config.tspackage.jsonpackage-lock.jsontests/  example.spec.tstests-examples/  demo-todo-app.spec.ts
+    playwright.config.ts         # Test configurationpackage.jsonpackage-lock.json            # Or yarn.lock / pnpm-lock.yamltests/  example.spec.ts            # Minimal example testtests-examples/  demo-todo-app.spec.ts      # Richer example tests
 
-The [playwright.config](/docs/test-configuration) is where you can add configuration for Playwright including modifying which browsers you would like to run Playwright on. If you are running tests inside an already existing project then dependencies will be added directly to your `package.json`.
+The [playwright.config](/docs/test-configuration) centralizes configuration: target browsers, timeouts, retries, projects, reporters and more. In existing projects dependencies are added to your current `package.json`.
 
-The `tests` folder contains a basic example test to help you get started with testing. For a more detailed example check out the `tests-examples` folder which contains tests written to test a todo app.
+`tests/` contains a minimal starter test. `tests-examples/` provides richer samples (e.g. a todo app) to explore patterns.
 
 Running the Example Test[​](#running-the-example-test "Direct link to Running the Example Test")
 ------------------------------------------------------------------------------------------------
 
-By default tests will be run on all 3 browsers, Chromium, Firefox and WebKit using several workers. This can be configured in the [playwright.config file](/docs/test-configuration). Tests are run in headless mode meaning no browser will open up when running the tests. Results of the tests and test logs will be shown in the terminal.
+By default tests run headless in parallel across Chromium, Firefox and WebKit (configurable in [playwright.config](/docs/test-configuration)). Output and aggregated results display in the terminal.
 
 *   npm
 *   yarn
@@ -2718,12 +2674,19 @@ By default tests will be run on all 3 browsers, Chromium, Firefox and WebKit usi
 
     pnpm exec playwright test
 
-![tests running in command line](https://github.com/microsoft/playwright/assets/13063165/981c1b2b-dc7e-4b85-b241-272b44da6628) See our doc on [Running Tests](/docs/running-tests) to learn more about running tests in headed mode, running multiple tests, running specific tests etc.
+Tips:
+
+*   See the browser window: add `--headed`.
+*   Run a single project/browser: `--project=chromium`.
+*   Run one file: `npx playwright test tests/example.spec.ts`.
+*   Open testing UI: `--ui`.
+
+See [Running Tests](/docs/running-tests) for details on filtering, headed mode, sharding and retries.
 
 HTML Test Reports[​](#html-test-reports "Direct link to HTML Test Reports")
 ---------------------------------------------------------------------------
 
-After your test completes, an [HTML Reporter](/docs/test-reporters#html-reporter) will be generated, which shows you a full report of your tests allowing you to filter the report by browsers, passed tests, failed tests, skipped tests and flaky tests. You can click on each test and explore the test's errors as well as each step of the test. By default, the HTML report is opened automatically if some of the tests failed.
+After a test run, the [HTML Reporter](/docs/test-reporters#html-reporter) provides a dashboard filterable by the browser, passed, failed, skipped, flaky and more. Click a test to inspect errors, attachments and steps. It auto-opens only when failures occur; open manually with the command below.
 
 *   npm
 *   yarn
@@ -2735,12 +2698,10 @@ After your test completes, an [HTML Reporter](/docs/test-reporters#html-reporter
 
     pnpm exec playwright show-report
 
-![HTML Report](https://github.com/microsoft/playwright/assets/13063165/38ec17a7-9e61-4002-b137-a93812765501)
-
 Running the Example Test in UI Mode[​](#running-the-example-test-in-ui-mode "Direct link to Running the Example Test in UI Mode")
 ---------------------------------------------------------------------------------------------------------------------------------
 
-Run your tests with [UI Mode](/docs/test-ui-mode) for a better developer experience with time travel debugging, watch mode and more.
+Run tests with [UI Mode](/docs/test-ui-mode) for watch mode, live step view, time travel debugging and more.
 
 *   npm
 *   yarn
@@ -2752,26 +2713,24 @@ Run your tests with [UI Mode](/docs/test-ui-mode) for a better developer experie
 
     pnpm exec playwright test --ui
 
-![UI Mode](https://github.com/microsoft/playwright/assets/13063165/c5b501cc-4f5d-485a-87cc-66044c651786)
-
-Check out or [detailed guide on UI Mode](/docs/test-ui-mode) to learn more about its features.
+See the [detailed guide on UI Mode](/docs/test-ui-mode) for watch filters, step details and trace integration.
 
 Updating Playwright[​](#updating-playwright "Direct link to Updating Playwright")
 ---------------------------------------------------------------------------------
 
-To update Playwright to the latest version run the following command:
+Update Playwright and download new browser binaries and their dependencies:
 
 *   npm
 *   yarn
 *   pnpm
 
-    npm install -D @playwright/test@latest# Also download new browser binaries and their dependencies:npx playwright install --with-deps
+    npm install -D @playwright/test@latestnpx playwright install --with-deps
 
-    yarn add --dev @playwright/test@latest# Also download new browser binaries and their dependencies:yarn playwright install --with-deps
+    yarn add --dev @playwright/test@latestyarn playwright install --with-deps
 
-    pnpm install --save-dev @playwright/test@latest# Also download new browser binaries and their dependencies:pnpm exec playwright install --with-deps
+    pnpm install --save-dev @playwright/test@latestpnpm exec playwright install --with-deps
 
-You can always check which version of Playwright you have by running the following command:
+Check your installed version:
 
 *   npm
 *   yarn
@@ -2786,18 +2745,18 @@ You can always check which version of Playwright you have by running the followi
 System requirements[​](#system-requirements "Direct link to System requirements")
 ---------------------------------------------------------------------------------
 
-*   Latest version of Node.js 20, 22 or 24.
+*   Node.js: latest 20.x, 22.x or 24.x.
 *   Windows 10+, Windows Server 2016+ or Windows Subsystem for Linux (WSL).
-*   macOS 14 Ventura, or later.
-*   Debian 12, Ubuntu 22.04, Ubuntu 24.04, on x86-64 and arm64 architecture.
+*   macOS 14 (Ventura) or later.
+*   Debian 12 / 13, Ubuntu 22.04 / 24.04 (x86-64 or arm64).
 
 What's next[​](#whats-next "Direct link to What's next")
 --------------------------------------------------------
 
-*   [Write tests using web first assertions, page fixtures and locators](/docs/writing-tests)
-*   [Run single test, multiple tests, headed mode](/docs/running-tests)
+*   [Write tests using web-first assertions, fixtures and locators](/docs/writing-tests)
+*   [Run single or multiple tests; headed mode](/docs/running-tests)
 *   [Generate tests with Codegen](/docs/codegen-intro)
-*   [See a trace of your tests](/docs/trace-viewer-intro)
+*   [View a trace of your tests](/docs/trace-viewer-intro)
 
 # Writing tests
 
@@ -2807,16 +2766,9 @@ Writing tests
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright tests are simple, they
+Playwright tests are simple: they **perform actions** and **assert the state** against expectations.
 
-*   **perform actions**, and
-*   **assert the state** against expectations.
-
-There is no need to wait for anything prior to performing an action: Playwright automatically waits for the wide range of [actionability](/docs/actionability) checks to pass prior to performing each action.
-
-There is also no need to deal with the race conditions when performing the checks - Playwright assertions are designed in a way that they describe the expectations that need to be eventually met.
-
-That's it! These design choices allow Playwright users to forget about flaky timeouts and racy checks in their tests altogether.
+Playwright automatically waits for [actionability](/docs/actionability) checks to pass before performing each action. You don't need to add manual waits or deal with race conditions. Playwright assertions are designed to describe expectations that will eventually be met, eliminating flaky timeouts and racy checks.
 
 **You will learn**
 
@@ -2844,15 +2796,17 @@ Actions[​](#actions "Direct link to Actions")
 
 ### Navigation[​](#navigation "Direct link to Navigation")
 
-Most of the tests will start with navigating page to the URL. After that, test will be able to interact with the page elements.
+Most tests start by navigating to a URL. After that, the test interacts with page elements.
 
     await page.goto('https://playwright.dev/');
 
-Playwright will wait for page to reach the load state prior to moving forward. Learn more about the [page.goto()](/docs/api/class-page#page-goto) options.
+Playwright waits for the page to reach the load state before continuing. Learn more about [page.goto()](/docs/api/class-page#page-goto) options.
 
 ### Interactions[​](#interactions "Direct link to Interactions")
 
-Performing actions starts with locating the elements. Playwright uses [Locators API](/docs/locators) for that. Locators represent a way to find element(s) on the page at any moment, learn more about the [different types](/docs/locators) of locators available. Playwright will wait for the element to be [actionable](/docs/actionability) prior to performing the action, so there is no need to wait for it to become available.
+Performing actions starts with locating elements. Playwright uses [Locators API](/docs/locators) for that. Locators represent a way to find element(s) on the page at any moment. Learn more about the [different types](/docs/locators) of locators available.
+
+Playwright waits for the element to be [actionable](/docs/actionability) before performing the action, so you don't need to wait for it to become available.
 
     // Create a locator.const getStarted = page.getByRole('link', { name: 'Get started' });// Click it.await getStarted.click();
 
@@ -2862,7 +2816,7 @@ In most cases, it'll be written in one line:
 
 ### Basic actions[​](#basic-actions "Direct link to Basic actions")
 
-This is the list of the most popular Playwright actions. Note that there are many more, so make sure to check the [Locator API](/docs/api/class-locator) section to learn more about them.
+Here are the most popular Playwright actions. For the complete list, check the [Locator API](/docs/api/class-locator) section.
 
 Action
 
@@ -2909,15 +2863,11 @@ Assertions[​](#assertions "Direct link to Assertions")
 
 Playwright includes [test assertions](/docs/test-assertions) in the form of `expect` function. To make an assertion, call `expect(value)` and choose a matcher that reflects the expectation.
 
-There are many generic matchers like `toEqual`, `toContain`, `toBeTruthy` that can be used to assert any conditions.
-
-    expect(success).toBeTruthy();
-
-Playwright also includes async matchers that will wait until the expected condition is met. Using these matchers allows making the tests non-flaky and resilient. For example, this code will wait until the page gets the title containing "Playwright":
+Playwright includes async matchers that wait until the expected condition is met. Using these matchers makes tests non-flaky and resilient. For example, this code waits until the page gets the title containing "Playwright":
 
     await expect(page).toHaveTitle(/Playwright/);
 
-Here is the list of the most popular async assertions. Note that there are [many more](/docs/test-assertions) to get familiar with:
+Here are the most popular async assertions. For the complete list, see [assertions guide](/docs/test-assertions):
 
 Assertion
 
@@ -2963,9 +2913,13 @@ Page has title
 
 Page has URL
 
+Playwright also includes generic matchers like `toEqual`, `toContain`, `toBeTruthy` that can be used to assert any conditions. These assertions do not use the `await` keyword as they perform immediate synchronous checks on already available values.
+
+    expect(success).toBeTruthy();
+
 ### Test Isolation[​](#test-isolation "Direct link to Test Isolation")
 
-Playwright Test is based on the concept of [test fixtures](/docs/test-fixtures) such as the [built in page fixture](/docs/test-fixtures#built-in-fixtures), which is passed into your test. Pages are [isolated between tests due to the Browser Context](/docs/browser-contexts), which is equivalent to a brand new browser profile, where every test gets a fresh environment, even when multiple tests run in a single Browser.
+Playwright Test is based on the concept of [test fixtures](/docs/test-fixtures) such as the [built in page fixture](/docs/test-fixtures#built-in-fixtures), which is passed into your test. Pages are [isolated between tests due to the Browser Context](/docs/browser-contexts), which is equivalent to a brand new browser profile. Every test gets a fresh environment, even when multiple tests run in a single browser.
 
 tests/example.spec.ts
 
@@ -2996,7 +2950,7 @@ Generating tests
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright comes with the ability to generate tests out of the box and is a great way to quickly get started with testing. It will open two windows, a browser window where you interact with the website you wish to test and the Playwright Inspector window where you can record your tests, copy the tests, clear your tests as well as change the language of your tests.
+Playwright can generate tests automatically, providing a quick way to get started with testing. Codegen opens a browser window for interaction and the Playwright Inspector for recording, copying, and managing your generated tests.
 
 **You will learn**
 
@@ -3006,49 +2960,45 @@ Playwright comes with the ability to generate tests out of the box and is a grea
 Running Codegen[​](#running-codegen "Direct link to Running Codegen")
 ---------------------------------------------------------------------
 
-Use the `codegen` command to run the test generator followed by the URL of the website you want to generate tests for. The URL is optional and you can always run the command without it and then add the URL directly into the browser window instead.
+Use the `codegen` command to run the test generator followed by the URL of the website you want to generate tests for. The URL is optional and can be added directly in the browser window if omitted.
 
     npx playwright codegen demo.playwright.dev/todomvc
 
 ### Recording a test[​](#recording-a-test "Direct link to Recording a test")
 
-Run `codegen` and perform actions in the browser. Playwright will generate the code for the user interactions. `Codegen` will look at the rendered page and figure out the recommended locator, prioritizing role, text and test id locators. If the generator identifies multiple elements matching the locator, it will improve the locator to make it resilient and uniquely identify the target element, therefore eliminating and reducing test(s) failing and flaking due to locators.
+Run `codegen` and perform actions in the browser. Playwright generates code for your interactions automatically. Codegen analyzes the rendered page and recommends the best locator, prioritizing role, text, and test id locators. When multiple elements match a locator, the generator improves it to uniquely identify the target element, reducing test failures and flakiness.
 
 With the test generator you can record:
 
-*   Actions like click or fill by simply interacting with the page
-*   Assertions by clicking on one of the icons in the toolbar and then clicking on an element on the page to assert against. You can choose:
+*   Actions like click or fill by interacting with the page
+*   Assertions by clicking a toolbar icon, then clicking a page element to assert against. You can choose:
     *   `'assert visibility'` to assert that an element is visible
     *   `'assert text'` to assert that an element contains specific text
     *   `'assert value'` to assert that an element has a specific value
 
-![Recording a test](https://github.com/microsoft/playwright/assets/13063165/34a79ea1-639e-4cb3-8115-bfdc78e3d34d)
-
 ###### [​](#-1 "Direct link to -1")
 
-When you have finished interacting with the page, press the `'record'` button to stop the recording and use the `'copy'` button to copy the generated code to your editor.
+When you finish interacting with the page, press the `'record'` button to stop recording and use the `'copy'` button to copy the generated code to your editor.
 
-Use the `'clear'` button to clear the code to start recording again. Once finished close the Playwright inspector window or stop the terminal command.
+Use the `'clear'` button to clear the code and start recording again. Once finished, close the Playwright Inspector window or stop the terminal command.
 
-To learn more about generating tests check out or detailed guide on [Codegen](/docs/codegen).
+To learn more about generating tests, check out our detailed guide on [Codegen](/docs/codegen).
 
 ### Generating locators[​](#generating-locators "Direct link to Generating locators")
 
 You can generate [locators](/docs/locators) with the test generator.
 
-*   Press the `'Record'` button to stop the recording and the `'Pick Locator'` button will appear.
-*   Click on the `'Pick Locator'` button and then hover over elements in the browser window to see the locator highlighted underneath each element.
-*   To choose a locator click on the element you would like to locate and the code for that locator will appear in the locator playground next to the Pick Locator button.
-*   You can then edit the locator in the locator playground to fine tune it and see the matching element highlighted in the browser window.
-*   Use the copy button to copy the locator and paste it into your code.
+*   Press the `'Record'` button to stop recording and the `'Pick Locator'` button will appear
+*   Click the `'Pick Locator'` button and hover over elements in the browser window to see the locator highlighted underneath each element
+*   Click the element you want to locate and the code for that locator will appear in the locator playground next to the Pick Locator button
+*   Edit the locator in the locator playground to fine-tune it and see the matching element highlighted in the browser window
+*   Use the copy button to copy the locator and paste it into your code
 
 ###### [​](#-2 "Direct link to -2")
 
-![picking a locator](https://github.com/microsoft/playwright/assets/13063165/2c8a12e2-4e98-4fdd-af92-1d73ae696d86)
-
 ### Emulation[​](#emulation "Direct link to Emulation")
 
-You can also generate tests using emulation so as to generate a test for a specific viewport, device, color scheme, as well as emulate the geolocation, language or timezone. The test generator can also generate a test while preserving authenticated state. Check out the [Test Generator](/docs/codegen#emulation) guide to learn more.
+You can generate tests using emulation for specific viewports, devices, color schemes, geolocation, language, or timezone. The test generator can also preserve authenticated state. Check out the [Test Generator](/docs/codegen#emulation) guide to learn more.
 
 What's Next[​](#whats-next "Direct link to What's Next")
 --------------------------------------------------------
@@ -3063,7 +3013,7 @@ Running and debugging tests
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-With Playwright you can run a single test, a set of tests or all tests. Tests can be run on one browser or multiple browsers by using the `--project` flag. Tests are run in parallel by default and are run in a headless manner, meaning no browser window will be opened while running the tests and results will be seen in the terminal. However, you can run tests in headed mode by using the `--headed` CLI argument, or you can run your tests in [UI mode](/docs/test-ui-mode) by using the `--ui` flag. See a full trace of your tests complete with watch mode, time travel debugging and more.
+With Playwright you can run a single test, a set of tests, or all tests. Tests can be run on one browser or multiple browsers using the `--project` flag. Tests run in parallel by default and in headless mode, meaning no browser window opens while running the tests and results appear in the terminal. You can run tests in headed mode using the `--headed` CLI argument, or run your tests in [UI mode](/docs/test-ui-mode) using the `--ui` flag to see a full trace of your tests.
 
 **You will learn**
 
@@ -3076,11 +3026,9 @@ Running tests[​](#running-tests "Direct link to Running tests")
 
 ### Command line[​](#command-line "Direct link to Command line")
 
-You can run your tests with the `playwright test` command. This will run your tests on all browsers as configured in the `playwright.config` file. Tests run in headless mode by default meaning no browser window will be opened while running the tests and results will be seen in the terminal.
+You can run your tests with the `playwright test` command. This runs your tests on all browsers as configured in the `playwright.config` file, and results appear in the terminal. Tests run in headless mode by default, meaning no browser window opens while running the tests.
 
     npx playwright test
-
-![tests running in command line](https://github.com/microsoft/playwright/assets/13063165/981c1b2b-dc7e-4b85-b241-272b44da6628)
 
 ### Run tests in UI mode[​](#run-tests-in-ui-mode "Direct link to Run tests in UI mode")
 
@@ -3088,33 +3036,31 @@ We highly recommend running your tests with [UI Mode](/docs/test-ui-mode) for a 
 
     npx playwright test --ui
 
-![UI Mode](https://github.com/microsoft/playwright/assets/13063165/c5b501cc-4f5d-485a-87cc-66044c651786)
-
-Check out or [detailed guide on UI Mode](/docs/test-ui-mode) to learn more about its features.
+Check out our [detailed guide on UI Mode](/docs/test-ui-mode) to learn more about its features.
 
 ### Run tests in headed mode[​](#run-tests-in-headed-mode "Direct link to Run tests in headed mode")
 
-To run your tests in headed mode, use the `--headed` flag. This will give you the ability to visually see how Playwright interacts with the website.
+To run your tests in headed mode, use the `--headed` flag. This gives you the ability to visually see how Playwright interacts with the website.
 
     npx playwright test --headed
 
 ### Run tests on different browsers[​](#run-tests-on-different-browsers "Direct link to Run tests on different browsers")
 
-To specify which browser you would like to run your tests on, use the `--project` flag followed by the name of the browser.
+To specify which browser you would like to run your tests on, use the `--project` flag followed by the browser name.
 
     npx playwright test --project webkit
 
-To specify multiple browsers to run your tests on, use the `--project` flag multiple times followed by the name of each browser.
+To specify multiple browsers to run your tests on, use the `--project` flag multiple times followed by each browser name.
 
     npx playwright test --project webkit --project firefox
 
 ### Run specific tests[​](#run-specific-tests "Direct link to Run specific tests")
 
-To run a single test file, pass in the name of the test file that you want to run.
+To run a single test file, pass in the test file name that you want to run.
 
     npx playwright test landing-page.spec.ts
 
-To run a set of test files from different directories, pass in the names of the directories that you want to run the tests in.
+To run a set of test files from different directories, pass in the directory names that you want to run the tests in.
 
     npx playwright test tests/todo-page/ tests/landing-page/
 
@@ -3134,26 +3080,20 @@ To run only the tests that failed in the last test run, first run your tests and
 
 ### Run tests in VS Code[​](#run-tests-in-vs-code "Direct link to Run tests in VS Code")
 
-Tests can be run right from VS Code using the [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright). Once installed you can simply click the green triangle next to the test you want to run or run all tests from the testing sidebar. Check out our [Getting Started with VS Code](/docs/getting-started-vscode#running-tests) guide for more details.
-
-![Playwright VS Code extension](https://github.com/microsoft/playwright/assets/13063165/47726e70-683b-4bd5-94de-7d03dd45c30f)
+Tests can be run right from VS Code using the [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright). Once installed you can simply click the green triangle next to the test you want to run or run all tests from the testing sidebar. Check out our [Getting Started with VS Code](/docs/getting-started-vscode) guide for more details.
 
 Debugging tests[​](#debugging-tests "Direct link to Debugging tests")
 ---------------------------------------------------------------------
 
-Since Playwright runs in Node.js, you can debug it with your debugger of choice e.g. using `console.log` or inside your IDE or directly in VS Code with the [VS Code Extension](/docs/getting-started-vscode). Playwright comes with [UI Mode](/docs/test-ui-mode), where you can easily walk through each step of the test, see logs, errors, network requests, inspect the DOM snapshot and more. You can also use the [Playwright Inspector](/docs/debug#playwright-inspector), which allows you to step through Playwright API calls, see their debug logs and explore [locators](/docs/locators).
+Since Playwright runs in Node.js, you can debug it with your debugger of choice, e.g. using `console.log`, inside your IDE, or directly in VS Code with the [VS Code Extension](/docs/getting-started-vscode). Playwright comes with [UI Mode](/docs/test-ui-mode), where you can easily walk through each step of the test, see logs, errors, network requests, inspect the DOM snapshot, and more. You can also use the [Playwright Inspector](/docs/debug#playwright-inspector), which allows you to step through Playwright API calls, see their debug logs, and explore [locators](/docs/locators).
 
 ### Debug tests in UI mode[​](#debug-tests-in-ui-mode "Direct link to Debug tests in UI mode")
 
-We highly recommend debugging your tests with [UI Mode](/docs/test-ui-mode) for a better developer experience where you can easily walk through each step of the test and visually see what was happening before, during and after each step. UI mode also comes with many other features such as the locator picker, watch mode and more.
+We highly recommend debugging your tests with [UI Mode](/docs/test-ui-mode) for a better developer experience where you can easily walk through each step of the test and visually see what was happening before, during, and after each step. UI mode also comes with many other features such as the locator picker, watch mode, and more.
 
     npx playwright test --ui
 
-![showing errors in ui mode](https://github.com/microsoft/playwright/assets/13063165/ffca2fd1-5349-41fb-ade9-ace143bb2c58)
-
-While debugging you can use the Pick Locator button to select an element on the page and see the locator that Playwright would use to find that element. You can also edit the locator in the locator playground and see it highlighting live on the Browser window. Use the Copy Locator button to copy the locator to your clipboard and then paste it into your test.
-
-![pick locator in ui mode](https://github.com/microsoft/playwright/assets/13063165/9e7eeb84-bd26-4010-8614-75e24b56c716)
+While debugging you can use the Pick Locator button to select an element on the page and see the locator that Playwright would use to find that element. You can also edit the locator in the locator playground and see it highlighting live in the browser window. Use the Copy Locator button to copy the locator to your clipboard and then paste it into your test.
 
 Check out our [detailed guide on UI Mode](/docs/test-ui-mode) to learn more about its features.
 
@@ -3163,11 +3103,9 @@ To debug all tests, run the Playwright test command followed by the `--debug` fl
 
     npx playwright test --debug
 
-![Debugging Tests with the Playwright inspector](https://github.com/microsoft/playwright/assets/13063165/6b3b3caa-d258-4cb8-aa05-cd407f501626)
+This command opens a browser window as well as the Playwright Inspector. You can use the step over button at the top of the inspector to step through your test. Or, press the play button to run your test from start to finish. Once the test finishes, the browser window closes.
 
-This command will open up a Browser window as well as the Playwright Inspector. You can use the step over button at the top of the inspector to step through your test. Or, press the play button to run your test from start to finish. Once the test has finished, the browser window will close.
-
-To debug one test file, run the Playwright test command with the name of the test file that you want to debug followed by the `--debug` flag.
+To debug one test file, run the Playwright test command with the test file name that you want to debug followed by the `--debug` flag.
 
     npx playwright test example.spec.ts --debug
 
@@ -3175,24 +3113,18 @@ To debug a specific test from the line number where the `test(..` is defined, ad
 
     npx playwright test example.spec.ts:10 --debug
 
-While debugging you can use the Pick Locator button to select an element on the page and see the locator that Playwright would use to find that element. You can also edit the locator and see it highlighting live on the Browser window. Use the Copy Locator button to copy the locator to your clipboard and then paste it into your test.
+While debugging you can use the Pick Locator button to select an element on the page and see the locator that Playwright would use to find that element. You can also edit the locator and see it highlighting live in the browser window. Use the Copy Locator button to copy the locator to your clipboard and then paste it into your test.
 
-![Locator picker in the Playwright Inspector](https://github.com/microsoft/playwright/assets/13063165/013d5edb-583e-423a-bb53-9f57bab7f3e1)
-
-Check out our [debugging guide](/docs/debug) to learn more about debugging with the [VS Code debugger](/docs/debug#vs-code-debugger), UI Mode and the [Playwright Inspector](/docs/debug#playwright-inspector) as well as debugging with [Browser Developer tools](/docs/debug#browser-developer-tools).
+Check out our [debugging guide](/docs/debug) to learn more about debugging with the [VS Code debugger](/docs/debug#vs-code-debugger), UI Mode, and the [Playwright Inspector](/docs/debug#playwright-inspector) as well as debugging with [Browser Developer tools](/docs/debug#browser-developer-tools).
 
 Test reports[​](#test-reports "Direct link to Test reports")
 ------------------------------------------------------------
 
-The [HTML Reporter](/docs/test-reporters#html-reporter) shows you a full report of your tests allowing you to filter the report by browsers, passed tests, failed tests, skipped tests and flaky tests. By default, the HTML report is opened automatically if some of the tests failed, otherwise you can open it with the following command.
+The [HTML Reporter](/docs/test-reporters#html-reporter) shows you a full report of your tests allowing you to filter the report by browsers, passed tests, failed tests, skipped tests, and flaky tests. By default, the HTML report opens automatically if some tests failed, otherwise you can open it with the following command.
 
     npx playwright show-report
 
-![HTML Report](https://github.com/microsoft/playwright/assets/13063165/c5f60e56-fb75-4a2d-a4b6-054b8c5d69c1)
-
-You can filter and search for tests as well as click on each test to see the tests errors and explore each step of the test.
-
-![HTML Reporter detail view](https://github.com/microsoft/playwright/assets/13063165/f36ada14-4701-4534-a3be-ed22c2b16cf5)
+You can filter and search for tests as well as click on each test to see the test errors and explore each step of the test.
 
 What's next[​](#whats-next "Direct link to What's next")
 --------------------------------------------------------
@@ -3210,7 +3142,7 @@ Trace viewer
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright Trace Viewer is a GUI tool that lets you explore recorded Playwright traces of your tests meaning you can go back and forward through each action of your test and visually see what was happening during each action.
+Playwright Trace Viewer is a GUI tool that lets you explore recorded Playwright traces of your tests, meaning you can go back and forward through each action of your test and visually see what was happening during each action.
 
 **You will learn**
 
@@ -3221,7 +3153,7 @@ Playwright Trace Viewer is a GUI tool that lets you explore recorded Playwright 
 Recording a Trace[​](#recording-a-trace "Direct link to Recording a Trace")
 ---------------------------------------------------------------------------
 
-By default the [playwright.config](/docs/trace-viewer#tracing-on-ci) file will contain the configuration needed to create a `trace.zip` file for each test. Traces are setup to run `on-first-retry` meaning they will be run on the first retry of a failed test. Also `retries` are set to 2 when running on CI and 0 locally. This means the traces will be recorded on the first retry of a failed test but not on the first run and not on the second retry.
+By default the [playwright.config](/docs/trace-viewer#tracing-on-ci) file contains the configuration needed to create a `trace.zip` file for each test. Traces are setup to run `on-first-retry`, meaning they run on the first retry of a failed test. Also `retries` are set to 2 when running on CI and 0 locally. This means the traces are recorded on the first retry of a failed test but not on the first run and not on the second retry.
 
 playwright.config.ts
 
@@ -3229,38 +3161,32 @@ playwright.config.ts
 
 To learn more about available options to record a trace check out our detailed guide on [Trace Viewer](/docs/trace-viewer).
 
-Traces are normally run in a Continuous Integration(CI) environment, because locally you can use [UI Mode](/docs/test-ui-mode) for developing and debugging tests. However, if you want to run traces locally without using [UI Mode](/docs/test-ui-mode), you can force tracing to be on with `--trace on`.
+Traces are normally run in a Continuous Integration (CI) environment, because locally you can use [UI Mode](/docs/test-ui-mode) for developing and debugging tests. However, if you want to run traces locally without using [UI Mode](/docs/test-ui-mode), you can force tracing to be on with `--trace on`.
 
     npx playwright test --trace on
 
 Opening the HTML report[​](#opening-the-html-report "Direct link to Opening the HTML report")
 ---------------------------------------------------------------------------------------------
 
-The HTML report shows you a report of all your tests that have been run and on which browsers as well as how long they took. Tests can be filtered by passed tests, failed, flaky or skipped tests. You can also search for a particular test. Clicking on a test will open the detailed view where you can see more information on your tests such as the errors, the test steps and the trace.
+The HTML report shows you a report of all your tests that have been run and on which browsers as well as how long they took. Tests can be filtered by passed tests, failed, flaky, or skipped tests. You can also search for a particular test. Clicking on a test opens the detailed view where you can see more information on your tests such as the errors, the test steps, and the trace.
 
     npx playwright show-report
 
 Opening the trace[​](#opening-the-trace "Direct link to Opening the trace")
 ---------------------------------------------------------------------------
 
-In the HTML report click on the trace icon next to the test name file name to directly open the trace for the required test.
+In the HTML report, click on the trace icon next to the test file name to directly open the trace for the required test.
 
-![playwright html report](https://github.com/microsoft/playwright/assets/13063165/a3da1fb5-6619-4c03-98aa-adf65c376525)
+You can also click to open the detailed view of the test and scroll down to the `'Traces'` tab and open the trace by clicking on the trace screenshot.
 
-You can also click open the detailed view of the test and scroll down to the `'Traces'` tab and open the trace by clicking on the trace screenshot.
-
-![playwright html report detailed view](https://github.com/microsoft/playwright/assets/13063165/2b583d6f-5241-4ecf-83a8-650072d4a201)
-
-To learn more about reporters check out our detailed guide on reporters including the [HTML Reporter](/docs/test-reporters#html-reporter).
+To learn more about reporters, check out our detailed guide on reporters including the [HTML Reporter](/docs/test-reporters#html-reporter).
 
 Viewing the trace[​](#viewing-the-trace "Direct link to Viewing the trace")
 ---------------------------------------------------------------------------
 
-View traces of your test by clicking through each action or hovering using the timeline and see the state of the page before and after the action. Inspect the log, source and network, errors and console during each step of the test. The trace viewer creates a DOM snapshot so you can fully interact with it and open the browser DevTools to inspect the HTML, CSS, etc.
+View traces of your test by clicking through each action or hovering using the timeline and see the state of the page before and after the action. Inspect the log, source and network, errors, and console during each step of the test. The trace viewer creates a DOM snapshot so you can fully interact with it and open the browser DevTools to inspect the HTML, CSS, etc.
 
-![playwright trace viewer](https://github.com/microsoft/playwright/assets/13063165/10fe3585-8401-4051-b1c2-b2e92ac4c274)
-
-To learn more about traces check out our detailed guide on [Trace Viewer](/docs/trace-viewer).
+To learn more about traces, check out our detailed guide on [Trace Viewer](/docs/trace-viewer).
 
 What's next[​](#whats-next "Direct link to What's next")
 --------------------------------------------------------
@@ -3276,7 +3202,7 @@ Setting up CI
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright tests can be run on any CI provider. This guide covers one way of running tests on GitHub using GitHub actions. If you would like to learn more, or how to configure other CI providers, check out our detailed [doc on Continuous Integration](/docs/ci).
+Playwright tests can be run on any CI provider. This guide covers one way of running tests on GitHub using GitHub Actions. If you would like to learn more, or how to configure other CI providers, check out our detailed [doc on Continuous Integration](/docs/ci).
 
 #### You will learn[​](#you-will-learn "Direct link to You will learn")
 
@@ -3289,7 +3215,7 @@ Playwright tests can be run on any CI provider. This guide covers one way of run
 Setting up GitHub Actions[​](#setting-up-github-actions "Direct link to Setting up GitHub Actions")
 ---------------------------------------------------------------------------------------------------
 
-When [installing Playwright](/docs/intro) using the [VS Code extension](/docs/getting-started-vscode) or with `npm init playwright@latest` you are given the option to add a [GitHub Actions](https://docs.github.com/en/actions) workflow. This creates a `playwright.yml` file inside a `.github/workflows` folder containing everything you need so that your tests run on each push and pull request into the main/master branch. Here's how that file looks:
+When [installing Playwright](/docs/intro) using the [VS Code extension](/docs/getting-started-vscode) or with `npm init playwright@latest`, you are given the option to add a [GitHub Actions](https://docs.github.com/en/actions) workflow. This creates a `playwright.yml` file inside a `.github/workflows` folder containing everything you need so that your tests run on each push and pull request into the main/master branch. Here's how that file looks:
 
 .github/workflows/playwright.yml
 
@@ -3309,14 +3235,14 @@ To learn more about this, see ["Understanding GitHub Actions"](https://docs.gith
 Create a Repo and Push to GitHub[​](#create-a-repo-and-push-to-github "Direct link to Create a Repo and Push to GitHub")
 ------------------------------------------------------------------------------------------------------------------------
 
-Once you have your [GitHub actions workflow](#setting-up-github-actions) setup then all you need to do is [Create a repo on GitHub](https://docs.github.com/en/get-started/quickstart/create-a-repo) or push your code to an existing repository. Follow the instructions on GitHub and don't forget to [initialize a git repository](https://github.com/git-guides/git-init) using the `git init` command so you can [add](https://github.com/git-guides/git-add), [commit](https://github.com/git-guides/git-commit) and [push](https://github.com/git-guides/git-push) your code.
+Once you have your [GitHub Actions workflow](#setting-up-github-actions) setup, then all you need to do is [Create a repo on GitHub](https://docs.github.com/en/get-started/quickstart/create-a-repo) or push your code to an existing repository. Follow the instructions on GitHub and don't forget to [initialize a git repository](https://github.com/git-guides/git-init) using the `git init` command so you can [add](https://github.com/git-guides/git-add), [commit](https://github.com/git-guides/git-commit), and [push](https://github.com/git-guides/git-push) your code.
 
 ![Create a Repo and Push to GitHub](https://user-images.githubusercontent.com/13063165/183423254-d2735278-a2ab-4d63-bb99-48d8e5e447bc.png)
 
 Opening the Workflows[​](#opening-the-workflows "Direct link to Opening the Workflows")
 ---------------------------------------------------------------------------------------
 
-Click on the **Actions** tab to see the workflows. Here you will see if your tests have passed or failed.
+Click on the **Actions** tab to see the workflows. Here you see if your tests have passed or failed.
 
 ###### [​](#-1 "Direct link to -1")
 
@@ -3325,7 +3251,7 @@ Click on the **Actions** tab to see the workflows. Here you will see if your tes
 Viewing Test Logs[​](#viewing-test-logs "Direct link to Viewing Test Logs")
 ---------------------------------------------------------------------------
 
-Clicking on the workflow run will show you the all the actions that GitHub performed and clicking on **Run Playwright tests** will show the error messages, what was expected and what was received as well as the call log.
+Clicking on the workflow run shows you all the actions that GitHub performed and clicking on **Run Playwright tests** shows the error messages, what was expected and what was received as well as the call log.
 
 ###### [​](#-2 "Direct link to -2")
 
@@ -3334,23 +3260,23 @@ Clicking on the workflow run will show you the all the actions that GitHub perfo
 HTML Report[​](#html-report "Direct link to HTML Report")
 ---------------------------------------------------------
 
-The HTML Report shows you a full report of your tests. You can filter the report by browsers, passed tests, failed tests, skipped tests and flaky tests.
+The HTML Report shows you a full report of your tests. You can filter the report by browsers, passed tests, failed tests, skipped tests, and flaky tests.
 
 ### Downloading the HTML Report[​](#downloading-the-html-report "Direct link to Downloading the HTML Report")
 
-In the Artifacts section click on the **playwright-report** to download your report in the format of a zip file.
+In the Artifacts section, click on the **playwright-report** to download your report in the format of a zip file.
 
 ![Downloading the HTML Report](https://user-images.githubusercontent.com/13063165/183437023-524f1803-84e4-4862-9ce3-1d55af0e023e.png)
 
 ### Viewing the HTML Report[​](#viewing-the-html-report "Direct link to Viewing the HTML Report")
 
-Locally opening the report will not work as expected as you need a web server in order for everything to work correctly. First, extract the zip, preferably in a folder that already has Playwright installed. Using the command line change into the directory where the report is and use `npx playwright show-report` followed by the name of the extracted folder. This will serve up the report and enable you to view it in your browser.
+Locally opening the report does not work as expected as you need a web server for everything to work correctly. First, extract the zip, preferably in a folder that already has Playwright installed. Using the command line, change into the directory where the report is and use `npx playwright show-report` followed by the name of the extracted folder. This serves up the report and enables you to view it in your browser.
 
     npx playwright show-report name-of-my-extracted-playwright-report
 
 ![viewing the HTML report](https://github.com/microsoft/playwright/assets/13063165/c5f60e56-fb75-4a2d-a4b6-054b8c5d69c1)
 
-To learn more about reports check out our detailed guide on [HTML Reporter](/docs/test-reporters#html-reporter)
+To learn more about reports, check out our detailed guide on [HTML Reporter](/docs/test-reporters#html-reporter)
 
 Viewing the Trace[​](#viewing-the-trace "Direct link to Viewing the Trace")
 ---------------------------------------------------------------------------
@@ -3396,7 +3322,7 @@ This step will not work for pull requests created from a forked repository becau
 Properly handling Secrets[​](#properly-handling-secrets "Direct link to Properly handling Secrets")
 ---------------------------------------------------------------------------------------------------
 
-Artifacts like trace files, HTML reports or even the console logs contain information about your test execution. They can contain sensitive data like user credentials for a test user, access tokens to a staging backend, testing source code or sometimes even your application source code. Treat these files just as careful as you treat that sensitive data. If you upload reports and traces as part of your CI workflow, make sure that you only upload them to trusted artifact stores, or that you encrypt the files before upload. The same is true for sharing artifacts with team members: Use a trusted file share or encrypt the files before sharing.
+Artifacts like trace files, HTML reports or even the console logs contain information about your test execution. They can contain sensitive data like user credentials for a test user, access tokens to a staging backend, testing source code, or sometimes even your application source code. Treat these files just as carefully as you treat that sensitive data. If you upload reports and traces as part of your CI workflow, make sure that you only upload them to trusted artifact stores, or that you encrypt the files before upload. The same is true for sharing artifacts with team members: Use a trusted file share or encrypt the files before sharing.
 
 What's Next[​](#whats-next "Direct link to What's Next")
 --------------------------------------------------------
@@ -4012,7 +3938,7 @@ Maximum time this test suite can run in milliseconds (default: unlimited).
 
 Only run tests matching this regular expression (default: ".\*").
 
-`-gv <grep>` or `--grep-invert <grep>`
+`--grep-invert <grep>`
 
 Only run tests that do not match this regular expression.
 
@@ -8757,8 +8683,6 @@ Use the `--project` command line option to run a single project.
 
 With the VS Code extension you can run your tests on different browsers by checking the checkbox next to the browser name in the Playwright sidebar. These names are defined in your Playwright config file under the projects section. The default config when installing Playwright gives you 3 projects, Chromium, Firefox and WebKit. The first project is selected by default.
 
-![Projects section in VS Code extension](https://github.com/microsoft/playwright/assets/13063165/58fedea6-a2b9-4942-b2c7-2f3d482210cf)
-
 To run tests on multiple projects(browsers), select each project by checking the checkboxes next to the project name.
 
 ![Selecting projects to run tests on](https://github.com/microsoft/playwright/assets/13063165/6dc86ef4-6097-481c-9cab-b6e053ec7ea6)
@@ -9014,7 +8938,9 @@ Introduction[​](#introduction "Direct link to Introduction")
 
 note
 
-Extensions only work in Chrome / Chromium launched with a persistent context. Use custom browser args at your own risk, as some of them may break Playwright functionality.
+Extensions only work in Chromium when launched with a persistent context. Use custom browser args at your own risk, as some of them may break Playwright functionality.
+
+Google Chrome and Microsoft Edge [removed the command-line flags needed to side-load extensions](https://groups.google.com/a/chromium.org/g/chromium-extensions/c/FxMU1TvxWWg/m/daZVTYNlBQAJ), so use Chromium that comes bundled with Playwright.
 
 The snippet below retrieves the [service worker](https://developer.chrome.com/docs/extensions/develop/concepts/service-workers) of a [Manifest v3](https://developer.chrome.com/docs/extensions/develop/migrate) extension whose source is located in `./my-extension`.
 
@@ -10687,7 +10613,7 @@ To record a HAR file we use [page.routeFromHAR()](/docs/api/class-page#page-rout
 
 Setting `update` option to true will create or update the HAR file with the actual network information instead of serving the requests from the HAR file. Use it when creating a test to populate the HAR with real data.
 
-    test('records or updates the HAR file', async ({ page }) => {  // Get the response from the HAR file  await page.routeFromHAR('./hars/fruit.har', {    url: '*/**/api/v1/fruits',    update: true,  });  // Go to the page  await page.goto('https://demo.playwright.dev/api-mocking');  // Assert that the fruit is visible  await expect(page.getByText('Strawberry')).toBeVisible();});
+Alternatively, you can also record HAR files by using the [recordHar](/docs/api/class-browser#browser-new-context-option-record-har) option in [browser.newContext()](/docs/api/class-browser#browser-new-context) when creating a browser context. This allows you to capture all network traffic for the entire context until the context is closed.
 
 ### Modifying a HAR file[​](#modifying-a-har-file "Direct link to Modifying a HAR file")
 
@@ -12950,7 +12876,7 @@ This Docker image is intended to be used for testing and development purposes on
 
 ### Pull the image[​](#pull-the-image "Direct link to Pull the image")
 
-    docker pull mcr.microsoft.com/playwright:v1.54.0-noble
+    docker pull mcr.microsoft.com/playwright:v1.55.0-noble
 
 ### Run the image[​](#run-the-image "Direct link to Run the image")
 
@@ -12960,13 +12886,13 @@ By default, the Docker image will use the `root` user to run the browsers. This 
 
 On trusted websites, you can avoid creating a separate user and use root for it since you trust the code which will run on the browsers.
 
-    docker run -it --rm --ipc=host mcr.microsoft.com/playwright:v1.54.0-noble /bin/bash
+    docker run -it --rm --ipc=host mcr.microsoft.com/playwright:v1.55.0-noble /bin/bash
 
 #### Crawling and scraping[​](#crawling-and-scraping "Direct link to Crawling and scraping")
 
 On untrusted websites, it's recommended to use a separate user for launching the browsers in combination with the seccomp profile. Inside the container or if you are using the Docker image as a base image you have to use `adduser` for it.
 
-    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright:v1.54.0-noble /bin/bash
+    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright:v1.55.0-noble /bin/bash
 
 [`seccomp_profile.json`](https://github.com/microsoft/playwright/blob/main/utils/docker/seccomp_profile.json) is needed to run Chromium with sandbox. This is a [default Docker seccomp profile](https://github.com/docker/engine/blob/d0d99b04cf6e00ed3fc27e81fc3d94e7eda70af3/profiles/seccomp/default.json) with extra user namespace cloning permissions:
 
@@ -12992,7 +12918,7 @@ You can run Playwright Server in Docker while keeping your tests running on the 
 
 Start the Playwright Server in Docker:
 
-    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.54.0-noble /bin/sh -c "npx -y playwright@1.54.0 run-server --port 3000 --host 0.0.0.0"
+    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.55.0-noble /bin/sh -c "npx -y playwright@1.55.0 run-server --port 3000 --host 0.0.0.0"
 
 #### Connecting to the Server[​](#connecting-to-the-server "Direct link to Connecting to the Server")
 
@@ -13010,7 +12936,7 @@ There are two ways to connect to the remote Playwright server:
 
 If you need to access local servers from within the Docker container:
 
-    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.54.0-noble /bin/sh -c "npx -y playwright@1.54.0 run-server --port 3000 --host 0.0.0.0"
+    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.55.0-noble /bin/sh -c "npx -y playwright@1.55.0 run-server --port 3000 --host 0.0.0.0"
 
 This makes `hostmachine` point to the host's localhost. Your tests should use `hostmachine` instead of `localhost` when accessing local servers.
 
@@ -13025,9 +12951,9 @@ See [all available image tags](https://mcr.microsoft.com/en-us/product/playwrigh
 
 We currently publish images with the following tags:
 
-*   `:v1.54.0` - Playwright v1.54.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.54.0-noble` - Playwright v1.54.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.54.0-jammy` - Playwright v1.54.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
+*   `:v1.55.0` - Playwright v1.55.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.55.0-noble` - Playwright v1.55.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.55.0-jammy` - Playwright v1.55.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
 
 note
 
@@ -13049,7 +12975,7 @@ Build your own image[​](#build-your-own-image "Direct link to Build your own i
 
 To run Playwright inside Docker, you need to have Node.js, [Playwright browsers](/docs/browsers#install-browsers) and [browser system dependencies](/docs/browsers#install-system-dependencies) installed. See the following Dockerfile:
 
-    FROM node:20-bookwormRUN npx -y playwright@1.54.0 install --with-deps
+    FROM node:20-bookwormRUN npx -y playwright@1.55.0 install --with-deps
 
 # Continuous Integration
 
@@ -13108,7 +13034,7 @@ GitHub Actions support [running jobs in a container](https://docs.github.com/en/
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright:v1.54.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v4      - uses: actions/setup-node@v4        with:          node-version: lts/*      - name: Install dependencies        run: npm ci      - name: Run your tests        run: npx playwright test
+    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright:v1.55.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v4      - uses: actions/setup-node@v4        with:          node-version: lts/*      - name: Install dependencies        run: npm ci      - name: Run your tests        run: npx playwright test
 
 #### On deployment[​](#on-deployment "Direct link to On deployment")
 
@@ -13158,13 +13084,13 @@ in `playwright.config.ts`.
 
 #### Azure Pipelines (containerized)[​](#azure-pipelines-containerized "Direct link to Azure Pipelines (containerized)")
 
-    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright:v1.54.0-noblesteps:- task: NodeTool@0  inputs:    versionSpec: '18'  displayName: 'Install Node.js'- script: npm ci  displayName: 'npm ci'- script: npx playwright test  displayName: 'Run Playwright tests'  env:    CI: 'true'
+    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright:v1.55.0-noblesteps:- task: NodeTool@0  inputs:    versionSpec: '18'  displayName: 'Install Node.js'- script: npm ci  displayName: 'npm ci'- script: npx playwright test  displayName: 'Run Playwright tests'  env:    CI: 'true'
 
 ### CircleCI[​](#circleci "Direct link to CircleCI")
 
 Running Playwright on CircleCI is very similar to running on GitHub Actions. In order to specify the pre-built Playwright [Docker image](/docs/docker), simply modify the agent definition with `docker:` in your config like so:
 
-    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright:v1.54.0-noble
+    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright:v1.55.0-noble
 
 Note: When using the docker agent definition, you are specifying the resource class of where playwright runs to the 'medium' tier [here](https://circleci.com/docs/configuration-reference?#docker-execution-environment). The default behavior of Playwright is to set the number of workers to the detected core count (2 in the case of the medium tier). Overriding the number of workers to greater than this number will cause unnecessary timeouts and failures.
 
@@ -13178,41 +13104,41 @@ Sharding in CircleCI is indexed with 0 which means that you will need to overrid
 
 Jenkins supports Docker agents for pipelines. Use the [Playwright Docker image](/docs/docker) to run tests on Jenkins.
 
-    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright:v1.54.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'npm ci'            sh 'npx playwright test'         }      }   }}
+    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright:v1.55.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'npm ci'            sh 'npx playwright test'         }      }   }}
 
 ### Bitbucket Pipelines[​](#bitbucket-pipelines "Direct link to Bitbucket Pipelines")
 
 Bitbucket Pipelines can use public [Docker images as build environments](https://confluence.atlassian.com/bitbucket/use-docker-images-as-build-environments-792298897.html). To run Playwright tests on Bitbucket, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    image: mcr.microsoft.com/playwright:v1.54.0-noble
+    image: mcr.microsoft.com/playwright:v1.55.0-noble
 
 ### GitLab CI[​](#gitlab-ci "Direct link to GitLab CI")
 
 To run Playwright tests on GitLab, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.54.0-noble  script:  ...
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.55.0-noble  script:  ...
 
 #### Sharding[​](#sharding "Direct link to Sharding")
 
 GitLab CI supports [sharding tests between multiple jobs](https://docs.gitlab.com/ee/ci/jobs/job_control.html#parallelize-large-jobs) using the [parallel](https://docs.gitlab.com/ee/ci/yaml/index.html#parallel) keyword. The test job will be split into multiple smaller jobs that run in parallel. Parallel jobs are named sequentially from `job_name 1/N` to `job_name N/N`.
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.54.0-noble  parallel: 7  script:    - npm ci    - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.55.0-noble  parallel: 7  script:    - npm ci    - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
 GitLab CI also supports sharding tests between multiple jobs using the [parallel:matrix](https://docs.gitlab.com/ee/ci/yaml/index.html#parallelmatrix) option. The test job will run multiple times in parallel in a single pipeline, but with different variable values for each instance of the job. In the example below, we have 2 `PROJECT` values and 10 `SHARD` values, resulting in a total of 20 jobs to be run.
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.54.0-noble  parallel:    matrix:      - PROJECT: ['chromium', 'webkit']        SHARD: ['1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10']  script:    - npm ci    - npx playwright test --project=$PROJECT --shard=$SHARD
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright:v1.55.0-noble  parallel:    matrix:      - PROJECT: ['chromium', 'webkit']        SHARD: ['1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10']  script:    - npm ci    - npx playwright test --project=$PROJECT --shard=$SHARD
 
 ### Google Cloud Build[​](#google-cloud-build "Direct link to Google Cloud Build")
 
 To run Playwright tests on Google Cloud Build, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    steps:- name: mcr.microsoft.com/playwright:v1.54.0-noble  script:   ...  env:  - 'CI=true'
+    steps:- name: mcr.microsoft.com/playwright:v1.55.0-noble  script:   ...  env:  - 'CI=true'
 
 ### Drone[​](#drone "Direct link to Drone")
 
 To run Playwright tests on Drone, use our public Docker image ([see Dockerfile](/docs/docker)).
 
-    kind: pipelinename: defaulttype: dockersteps:  - name: test    image: mcr.microsoft.com/playwright:v1.54.0-noble    commands:      - npx playwright test
+    kind: pipelinename: defaulttype: dockersteps:  - name: test    image: mcr.microsoft.com/playwright:v1.55.0-noble    commands:      - npx playwright test
 
 Caching browsers[​](#caching-browsers "Direct link to Caching browsers")
 ------------------------------------------------------------------------
@@ -14069,11 +13995,11 @@ You can also call `test.fixme()` without arguments inside the test body to alway
     
 *   `condition` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#test-fixme-option-condition)
     
-    Test is marked as "should fail" when the condition is `true`.
+    Test is marked as "fixme" when the condition is `true`.
     
 *   `callback` [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function")([Fixtures](/docs/api/class-fixtures "Fixtures")):[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#test-fixme-option-callback)
     
-    A function that returns whether to mark as "should fail", based on test fixtures. Test or tests are marked as "should fail" when the return value is `true`.
+    A function that returns whether to mark as "fixme", based on test fixtures. Test or tests are marked as "fixme" when the return value is `true`.
     
 *   `description` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_[#](#test-fixme-option-description)
     
@@ -14206,7 +14132,7 @@ You can skip all tests in a file or [test.describe()](/docs/api/class-test#test-
 
     import { test, expect } from '@playwright/test';test.skip(({ browserName }) => browserName !== 'webkit', 'Safari-only');test('Safari-only test 1', async ({ page }) => {  // ...});test('Safari-only test 2', async ({ page }) => {  // ...});
 
-You can also call `test.skip()` without arguments inside the test body to always mark the test as failed. We recommend using `test.skip(title, body)` instead.
+You can also call `test.skip()` without arguments inside the test body to always skip the test. However, we recommend using `test.skip(title, body)` instead.
 
     import { test, expect } from '@playwright/test';test('less readable', async ({ page }) => {  test.skip();  // ...});
 
@@ -14235,11 +14161,11 @@ You can also call `test.skip()` without arguments inside the test body to always
     
 *   `condition` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#test-skip-option-condition)
     
-    Test is marked as "should fail" when the condition is `true`.
+    Test is marked as "skipped" when the condition is `true`.
     
 *   `callback` [function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function")([Fixtures](/docs/api/class-fixtures "Fixtures")):[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#test-skip-option-callback)
     
-    A function that returns whether to mark as "should fail", based on test fixtures. Test or tests are marked as "should fail" when the return value is `true`.
+    A function that returns whether to mark as "skipped", based on test fixtures. Test or tests are marked as "skipped" when the return value is `true`.
     
 *   `description` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_[#](#test-skip-option-description)
     
@@ -14863,6 +14789,8 @@ Creates new instances of [APIRequestContext](/docs/api/class-apirequestcontext "
         **Details**
         
         An array of client certificates to be used. Each certificate object must have either both `certPath` and `keyPath`, a single `pfxPath`, or their corresponding direct value equivalents (`cert` and `key`, or `pfx`). Optionally, `passphrase` property should be provided if the certificate is encrypted. The `origin` property should be provided with an exact match to the request origin that the certificate is valid for.
+        
+        Client certificate authentication is only active when at least one client certificate is provided. If you want to reject all client certificates sent by the server, you need to provide a client certificate with an `origin` that does not match any of the domains you plan to visit.
         
         note
         
@@ -16169,6 +16097,8 @@ If directly using this method to create [BrowserContext](/docs/api/class-browser
         
         An array of client certificates to be used. Each certificate object must have either both `certPath` and `keyPath`, a single `pfxPath`, or their corresponding direct value equivalents (`cert` and `key`, or `pfx`). Optionally, `passphrase` property should be provided if the certificate is encrypted. The `origin` property should be provided with an exact match to the request origin that the certificate is valid for.
         
+        Client certificate authentication is only active when at least one client certificate is provided. If you want to reject all client certificates sent by the server, you need to provide a client certificate with an `origin` that does not match any of the domains you plan to visit.
+        
         note
         
         When using WebKit on macOS, accessing `localhost` will not pick up client certificates. You can make it work by replacing `localhost` with `local.playwright`.
@@ -16526,6 +16456,8 @@ This is a convenience API that should only be used for the single-page scenarios
         **Details**
         
         An array of client certificates to be used. Each certificate object must have either both `certPath` and `keyPath`, a single `pfxPath`, or their corresponding direct value equivalents (`cert` and `key`, or `pfx`). Optionally, `passphrase` property should be provided if the certificate is encrypted. The `origin` property should be provided with an exact match to the request origin that the certificate is valid for.
+        
+        Client certificate authentication is only active when at least one client certificate is provided. If you want to reject all client certificates sent by the server, you need to provide a client certificate with an `origin` that does not match any of the domains you plan to visit.
         
         note
         
@@ -18570,6 +18502,10 @@ Launches browser that uses persistent storage located at [userDataDir](/docs/api
     
     Note that browsers do not allow launching multiple instances with the same User Data Directory.
     
+    warning
+    
+    Chromium/Chrome: Due to recent Chrome policy changes, automating the default Chrome user profile is not supported. Pointing `userDataDir` to Chrome's main "User Data" directory (the profile used for your regular browsing) may result in pages not loading or the browser exiting. Create and use a separate directory (for example, an empty folder) as your automation profile instead. See [https://developer.chrome.com/blog/remote-debugging-port](https://developer.chrome.com/blog/remote-debugging-port) for details.
+    
 *   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
     
     *   `acceptDownloads` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#browser-type-launch-persistent-context-option-accept-downloads)
@@ -18647,6 +18583,8 @@ Launches browser that uses persistent storage located at [userDataDir](/docs/api
         **Details**
         
         An array of client certificates to be used. Each certificate object must have either both `certPath` and `keyPath`, a single `pfxPath`, or their corresponding direct value equivalents (`cert` and `key`, or `pfx`). Optionally, `passphrase` property should be provided if the certificate is encrypted. The `origin` property should be provided with an exact match to the request origin that the certificate is valid for.
+        
+        Client certificate authentication is only active when at least one client certificate is provided. If you want to reject all client certificates sent by the server, you need to provide a client certificate with an `origin` that does not match any of the domains you plan to visit.
         
         note
         
@@ -28981,7 +28919,7 @@ Returns the opener for popup pages and `null` for others. If the opener has been
 
 Added in: v1.9 page.pause
 
-Pauses script execution. Playwright will stop executing the script and wait for the user to either press 'Resume' button in the page overlay or to call `playwright.resume()` in the DevTools console.
+Pauses script execution. Playwright will stop executing the script and wait for the user to either press the 'Resume' button in the page overlay or to call `playwright.resume()` in the DevTools console.
 
 User can inspect selectors or perform manual steps while paused. Resume will continue running the original script from the place it was paused.
 
@@ -38967,6 +38905,8 @@ playwright.config.ts
 
 An array of client certificates to be used. Each certificate object must have either both `certPath` and `keyPath`, a single `pfxPath`, or their corresponding direct value equivalents (`cert` and `key`, or `pfx`). Optionally, `passphrase` property should be provided if the certificate is encrypted. The `origin` property should be provided with an exact match to the request origin that the certificate is valid for.
 
+Client certificate authentication is only active when at least one client certificate is provided. If you want to reject all client certificates sent by the server, you need to provide a client certificate with an `origin` that does not match any of the domains you plan to visit.
+
 note
 
 When using WebKit on macOS, accessing `localhost` will not pick up client certificates. You can make it work by replacing `localhost` with `local.playwright`.
@@ -39833,7 +39773,7 @@ Filter to only run tests with a title matching one of the patterns. For example,
 
 Added in: v1.10 testProject.grepInvert
 
-Filter to only run tests with a title **not** matching one of the patterns. This is the opposite of [testProject.grep](/docs/api/class-testproject#test-project-grep). Also available globally and in the [command line](/docs/test-cli) with the `--grep-invert` option.
+Filter to only run tests with a title **not** matching any of the patterns. This is the opposite of [testProject.grep](/docs/api/class-testproject#test-project-grep). Also available globally and in the [command line](/docs/test-cli) with the `--grep-invert` option.
 
 `grepInvert` option is also useful for [tagging tests](/docs/test-annotations#tag-tests).
 
@@ -40316,6 +40256,26 @@ Conditionally abort the currently running step and mark it as skipped with an op
 *   `description` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_[#](#test-step-info-skip-2-option-description)
     
     Optional description that will be reflected in a test report.
+    
+
+* * *
+
+Properties[​](#properties "Direct link to Properties")
+------------------------------------------------------
+
+### titlePath[​](#test-step-info-title-path "Direct link to titlePath")
+
+Added in: v1.55 testStepInfo.titlePath
+
+The full title path starting with the test file name, including the step titles. See also [testInfo.titlePath](/docs/api/class-testinfo#test-info-title-path).
+
+**Usage**
+
+    testStepInfo.titlePath
+
+**Type**
+
+*   [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")\>
 
 # WorkerInfo
 
