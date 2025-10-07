@@ -115,7 +115,7 @@ Version 1.55[​](#version-155 "Direct link to Version 1.55")
 
 ### Codegen[​](#codegen "Direct link to Codegen")
 
-*   Automatic `toBeVisible()` assertions: Codegen can now generate automatic `toBeVisible()` assertions for common UI interactions. This feature can be enabled in the Codegen settings UI.
+*   Automatic `to_be_visible()` assertions: Codegen can now generate automatic `to_be_visible()` assertions for common UI interactions. This feature can be enabled in the Codegen settings UI.
 
 ### Breaking Changes[​](#breaking-changes "Direct link to Breaking Changes")
 
@@ -1850,7 +1850,7 @@ System requirements[​](#system-requirements "Direct link to System requirement
 ---------------------------------------------------------------------------------
 
 *   Python 3.8 or higher.
-*   Windows 10+, Windows Server 2016+ or Windows Subsystem for Linux (WSL).
+*   Windows 11+, Windows Server 2019+ or Windows Subsystem for Linux (WSL).
 *   macOS 14 Ventura, or later.
 *   Debian 12, Debian 13, Ubuntu 22.04, Ubuntu 24.04, on x86-64 and arm64 architecture.
 
@@ -2074,6 +2074,8 @@ With the test generator you can record:
     *   `'assert text'` to assert that an element contains specific text
     *   `'assert value'` to assert that an element has a specific value
 
+![recording a test](/python/assets/images/record-test-python-f8cedafb52b7381780a887b20a450bf5.png)
+
 ###### [​](#-1 "Direct link to -1")
 
 When you finish interacting with the page, press the `'record'` button to stop recording and use the `'copy'` button to copy the generated code to your editor.
@@ -2093,6 +2095,8 @@ You can generate [locators](/python/docs/locators) with the test generator.
 *   Use the copy button to copy the locator and paste it into your code
 
 ###### [​](#-2 "Direct link to -2")
+
+![picking a locator](/python/assets/images/pick-locator-python-042226bb6d5fe7cdf2450b2b8d46354a.png)
 
 ### Emulation[​](#emulation "Direct link to Emulation")
 
@@ -2287,7 +2291,7 @@ Setting up CI
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright tests can be run on any CI provider. In this section we cover running tests on GitHub using GitHub Actions. If you would like to see how to configure other CI providers, check out our detailed doc on Continuous Integration.
+Playwright tests can be run on any CI provider. In this section we cover running tests on GitHub using GitHub Actions. If you would like to see how to configure other CI providers, check out our detailed [doc on Continuous Integration](/python/docs/ci).
 
 #### You will learn[​](#you-will-learn "Direct link to You will learn")
 
@@ -2302,7 +2306,7 @@ To add a [GitHub Actions](https://docs.github.com/en/actions) file, first create
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  test:    timeout-minutes: 60    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@v4    - name: Set up Python      uses: actions/setup-python@v4      with:        python-version: '3.11'    - name: Install dependencies      run: |        python -m pip install --upgrade pip        pip install -r requirements.txt    - name: Ensure browsers are installed      run: python -m playwright install --with-deps    - name: Run your tests      run: pytest --tracing=retain-on-failure    - uses: actions/upload-artifact@v4      if: ${{ !cancelled() }}      with:        name: playwright-traces        path: test-results/
+    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  test:    timeout-minutes: 60    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@v5    - name: Set up Python      uses: actions/setup-python@v6      with:        python-version: '3.13'    - name: Install dependencies      run: |        python -m pip install --upgrade pip        pip install -r requirements.txt    - name: Ensure browsers are installed      run: python -m playwright install --with-deps    - name: Run your tests      run: pytest --tracing=retain-on-failure    - uses: actions/upload-artifact@v4      if: ${{ !cancelled() }}      with:        name: playwright-traces        path: test-results/
 
 To learn more about this, see ["Understanding GitHub Actions"](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions).
 
@@ -2343,6 +2347,8 @@ Viewing the Trace[​](#viewing-the-trace "Direct link to Viewing the Trace")
 ---------------------------------------------------------------------------
 
 [trace.playwright.dev](https://trace.playwright.dev) is a statically hosted variant of the Trace Viewer. You can upload trace files using drag and drop.
+
+![playwright trace viewer](/python/assets/images/trace-viewer-failed-test-5ec04c65e0f0c1ffca58529f6789c752.png)
 
 Properly handling Secrets[​](#properly-handling-secrets "Direct link to Properly handling Secrets")
 ---------------------------------------------------------------------------------------------------
@@ -2422,6 +2428,7 @@ This plugin configures Playwright-specific [fixtures for pytest](https://docs.py
 
 *   `browser_type_launch_args`: Override launch arguments for [browser\_type.launch()](/python/docs/api/class-browsertype#browser-type-launch). It should return a Dict.
 *   `browser_context_args`: Override the options for [browser.new\_context()](/python/docs/api/class-browser#browser-new-context). It should return a Dict.
+*   `connect_options`: Connect to an existing browser via WebSocket endpoint. It should return a Dict with [browser\_type.connect()](/python/docs/api/class-browsertype#browser-type-connect) options.
 
 Its also possible to override the context options ([browser.new\_context()](/python/docs/api/class-browser#browser-new-context)) for a single test by using the `browser_context_args` marker:
 
@@ -2506,6 +2513,12 @@ conftest.py
     import pytest@pytest.fixture(scope="session")def browser_context_args(browser_context_args, playwright):    iphone_11 = playwright.devices['iPhone 11 Pro']    return {        **browser_context_args,        **iphone_11,    }
 
 Or via the CLI `--device="iPhone 11 Pro"`
+
+### Connect to remote browsers[​](#connect-to-remote-browsers "Direct link to Connect to remote browsers")
+
+conftest.py
+
+    import pytest@pytest.fixture(scope="session")def connect_options():    return {        "wsEndpoint": "ws://localhost:8080/ws"    }
 
 ### Using with `unittest.TestCase`[​](#using-with-unittesttestcase "Direct link to using-with-unittesttestcase")
 
@@ -4041,8 +4054,6 @@ When running in Debug Mode with `PWDEBUG=console`, a `playwright` object is avai
 *   Inspect the DOM tree and **find element selectors**
 *   **See console logs** during execution (or learn how to [read logs via API](/python/docs/api/class-page#page-event-console))
 *   Check **network activity** and other developer tools features
-
-This will also set the default timeouts of Playwright to 0 (= no timeout).
 
 ![Browser Developer Tools with Playwright object](https://user-images.githubusercontent.com/13063165/219128002-898f604d-9697-4b7f-95b5-a6a8260b7282.png)
 
@@ -6110,9 +6121,11 @@ The `:is()` pseudo-class is an [experimental CSS pseudo-class](https://developer
 
 ### CSS: matching elements based on layout[​](#css-matching-elements-based-on-layout "Direct link to CSS: matching elements based on layout")
 
-note
+warning
 
-Matching based on layout may produce unexpected results. For example, a different element could be matched when layout changes by one pixel.
+Layout selectors are deprecated and may be removed in the future. Matching based on layout may produce unexpected results. For example, a different element could be matched when layout changes by one pixel.
+
+We recommend prioritizing [user-visible locators](/python/docs/locators#quick-guide) instead.
 
 Sometimes, it is hard to come up with a good selector to the target element when it lacks distinctive features. In this case, using Playwright layout CSS pseudo-classes could help. These can be combined with regular CSS to pinpoint one of the multiple choices.
 
@@ -7408,7 +7421,7 @@ This Docker image is intended to be used for testing and development purposes on
 
 ### Pull the image[​](#pull-the-image "Direct link to Pull the image")
 
-    docker pull mcr.microsoft.com/playwright/python:v1.54.0-noble
+    docker pull mcr.microsoft.com/playwright/python:v1.55.0-noble
 
 ### Run the image[​](#run-the-image "Direct link to Run the image")
 
@@ -7418,13 +7431,13 @@ By default, the Docker image will use the `root` user to run the browsers. This 
 
 On trusted websites, you can avoid creating a separate user and use root for it since you trust the code which will run on the browsers.
 
-    docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.54.0-noble /bin/bash
+    docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.55.0-noble /bin/bash
 
 #### Crawling and scraping[​](#crawling-and-scraping "Direct link to Crawling and scraping")
 
 On untrusted websites, it's recommended to use a separate user for launching the browsers in combination with the seccomp profile. Inside the container or if you are using the Docker image as a base image you have to use `adduser` for it.
 
-    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright/python:v1.54.0-noble /bin/bash
+    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright/python:v1.55.0-noble /bin/bash
 
 [`seccomp_profile.json`](https://github.com/microsoft/playwright/blob/main/utils/docker/seccomp_profile.json) is needed to run Chromium with sandbox. This is a [default Docker seccomp profile](https://github.com/docker/engine/blob/d0d99b04cf6e00ed3fc27e81fc3d94e7eda70af3/profiles/seccomp/default.json) with extra user namespace cloning permissions:
 
@@ -7450,7 +7463,7 @@ You can run Playwright Server in Docker while keeping your tests running on the 
 
 Start the Playwright Server in Docker:
 
-    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.54.0-noble /bin/sh -c "npx -y playwright@1.54.0 run-server --port 3000 --host 0.0.0.0"
+    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.55.0-noble /bin/sh -c "npx -y playwright@1.55.0 run-server --port 3000 --host 0.0.0.0"
 
 #### Connecting to the Server[​](#connecting-to-the-server "Direct link to Connecting to the Server")
 
@@ -7465,7 +7478,7 @@ Start the Playwright Server in Docker:
 
 If you need to access local servers from within the Docker container:
 
-    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.54.0-noble /bin/sh -c "npx -y playwright@1.54.0 run-server --port 3000 --host 0.0.0.0"
+    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.55.0-noble /bin/sh -c "npx -y playwright@1.55.0 run-server --port 3000 --host 0.0.0.0"
 
 This makes `hostmachine` point to the host's localhost. Your tests should use `hostmachine` instead of `localhost` when accessing local servers.
 
@@ -7480,9 +7493,9 @@ See [all available image tags](https://mcr.microsoft.com/en-us/product/playwrigh
 
 We currently publish images with the following tags:
 
-*   `:v1.54.0` - Playwright v1.54.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.54.0-noble` - Playwright v1.54.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.54.0-jammy` - Playwright v1.54.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
+*   `:v1.55.0` - Playwright v1.55.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.55.0-noble` - Playwright v1.55.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.55.0-jammy` - Playwright v1.55.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
 
 note
 
@@ -7504,7 +7517,7 @@ Build your own image[​](#build-your-own-image "Direct link to Build your own i
 
 To run Playwright inside Docker, you need to have Python, [Playwright browsers](/python/docs/browsers#install-browsers) and [browser system dependencies](/python/docs/browsers#install-system-dependencies) installed. See the following Dockerfile:
 
-    FROM python:3.12-bookwormRUN pip install playwright==@1.54.0 && \    playwright install --with-deps
+    FROM python:3.12-bookwormRUN pip install playwright==@1.55.0 && \    playwright install --with-deps
 
 # Continuous Integration
 
@@ -7542,7 +7555,7 @@ Tests will run on push or pull request on branches main/master. The [workflow](h
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  test:    timeout-minutes: 60    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@v4    - name: Set up Python      uses: actions/setup-python@v4      with:        python-version: '3.11'    - name: Install dependencies      run: |        python -m pip install --upgrade pip        pip install -r requirements.txt    - name: Ensure browsers are installed      run: python -m playwright install --with-deps    - name: Run your tests      run: pytest --tracing=retain-on-failure    - uses: actions/upload-artifact@v4      if: ${{ !cancelled() }}      with:        name: playwright-traces        path: test-results/
+    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  test:    timeout-minutes: 60    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@v5    - name: Set up Python      uses: actions/setup-python@v6      with:        python-version: '3.13'    - name: Install dependencies      run: |        python -m pip install --upgrade pip        pip install -r requirements.txt    - name: Ensure browsers are installed      run: python -m playwright install --with-deps    - name: Run your tests      run: pytest --tracing=retain-on-failure    - uses: actions/upload-artifact@v4      if: ${{ !cancelled() }}      with:        name: playwright-traces        path: test-results/
 
 #### Via Containers[​](#via-containers "Direct link to Via Containers")
 
@@ -7550,7 +7563,7 @@ GitHub Actions support [running jobs in a container](https://docs.github.com/en/
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright/python:v1.54.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v4      - name: Set up Python        uses: actions/setup-python@v4        with:          python-version: '3.11'      - name: Install dependencies        run: |          python -m pip install --upgrade pip          pip install -r local-requirements.txt          pip install -e .      - name: Run your tests        run: pytest
+    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright/python:v1.55.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v5      - name: Set up Python        uses: actions/setup-python@v6        with:          python-version: '3.13'      - name: Install dependencies        run: |          python -m pip install --upgrade pip          pip install -r local-requirements.txt          pip install -e .      - name: Run your tests        run: pytest
 
 #### On deployment[​](#on-deployment "Direct link to On deployment")
 
@@ -7558,7 +7571,7 @@ This will start the tests after a [GitHub Deployment](https://developer.github.c
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  deployment_status:jobs:  test:    timeout-minutes: 60    runs-on: ubuntu-latest    if: github.event.deployment_status.state == 'success'    steps:    - uses: actions/checkout@v4      uses: actions/setup-python@v4      with:        python-version: '3.11'    - name: Install dependencies      run: |        python -m pip install --upgrade pip        pip install -r requirements.txt    - name: Ensure browsers are installed      run: python -m playwright install --with-deps    - name: Run tests      run: pytest      env:        # This might depend on your test-runner        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+    name: Playwright Testson:  deployment_status:jobs:  test:    timeout-minutes: 60    runs-on: ubuntu-latest    if: github.event.deployment_status.state == 'success'    steps:    - uses: actions/checkout@v5      uses: actions/setup-python@v6      with:        python-version: '3.13'    - name: Install dependencies      run: |        python -m pip install --upgrade pip        pip install -r requirements.txt    - name: Ensure browsers are installed      run: python -m playwright install --with-deps    - name: Run tests      run: pytest      env:        # This might depend on your test-runner        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
 
 ### Docker[​](#docker "Direct link to Docker")
 
@@ -7572,17 +7585,17 @@ For Linux agents, you can use [our Docker container](/python/docs/docker) with A
 
 For running the Playwright tests use this pipeline task:
 
-    trigger:- mainpool:  vmImage: ubuntu-lateststeps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.11'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: playwright install --with-deps  displayName: 'Install Playwright browsers'- script: pytest  displayName: 'Run Playwright tests'
+    trigger:- mainpool:  vmImage: ubuntu-lateststeps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.13'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: playwright install --with-deps  displayName: 'Install Playwright browsers'- script: pytest  displayName: 'Run Playwright tests'
 
 #### Azure Pipelines (containerized)[​](#azure-pipelines-containerized "Direct link to Azure Pipelines (containerized)")
 
-    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright/python:v1.54.0-noblesteps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.11'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: pytest  displayName: 'Run tests'
+    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright/python:v1.55.0-noblesteps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.13'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: pytest  displayName: 'Run tests'
 
 ### CircleCI[​](#circleci "Direct link to CircleCI")
 
 Running Playwright on CircleCI is very similar to running on GitHub Actions. In order to specify the pre-built Playwright [Docker image](/python/docs/docker), simply modify the agent definition with `docker:` in your config like so:
 
-    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright/python:v1.54.0-noble
+    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright/python:v1.55.0-noble
 
 Note: When using the docker agent definition, you are specifying the resource class of where playwright runs to the 'medium' tier [here](https://circleci.com/docs/configuration-reference?#docker-execution-environment). The default behavior of Playwright is to set the number of workers to the detected core count (2 in the case of the medium tier). Overriding the number of workers to greater than this number will cause unnecessary timeouts and failures.
 
@@ -7590,19 +7603,19 @@ Note: When using the docker agent definition, you are specifying the resource cl
 
 Jenkins supports Docker agents for pipelines. Use the [Playwright Docker image](/python/docs/docker) to run tests on Jenkins.
 
-    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright/python:v1.54.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'pip install -r requirements.txt'            sh 'pytest'         }      }   }}
+    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright/python:v1.55.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'pip install -r requirements.txt'            sh 'pytest'         }      }   }}
 
 ### Bitbucket Pipelines[​](#bitbucket-pipelines "Direct link to Bitbucket Pipelines")
 
 Bitbucket Pipelines can use public [Docker images as build environments](https://confluence.atlassian.com/bitbucket/use-docker-images-as-build-environments-792298897.html). To run Playwright tests on Bitbucket, use our public Docker image ([see Dockerfile](/python/docs/docker)).
 
-    image: mcr.microsoft.com/playwright/python:v1.54.0-noble
+    image: mcr.microsoft.com/playwright/python:v1.55.0-noble
 
 ### GitLab CI[​](#gitlab-ci "Direct link to GitLab CI")
 
 To run Playwright tests on GitLab, use our public Docker image ([see Dockerfile](/python/docs/docker)).
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright/python:v1.54.0-noble  script:  ...
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright/python:v1.55.0-noble  script:  ...
 
 Caching browsers[​](#caching-browsers "Direct link to Caching browsers")
 ------------------------------------------------------------------------
@@ -10897,26 +10910,6 @@ Waits for given `event` to fire. If predicate is provided, it passes event's val
 Properties[​](#properties "Direct link to Properties")
 ------------------------------------------------------
 
-### background\_pages[​](#browser-context-background-pages "Direct link to background_pages")
-
-Added in: v1.11 browserContext.background\_pages
-
-note
-
-Background pages are only supported on Chromium-based browsers.
-
-All existing background pages in the context.
-
-**Usage**
-
-    browser_context.background_pages
-
-**Returns**
-
-*   [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Page](/python/docs/api/class-page "Page")\][#](#browser-context-background-pages-return)
-
-* * *
-
 ### browser[​](#browser-context-browser "Direct link to browser")
 
 Added before v1.9 browserContext.browser
@@ -11017,33 +11010,6 @@ Added in: v1.12 browserContext.tracing
 
 Events[​](#events "Direct link to Events")
 ------------------------------------------
-
-### on("backgroundpage")[​](#browser-context-event-background-page "Direct link to on(\"backgroundpage\")")
-
-Added in: v1.11 browserContext.on("backgroundpage")
-
-note
-
-Only works with Chromium browser's persistent context.
-
-Emitted when new background page is created in the context.
-
-*   Sync
-*   Async
-
-    background_page = context.wait_for_event("backgroundpage")
-
-    background_page = await context.wait_for_event("backgroundpage")
-
-**Usage**
-
-    browser_context.on("backgroundpage", handler)
-
-**Event data**
-
-*   [Page](/python/docs/api/class-page "Page")
-
-* * *
 
 ### on("close")[​](#browser-context-event-close "Direct link to on(\"close\")")
 
@@ -11240,6 +11206,49 @@ Emitted when exception is unhandled in any of the pages in this context. To list
 **Event data**
 
 *   [WebError](/python/docs/api/class-weberror "WebError")
+
+* * *
+
+Deprecated[​](#deprecated "Direct link to Deprecated")
+------------------------------------------------------
+
+### on("backgroundpage")[​](#browser-context-event-background-page "Direct link to on(\"backgroundpage\")")
+
+Added in: v1.11 browserContext.on("backgroundpage")
+
+Deprecated
+
+Background pages have been removed from Chromium together with Manifest V2 extensions.
+
+This event is not emitted.
+
+**Usage**
+
+    browser_context.on("backgroundpage", handler)
+
+**Event data**
+
+*   [Page](/python/docs/api/class-page "Page")
+
+* * *
+
+### background\_pages[​](#browser-context-background-pages "Direct link to background_pages")
+
+Added in: v1.11 browserContext.background\_pages
+
+Deprecated
+
+Background pages have been removed from Chromium together with Manifest V2 extensions.
+
+Returns an empty list.
+
+**Usage**
+
+    browser_context.background_pages
+
+**Returns**
+
+*   [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Page](/python/docs/api/class-page "Page")\][#](#browser-context-background-pages-return)
 
 # BrowserType
 
@@ -18034,9 +18043,9 @@ The following example finds a button with a specific title.
 *   Sync
 *   Async
 
-    button = page.get_by_role("button").and_(page.getByTitle("Subscribe"))
+    button = page.get_by_role("button").and_(page.get_by_title("Subscribe"))
 
-    button = page.get_by_role("button").and_(page.getByTitle("Subscribe"))
+    button = page.get_by_role("button").and_(page.get_by_title("Subscribe"))
 
 **Arguments**
 
@@ -21075,6 +21084,22 @@ if [run\_before\_unload](/python/docs/api/class-page#page-close-option-run-befor
 
 * * *
 
+### console\_messages[​](#page-console-messages "Direct link to console_messages")
+
+Added in: v1.56 page.console\_messages
+
+Returns up to (currently) 200 last console messages from this page. See [page.on("console")](/python/docs/api/class-page#page-event-console) for more details.
+
+**Usage**
+
+    page.console_messages()
+
+**Returns**
+
+*   [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[ConsoleMessage](/python/docs/api/class-consolemessage "ConsoleMessage")\][#](#page-console-messages-return)
+
+* * *
+
 ### content[​](#page-content "Direct link to content")
 
 Added before v1.9 page.content
@@ -22274,6 +22299,22 @@ Returns the opener for popup pages and `null` for others. If the opener has been
 
 * * *
 
+### page\_errors[​](#page-page-errors "Direct link to page_errors")
+
+Added in: v1.56 page.page\_errors
+
+Returns up to (currently) 200 last page errors from this page. See [page.on("pageerror")](/python/docs/api/class-page#page-event-page-error) for more details.
+
+**Usage**
+
+    page.page_errors()
+
+**Returns**
+
+*   [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Error](/python/docs/api/class-error "Error")\][#](#page-page-errors-return)
+
+* * *
+
 ### pause[​](#page-pause "Direct link to pause")
 
 Added in: v1.9 page.pause
@@ -22517,6 +22558,26 @@ This is useful to help detect memory leaks. For example, if your page has a larg
 **Returns**
 
 *   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-request-gc-return)
+
+* * *
+
+### requests[​](#page-requests "Direct link to requests")
+
+Added in: v1.56 page.requests
+
+Returns up to (currently) 100 last network request from this page. See [page.on("request")](/python/docs/api/class-page#page-event-request) for more details.
+
+Returned requests should be accessed immediately, otherwise they might be collected to prevent unbounded memory growth as new requests come in. Once collected, retrieving most information about the request is impossible.
+
+Note that requests reported through the [page.on("request")](/python/docs/api/class-page#page-event-request) request are not collected, so there is a trade off between efficient memory usage with [page.requests()](/python/docs/api/class-page#page-requests) and the amount of available information reported through [page.on("request")](/python/docs/api/class-page#page-event-request).
+
+**Usage**
+
+    page.requests()
+
+**Returns**
+
+*   [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Request](/python/docs/api/class-request "Request")\][#](#page-requests-return)
 
 * * *
 
