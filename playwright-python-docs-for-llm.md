@@ -10406,6 +10406,8 @@ Grants specified permissions to the browser context. Only grants corresponding p
     *   `'clipboard-write'`
     *   `'geolocation'`
     *   `'gyroscope'`
+    *   `'local-fonts'`
+    *   `'local-network-access'`
     *   `'magnetometer'`
     *   `'microphone'`
     *   `'midi-sysex'` (system-exclusive midi)
@@ -10413,7 +10415,6 @@ Grants specified permissions to the browser context. Only grants corresponding p
     *   `'notifications'`
     *   `'payment-handler'`
     *   `'storage-access'`
-    *   `'local-fonts'`
 *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#browser-context-grant-permissions-option-origin)
     
     The [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin "Origin") to grant permissions to, e.g. "[https://example.com](https://example.com)".
