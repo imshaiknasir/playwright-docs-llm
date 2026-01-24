@@ -7541,6 +7541,14 @@ note
 
 When running tests remotely, ensure the Playwright version in your tests matches the version running in the Docker container.
 
+### Connecting using noVNC and GitHub Codespaces[​](#connecting-using-novnc-and-github-codespaces "Direct link to Connecting using noVNC and GitHub Codespaces")
+
+For Docker and GitHub Codespaces environments, you can view and generate tests using the `noVNC` viewer built into the Docker image. In order for the VNC webviewer to be accessible outside of the container, you can enable the `desktop-lite` feature and specify the `webPort` in your `.devcontainer/devcontainer.json` file:
+
+    {  "image": "mcr.microsoft.com/playwright:v1.57.0",  "forwardPorts": [6080],  "features": {    "desktop-lite": {      "webPort": "6080"    }  }}
+
+Once this is enabled you can open the port specified in a new browser tab and you will have access to the `noVNC` web viewer. This will enable you to record tests, pick selectors, and use codegen directly on your container.
+
 Image tags[​](#image-tags "Direct link to Image tags")
 ------------------------------------------------------
 
@@ -11240,6 +11248,10 @@ This connection is significantly lower fidelity than the Playwright protocol con
     
     Additional HTTP headers to be sent with connect request. Optional.
     
+*   `is_local` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_ Added in: v1.58[#](#browser-type-connect-over-cdp-option-is-local)
+    
+    Tells Playwright that it runs on the same host as the CDP server. It will enable certain optimizations that rely upon the file system being the same between Playwright and the Browser.
+    
 *   `slow_mo` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_ Added in: v1.11[#](#browser-type-connect-over-cdp-option-slow-mo)
     
     Slows down Playwright operations by the specified amount of milliseconds. Useful so that you can see what is going on. Defaults to 0.
@@ -11300,14 +11312,6 @@ You can use [ignore\_default\_args](/python/docs/api/class-browsertype#browser-t
     
     Enable Chromium sandboxing. Defaults to `false`.
     
-*   `devtools` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#browser-type-launch-option-devtools)
-    
-    Deprecated
-    
-    Use [debugging tools](/python/docs/debug) instead.
-    
-    **Chromium-only** Whether to auto-open a Developer Tools panel for each tab. If this option is `true`, the [headless](/python/docs/api/class-browsertype#browser-type-launch-option-headless) option will be set `false`.
-    
 *   `downloads_path` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] _(optional)_[#](#browser-type-launch-option-downloads-path)
     
     If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in is closed.
@@ -11340,7 +11344,7 @@ You can use [ignore\_default\_args](/python/docs/api/class-browsertype#browser-t
     
 *   `headless` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#browser-type-launch-option-headless)
     
-    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/python/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true`.
     
 *   `ignore_default_args` [bool](https://docs.python.org/3/library/stdtypes.html "bool") | [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")\] _(optional)_[#](#browser-type-launch-option-ignore-default-args)
     
@@ -11506,14 +11510,6 @@ Launches browser that uses persistent storage located at [user\_data\_dir](/pyth
     
     Specify device scale factor (can be thought of as dpr). Defaults to `1`. Learn more about [emulating devices with device scale factor](/python/docs/emulation#devices).
     
-*   `devtools` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#browser-type-launch-persistent-context-option-devtools)
-    
-    Deprecated
-    
-    Use [debugging tools](/python/docs/debug) instead.
-    
-    **Chromium-only** Whether to auto-open a Developer Tools panel for each tab. If this option is `true`, the [headless](/python/docs/api/class-browsertype#browser-type-launch-persistent-context-option-headless) option will be set `false`.
-    
 *   `downloads_path` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] _(optional)_[#](#browser-type-launch-persistent-context-option-downloads-path)
     
     If specified, accepted downloads are downloaded into this directory. Otherwise, temporary directory is created and is deleted when browser is closed. In either case, the downloads are deleted when the browser context they were created in is closed.
@@ -11572,7 +11568,7 @@ Launches browser that uses persistent storage located at [user\_data\_dir](/pyth
     
 *   `headless` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#browser-type-launch-persistent-context-option-headless)
     
-    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true` unless the [devtools](/python/docs/api/class-browsertype#browser-type-launch-option-devtools) option is `true`.
+    Whether to run browser in headless mode. More details for [Chromium](https://developers.google.com/web/updates/2017/04/headless-chrome) and [Firefox](https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/). Defaults to `true`.
     
 *   `http_credentials` [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict") _(optional)_[#](#browser-type-launch-persistent-context-option-http-credentials)
     
@@ -12165,7 +12161,7 @@ Added before v1.9 consoleMessage.type
 
 **Returns**
 
-*   "log" | "debug" | "info" | "error" | "warning" | "dir" | "dirxml" | "table" | "trace" | "clear" | "startGroup" | "startGroupCollapsed" | "endGroup" | "assert" | "profile" | "profileEnd" | "count" | "timeEnd"[#](#console-message-type-return)
+*   "log" | "debug" | "info" | "error" | "warning" | "dir" | "dirxml" | "table" | "trace" | "clear" | "startGroup" | "startGroupCollapsed" | "endGroup" | "assert" | "profile" | "profileEnd" | "count" | "time" | "timeEnd"[#](#console-message-type-return)
 
 * * *
 
@@ -20375,7 +20371,7 @@ For a reverse operation, use [frame\_locator.owner](/python/docs/api/class-frame
 
 Added in: v1.57 locator.description
 
-Returns locator description previously set with [locator.describe()](/python/docs/api/class-locator#locator-describe). Returns `null` if no custom description has been set. Prefer `Locator.toString()` for a human-readable representation, as it uses the description when available.
+Returns locator description previously set with [locator.describe()](/python/docs/api/class-locator#locator-describe). Returns `null` if no custom description has been set.
 
 **Usage**
 
@@ -26258,7 +26254,9 @@ The [headers](/python/docs/api/class-route#route-continue-option-headers) option
 
 warning
 
-The `Cookie` header cannot be overridden using this method. If a value is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browser\_context.add\_cookies()](/python/docs/api/class-browsercontext#browser-context-add-cookies).
+Some request headers are **forbidden** and cannot be overridden (for example, `Cookie`, `Host`, `Content-Length` and others, see [this MDN page](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_request_header) for full list). If an override is provided for a forbidden header, it will be ignored and the original request header will be used.
+
+To set custom cookies, use [browser\_context.add\_cookies()](/python/docs/api/class-browsercontext#browser-context-add-cookies).
 
 * * *
 
@@ -28625,9 +28623,9 @@ Let's see how we can use the assertion:
 *   Sync
 *   Async
 
-    from playwright.sync_api import expect# ✓ Contains the right items in the right orderexpect(page.locator("ul > li")).to_contain_text(["Text 1", "Text 3", "Text 4"])# ✖ Wrong orderexpect(page.locator("ul > li")).to_contain_text(["Text 3", "Text 2"])# ✖ No item contains this textexpect(page.locator("ul > li")).to_contain_text(["Some 33"])# ✖ Locator points to the outer list element, not to the list itemsexpect(page.locator("ul")).to_contain_text(["Text 3"])
+    from playwright.sync_api import expect# ✓ Contains the right items in the right orderexpect(page.locator("ul > li")).to_contain_text(["Text 1", "Text 3"])# ✖ Wrong orderexpect(page.locator("ul > li")).to_contain_text(["Text 3", "Text 2"])# ✖ No item contains this textexpect(page.locator("ul > li")).to_contain_text(["Some 33"])# ✖ Locator points to the outer list element, not to the list itemsexpect(page.locator("ul")).to_contain_text(["Text 3"])
 
-    from playwright.async_api import expect# ✓ Contains the right items in the right orderawait expect(page.locator("ul > li")).to_contain_text(["Text 1", "Text 3", "Text 4"])# ✖ Wrong orderawait expect(page.locator("ul > li")).to_contain_text(["Text 3", "Text 2"])# ✖ No item contains this textawait expect(page.locator("ul > li")).to_contain_text(["Some 33"])# ✖ Locator points to the outer list element, not to the list itemsawait expect(page.locator("ul")).to_contain_text(["Text 3"])
+    from playwright.async_api import expect# ✓ Contains the right items in the right orderawait expect(page.locator("ul > li")).to_contain_text(["Text 1", "Text 3"])# ✖ Wrong orderawait expect(page.locator("ul > li")).to_contain_text(["Text 3", "Text 2"])# ✖ No item contains this textawait expect(page.locator("ul > li")).to_contain_text(["Some 33"])# ✖ Locator points to the outer list element, not to the list itemsawait expect(page.locator("ul")).to_contain_text(["Text 3"])
 
 **Arguments**
 
