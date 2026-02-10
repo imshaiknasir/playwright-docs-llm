@@ -110,6 +110,40 @@ Playwright's API is not thread-safe. If you are using Playwright in a multi-thre
 Release notes
 =============
 
+Version 1.58[​](#version-158 "Direct link to Version 1.58")
+-----------------------------------------------------------
+
+### UI Mode and Trace Viewer Improvements[​](#ui-mode-and-trace-viewer-improvements "Direct link to UI Mode and Trace Viewer Improvements")
+
+*   New 'system' theme option follows your OS dark/light mode preference
+*   Search functionality (Cmd/Ctrl+F) is now available in code editors
+*   Network details panel has been reorganized for better usability
+*   JSON responses are now automatically formatted for readability
+
+Thanks to [@cpAdm](https://github.com/cpAdm) for contributing these improvements!
+
+### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+
+[browser\_type.connect\_over\_cdp()](/python/docs/api/class-browsertype#browser-type-connect-over-cdp) now accepts an `is_local` option. When set to `True`, it tells Playwright that it runs on the same host as the CDP server, enabling file system optimizations.
+
+### Breaking Changes ⚠️[​](#breaking-changes-️ "Direct link to Breaking Changes ⚠️")
+
+*   Removed `_react` and `_vue` selectors. See [locators guide](/python/docs/locators) for alternatives.
+*   Removed `:light` selector engine suffix. Use standard CSS selectors instead.
+*   Option `devtools` from [browser\_type.launch()](/python/docs/api/class-browsertype#browser-type-launch) has been removed. Use `args=['--auto-open-devtools-for-tabs']` instead.
+*   Removed macOS 13 support for WebKit. We recommend to upgrade your macOS version, or keep using an older Playwright version.
+
+### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+
+*   Chromium 145.0.7632.6
+*   Mozilla Firefox 146.0.1
+*   WebKit 26.0
+
+This version was also tested against the following stable channels:
+
+*   Google Chrome 144
+*   Microsoft Edge 144
+
 Version 1.57[​](#version-157 "Direct link to Version 1.57")
 -----------------------------------------------------------
 
@@ -137,7 +171,7 @@ After 3 years of being deprecated, we removed `page.accessibility` from our API.
 *   Network requests issued by [Service Workers](/python/docs/service-workers#network-events-and-routing) are now reported and can be routed through the [BrowserContext](/python/docs/api/class-browsercontext), only in Chromium. You can opt out using the `PLAYWRIGHT_DISABLE_SERVICE_WORKER_NETWORK` environment variable.
 *   Console messages from Service Workers are dispatched through [worker.on("console")](/python/docs/api/class-worker#worker-event-console). You can opt out of this using the `PLAYWRIGHT_DISABLE_SERVICE_WORKER_CONSOLE` environment variable.
 
-### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
 
 *   Chromium 143.0.7499.4
 *   Mozilla Firefox 144.0.2
@@ -155,11 +189,11 @@ Version 1.56[​](#version-156 "Direct link to Version 1.56")
 
 *   Event [browser\_context.on("backgroundpage")](/python/docs/api/class-browsercontext#browser-context-event-background-page) has been deprecated and will not be emitted. Method [browser\_context.background\_pages](/python/docs/api/class-browsercontext#browser-context-background-pages) will return an empty list
 
-### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
 
 *   Aria snapshots render and compare `input` `placeholder`
 
-### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
 
 *   Chromium 141.0.7390.37
 *   Mozilla Firefox 142.0.1
@@ -176,11 +210,11 @@ Version 1.55[​](#version-155 "Direct link to Version 1.55")
 
 *   ⚠️ Dropped support for Chromium extension manifest v2.
 
-### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
 
 *   Added support for Debian 13 "Trixie".
 
-### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
 
 *   Chromium 140.0.7339.16
 *   Mozilla Firefox 141.0
@@ -205,7 +239,7 @@ Version 1.54[​](#version-154 "Direct link to Version 1.54")
 *   `playwright open` does not open the test recorder anymore. Use `playwright codegen` instead.
     
 
-### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
 
 *   Chromium 139.0.7258.5
 *   Mozilla Firefox 140.0.2
@@ -230,7 +264,7 @@ Version 1.53[​](#version-153 "Direct link to Version 1.53")
 *   `python -m playwright install --list` will now list all installed browsers, versions and locations.
     
 
-### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
 
 *   Chromium 138.0.7204.4
 *   Mozilla Firefox 139.0
@@ -255,7 +289,7 @@ Version 1.52[​](#version-152 "Direct link to Version 1.52")
         expect(locator).to_match_aria_snapshot("""  - list    - /children: equal    - listitem: Feature A    - listitem:      - link "Feature B":        - /url: "https://playwright.dev"""")
     
 
-### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
 
 *   New option [max\_redirects](/python/docs/api/class-apirequest#api-request-new-context-option-max-redirects) in [api\_request.new\_context()](/python/docs/api/class-apirequest#api-request-new-context) to control the maximum number of redirects.
 
@@ -265,7 +299,7 @@ Version 1.52[​](#version-152 "Direct link to Version 1.52")
 *   Method [route.continue\_()](/python/docs/api/class-route#route-continue) does not allow to override the `Cookie` header anymore. If a `Cookie` header is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browser\_context.add\_cookies()](/python/docs/api/class-browsercontext#browser-context-add-cookies).
 *   macOS 13 is now deprecated and will no longer receive WebKit updates. Please upgrade to a more recent macOS version to continue benefiting from the latest WebKit improvements.
 
-### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
 
 *   Chromium 136.0.7103.25
 *   Mozilla Firefox 137.0
@@ -296,7 +330,7 @@ Version 1.51[​](#version-151 "Direct link to Version 1.51")
 *   New option [fail\_on\_status\_code](/python/docs/api/class-apirequest#api-request-new-context-option-fail-on-status-code) makes all fetch requests made through the [APIRequestContext](/python/docs/api/class-apirequestcontext "APIRequestContext") throw on response codes other than 2xx and 3xx.
     
 
-### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
 
 *   Chromium 134.0.6998.35
 *   Mozilla Firefox 135.0
@@ -314,7 +348,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 
 *   [Playwright's Pytest plugin](/python/docs/test-runners) now has support for [Async Fixtures](https://playwright.dev/python/docs/test-runners#async-fixtures).
 
-### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
 
 *   Added method [expect(locator).to\_have\_accessible\_error\_message()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-accessible-error-message) to assert the Locator points to an element with a given [aria errormessage](https://w3c.github.io/aria/#aria-errormessage).
 
@@ -329,7 +363,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 
 *   [expect(locator).to\_be\_editable()](/python/docs/api/class-locatorassertions#locator-assertions-to-be-editable) and [locator.is\_editable()](/python/docs/api/class-locator#locator-is-editable) now throw if the target element is not `<input>`, `<select>`, or a number of other editable elements.
 
-### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
 
 *   Chromium 133.0.6943.16
 *   Mozilla Firefox 134.0
@@ -378,13 +412,13 @@ See [issue #33566](https://github.com/microsoft/playwright/issues/33566) for the
 
     pytest test_login.py --browser-channel chromium
 
-### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
 
 *   There will be no more updates for WebKit on Ubuntu 20.04 and Debian 11. We recommend updating your OS to a later version.
 *   `<canvas>` elements inside a snapshot now draw a preview.
 *   Python 3.8 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
 
 *   Chromium 131.0.6778.33
 *   Mozilla Firefox 132.0
@@ -412,12 +446,12 @@ See [WebSocketRoute](/python/docs/api/class-websocketroute "WebSocketRoute") for
 *   Route method calls like [route.fulfill()](/python/docs/api/class-route#route-fulfill) are not shown in the report and trace viewer anymore. You can see which network requests were routed in the network tab instead.
 *   New "Copy as cURL" and "Copy as fetch" buttons for requests in the network tab.
 
-### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
 
 *   New method [page.request\_gc()](/python/docs/api/class-page#page-request-gc) may help detect memory leaks.
 *   Requests made by [APIRequestContext](/python/docs/api/class-apirequestcontext "APIRequestContext") now record detailed timing and security information in the HAR.
 
-### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
 
 *   Chromium 130.0.6723.19
 *   Mozilla Firefox 130.0
@@ -441,7 +475,7 @@ The Network tab in the trace viewer has several nice improvements:
 
 ![Network tab now has filters](https://github.com/user-attachments/assets/4bd1b67d-90bd-438b-a227-00b9e86872e2)
 
-### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
 
 *   The `mcr.microsoft.com/playwright/python:v1.47.0` now serves a Playwright image based on Ubuntu 24.04 Noble. To use the 22.04 jammy-based image, please use `mcr.microsoft.com/playwright/python:v1.47.0-jammy` instead.
 *   The `:latest`/`:focal`/`:jammy` tag for Playwright Docker images is no longer being published. Pin to a specific version for better stability and reproducibility.
@@ -449,7 +483,7 @@ The Network tab in the trace viewer has several nice improvements:
 *   [no\_wait\_after](/python/docs/api/class-locator#locator-select-option-option-no-wait-after) in [locator.select\_option()](/python/docs/api/class-locator#locator-select-option) was deprecated.
 *   We've seen reports of WebGL in Webkit misbehaving on GitHub Actions `macos-13`. We recommend upgrading GitHub Actions to `macos-14`.
 
-### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
 
 *   Chromium 129.0.6668.29
 *   Mozilla Firefox 130.0
@@ -479,11 +513,11 @@ You can provide client certificates as a parameter of [browser.new\_context()](/
 *   New button to copy source file location to clipboard.
 *   Metadata pane now displays the `base_url`.
 
-### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
 
 *   New `maxRetries` option in [api\_request\_context.fetch()](/python/docs/api/class-apirequestcontext#api-request-context-fetch) which retries on the `ECONNRESET` network error.
 
-### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
 
 *   Chromium 128.0.6613.18
 *   Mozilla Firefox 128.0
@@ -510,7 +544,7 @@ Utilizing the new [Clock](/python/docs/api/class-clock "Clock") API allows to ma
 
 See [the clock guide](/python/docs/clock) for more details.
 
-### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
 
 *   Method [locator.set\_input\_files()](/python/docs/api/class-locator#locator-set-input-files) now supports uploading a directory for `<input type=file webkitdirectory>` elements.
     
@@ -527,7 +561,7 @@ See [the clock guide](/python/docs/clock) for more details.
 *   v1.45 is the last release to receive WebKit update for macOS 12 Monterey. Please update macOS to keep using the latest WebKit.
     
 
-### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
 
 *   Chromium 127.0.6533.5
 *   Mozilla Firefox 127.0
@@ -571,7 +605,7 @@ Version 1.44[​](#version-144 "Direct link to Version 1.44")
 
 *   [expect(page).to\_have\_url()](/python/docs/api/class-pageassertions#page-assertions-to-have-url) now supports `ignore_case` [option](/python/docs/api/class-pageassertions#page-assertions-to-have-url-option-ignore-case).
 
-### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
 
 *   Chromium 125.0.6422.14
 *   Mozilla Firefox 125.0.1
@@ -602,7 +636,7 @@ Version 1.43[​](#version-143 "Direct link to Version 1.43")
 *   Conda builds are now published for macOS-arm64 and Linux-arm64.
     
 
-### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
 
 *   Chromium 124.0.6367.8
 *   Mozilla Firefox 124.0
@@ -630,7 +664,7 @@ New method [page.add\_locator\_handler()](/python/docs/api/class-page#page-add-l
 
 *   ⚠️ Ubuntu 18 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
 
 *   Chromium 123.0.6312.4
 *   Mozilla Firefox 123.0
@@ -650,7 +684,7 @@ Version 1.41[​](#version-141 "Direct link to Version 1.41")
 *   New method [browser\_context.unroute\_all()](/python/docs/api/class-browsercontext#browser-context-unroute-all) removes all routes registered by [browser\_context.route()](/python/docs/api/class-browsercontext#browser-context-route) and [browser\_context.route\_from\_har()](/python/docs/api/class-browsercontext#browser-context-route-from-har). Optionally allows to wait for ongoing routes to finish, or ignore any errors from them.
 *   New options [style](/python/docs/api/class-page#page-screenshot-option-style) in [page.screenshot()](/python/docs/api/class-page#page-screenshot) and [style](/python/docs/api/class-locator#locator-screenshot-option-style) in [locator.screenshot()](/python/docs/api/class-locator#locator-screenshot) to add custom CSS to the page before taking a screenshot.
 
-### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
 
 *   Chromium 121.0.6167.57
 *   Mozilla Firefox 121.0
@@ -687,7 +721,7 @@ Here is an example of a generated test with assertions:
 
 *   Method [download.path()](/python/docs/api/class-download#download-path) throws an error for failed and cancelled downloads.
 
-### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
 
 *   Chromium 120.0.6099.28
 *   Mozilla Firefox 119.0
@@ -703,7 +737,7 @@ Version 1.39[​](#version-139 "Direct link to Version 1.39")
 
 Evergreen browsers update.
 
-### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
 
 *   Chromium 119.0.6045.9
 *   Mozilla Firefox 118.0.1
@@ -733,7 +767,7 @@ Version 1.38[​](#version-138 "Direct link to Version 1.38")
 
 *   The following methods were deprecated: [page.type()](/python/docs/api/class-page#page-type), [frame.type()](/python/docs/api/class-frame#frame-type), [locator.type()](/python/docs/api/class-locator#locator-type) and [element\_handle.type()](/python/docs/api/class-elementhandle#element-handle-type). Please use [locator.fill()](/python/docs/api/class-locator#locator-fill) instead which is much faster. Use [locator.press\_sequentially()](/python/docs/api/class-locator#locator-press-sequentially) only if there is a special keyboard handling on the page, and you need to press keys one-by-one.
 
-### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
 
 *   Chromium 117.0.5938.62
 *   Mozilla Firefox 117.0
@@ -797,7 +831,7 @@ Firefox
 
 ✅
 
-### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
 
 *   Chromium 116.0.5845.82
 *   Mozilla Firefox 115.0
@@ -813,7 +847,7 @@ Version 1.36[​](#version-136 "Direct link to Version 1.36")
 
 🏝️ Summer maintenance release.
 
-### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.75
 *   Mozilla Firefox 115.0
@@ -836,7 +870,7 @@ Version 1.35[​](#version-135 "Direct link to Version 1.35")
         $ playwright uninstall # remove browsers installed by this installation$ playwright uninstall --all # remove all ever-install Playwright browsers
     
 
-### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.13
 *   Mozilla Firefox 113.0
@@ -859,7 +893,7 @@ Version 1.34[​](#version-134 "Direct link to Version 1.34")
 *   New events [browser\_context.on("console")](/python/docs/api/class-browsercontext#browser-context-event-console) and [browser\_context.on("dialog")](/python/docs/api/class-browsercontext#browser-context-event-dialog) to subscribe to any dialogs and console messages from any page from the given browser context. Use the new methods [console\_message.page](/python/docs/api/class-consolemessage#console-message-page) and [dialog.page](/python/docs/api/class-dialog#dialog-page) to pin-point event source.
     
 
-### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
 
 *   Chromium 114.0.5735.26
 *   Mozilla Firefox 113.0
@@ -898,7 +932,7 @@ Version 1.33[​](#version-133 "Direct link to Version 1.33")
 
 *   The `mcr.microsoft.com/playwright/python:v1.33.0` now serves a Playwright image based on Ubuntu Jammy. To use the focal-based image, please use `mcr.microsoft.com/playwright/python:v1.33.0-focal` instead.
 
-### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
 
 *   Chromium 113.0.5672.53
 *   Mozilla Firefox 112.0
@@ -919,7 +953,7 @@ Version 1.32[​](#version-132 "Direct link to Version 1.32")
 *   Chaining existing locator objects, see [locator docs](/python/docs/locators#matching-inside-a-locator) for details.
 *   New option [name](/python/docs/api/class-tracing#tracing-start-chunk-option-name) in method [tracing.start\_chunk()](/python/docs/api/class-tracing#tracing-start-chunk).
 
-### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
 
 *   Chromium 112.0.5615.29
 *   Mozilla Firefox 111.0
@@ -940,14 +974,14 @@ Version 1.31[​](#version-131 "Direct link to Version 1.31")
         from playwright.sync_api import expectlocator = page.get_by_role("button")# Make sure at least some part of element intersects viewport.expect(locator).to_be_in_viewport()# Make sure element is fully outside of viewport.expect(locator).not_to_be_in_viewport()# Make sure that at least half of the element intersects viewport.expect(locator).to_be_in_viewport(ratio=0.5)
     
 
-### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-10 "Direct link to Miscellaneous")
 
 *   DOM snapshots in trace viewer can be now opened in a separate window.
 *   New option [max\_redirects](/python/docs/api/class-route#route-fetch-option-max-redirects) for method [route.fetch()](/python/docs/api/class-route#route-fetch).
 *   Playwright now supports Debian 11 arm64.
 *   Official [docker images](/python/docs/docker) now include Node 18 instead of Node 16.
 
-### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
 
 *   Chromium 111.0.5563.19
 *   Mozilla Firefox 109.0
@@ -961,7 +995,7 @@ This version was also tested against the following stable channels:
 Version 1.30[​](#version-130 "Direct link to Version 1.30")
 -----------------------------------------------------------
 
-### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
 
 *   Chromium 110.0.5481.38
 *   Mozilla Firefox 108.0.2
@@ -992,11 +1026,11 @@ Version 1.29[​](#version-129 "Direct link to Version 1.29")
         element.select_option("Red")
     
 
-### Miscellaneous[​](#miscellaneous-10 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-11 "Direct link to Miscellaneous")
 
 *   Option `postData` in method [route.continue\_()](/python/docs/api/class-route#route-continue) now supports [Serializable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Description "Serializable") values.
 
-### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
 
 *   Chromium 109.0.5414.46
 *   Mozilla Firefox 107.0
@@ -1021,7 +1055,7 @@ Version 1.28[​](#version-128 "Direct link to Version 1.28")
 *   [locator.blur()](/python/docs/api/class-locator#locator-blur)
 *   [locator.clear()](/python/docs/api/class-locator#locator-clear)
 
-### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
 
 *   Chromium 108.0.5359.29
 *   Mozilla Firefox 106.0
@@ -1062,7 +1096,7 @@ All the same methods are also available on [Locator](/python/docs/api/class-loca
         expect(page.get_by_role("button")).to_have_attribute("disabled", "")
     
 
-### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
 
 *   Chromium 107.0.5304.18
 *   Mozilla Firefox 105.0.1
@@ -1098,7 +1132,7 @@ Prior to 1.26, this would wait for all iframes to fire the `DOMContentLoaded` ev
 
 To align with web specification, the `'domcontentloaded'` value only waits for the target frame to fire the `'DOMContentLoaded'` event. Use `wait_until="load"` to wait for all iframes.
 
-### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
 
 *   Chromium 106.0.5249.30
 *   Mozilla Firefox 104.0
@@ -1118,7 +1152,7 @@ Version 1.25[​](#version-125 "Direct link to Version 1.25")
 *   🪦 This is the last release with macOS 10.15 support (deprecated as of 1.21).
 *   ⚠️ Ubuntu 18 is now deprecated and will not be supported as of Dec 2022.
 
-### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
 
 *   Chromium 105.0.5195.19
 *   Mozilla Firefox 103.0
@@ -1195,7 +1229,7 @@ Note that the new methods [page.route\_from\_har()](/python/docs/api/class-page#
 *   New method [expect(locator).to\_have\_values()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-values) that asserts all selected values of `<select multiple>` element.
 *   Methods [expect(locator).to\_contain\_text()](/python/docs/api/class-locatorassertions#locator-assertions-to-contain-text) and [expect(locator).to\_have\_text()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-text) now accept `ignore_case` option.
 
-### Miscellaneous[​](#miscellaneous-11 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-12 "Direct link to Miscellaneous")
 
 *   If there's a service worker that's in your way, you can now easily disable it with a new context option `service_workers`:
     
@@ -1273,7 +1307,7 @@ Version 1.21[​](#version-121 "Direct link to Version 1.21")
 *   The `mcr.microsoft.com/playwright` docker image no longer contains Python. Please use `mcr.microsoft.com/playwright/python` as a Playwright-ready docker image with pre-installed Python.
 *   Playwright now supports large file uploads (100s of MBs) via [locator.set\_input\_files()](/python/docs/api/class-locator#locator-set-input-files) API.
 
-### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4951.26
 *   Mozilla Firefox 98.0.2
@@ -1300,7 +1334,7 @@ Version 1.20[​](#version-120 "Direct link to Version 1.20")
 *   We now ship a designated Python docker image `mcr.microsoft.com/playwright/python`. Please switch over to it if you use Python. This is the last release that includes Python inside our javascript `mcr.microsoft.com/playwright` docker image.
 *   v1.20 is the last release to receive WebKit update for macOS 10.15 Catalina. Please update macOS to keep using latest & greatest WebKit!
 
-### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4921.0
 *   Mozilla Firefox 97.0.1
@@ -1334,7 +1368,7 @@ Version 1.19[​](#version-119 "Direct link to Version 1.19")
 *   Playwright Codegen now generates locators and frame locators
     
 
-### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
 
 *   Chromium 100.0.4863.0
 *   Mozilla Firefox 96.0.1
@@ -1405,7 +1439,7 @@ Read more in [our documentation](/python/docs/test-assertions).
 *   [`accept_downloads`](/python/docs/api/class-browser#browser-new-context-option-accept-downloads) option now defaults to `True`.
 *   [`sources`](/python/docs/api/class-tracing#tracing-start-option-sources) option to embed sources into traces.
 
-### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
 
 *   Chromium 99.0.4812.0
 *   Mozilla Firefox 95.0
@@ -1493,7 +1527,7 @@ Read more about [Docker integration](/python/docs/docker).
 
 Read more about [Trace Viewer](/python/docs/trace-viewer).
 
-### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
 
 *   Chromium 97.0.4666.0
 *   Mozilla Firefox 93.0
@@ -1535,7 +1569,7 @@ Its now possible to emulate the `forced-colors` CSS media feature by passing it 
 *   [tracing.start\_chunk()](/python/docs/api/class-tracing#tracing-start-chunk) - Start a new trace chunk.
 *   [tracing.stop\_chunk()](/python/docs/api/class-tracing#tracing-stop-chunk) - Stops a new trace chunk.
 
-### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
 
 *   Chromium 96.0.4641.0
 *   Mozilla Firefox 92.0
@@ -1579,7 +1613,7 @@ Learn more in the [react selectors documentation](/python/docs/other-locators#re
 
     # select the first button among all buttonsbutton.click("button >> nth=0")# or if you are using locators, you can use first, nth() and lastpage.locator("button").first.click()# click a visible buttonbutton.click("button >> visible=true")
 
-### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
 
 *   Chromium 94.0.4595.0
 *   Mozilla Firefox 91.0
@@ -1603,7 +1637,7 @@ Version 1.13[​](#version-113 "Direct link to Version 1.13")
 *   [Authentication](/python/docs/auth)
 *   [Chrome Extensions](/python/docs/chrome-extensions)
 
-#### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-41 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4576.0
 *   Mozilla Firefox 90.0
@@ -1644,7 +1678,7 @@ That will open the following GUI:
 
 👉 Read more in [trace viewer documentation](/python/docs/trace-viewer).
 
-#### Browser Versions[​](#browser-versions-41 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-42 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4530.0
 *   Mozilla Firefox 89.0
@@ -1676,7 +1710,7 @@ Version 1.11[​](#version-111 "Direct link to Version 1.11")
 *   Did live demos with new features ✨
 *   **Special thanks** to [applitools](http://applitools.com/) for hosting the event and inviting us!
 
-#### Browser Versions[​](#browser-versions-42 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-43 "Direct link to Browser Versions")
 
 *   Chromium 92.0.4498.0
 *   Mozilla Firefox 89.0b6
@@ -1729,7 +1763,7 @@ Version 1.9[​](#version-19 "Direct link to Version 1.9")
 *   **Page dialogs are now auto-dismissed** during execution, unless a listener for `dialog` event is configured. [Learn more](/python/docs/dialogs) about this.
 *   [Playwright for Python](https://github.com/microsoft/playwright-python) is **now stable** with an idiomatic snake case API and pre-built [Docker image](/python/docs/docker) to run tests in CI/CD.
 
-#### Browser Versions[​](#browser-versions-43 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-44 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4421.0
 *   Mozilla Firefox 86.0b10
@@ -1769,7 +1803,7 @@ Version 1.8[​](#version-18 "Direct link to Version 1.8")
 *   [page.is\_visible()](/python/docs/api/class-page#page-is-visible).
 *   New option `'editable'` in [element\_handle.wait\_for\_element\_state()](/python/docs/api/class-elementhandle#element-handle-wait-for-element-state).
 
-#### Browser Versions[​](#browser-versions-44 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-45 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4392.0
 *   Mozilla Firefox 85.0b5
@@ -1789,7 +1823,7 @@ Version 1.7[​](#version-17 "Direct link to Version 1.7")
 *   [browser\_context.storage\_state()](/python/docs/api/class-browsercontext#browser-context-storage-state) to get current state for later reuse.
 *   `storageState` option in [browser.new\_context()](/python/docs/api/class-browser#browser-new-context) and [browser.new\_page()](/python/docs/api/class-browser#browser-new-page) to setup browser context state.
 
-#### Browser Versions[​](#browser-versions-45 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-46 "Direct link to Browser Versions")
 
 *   Chromium 89.0.4344.0
 *   Mozilla Firefox 84.0b9
@@ -7476,7 +7510,7 @@ This Docker image is intended to be used for testing and development purposes on
 
 ### Pull the image[​](#pull-the-image "Direct link to Pull the image")
 
-    docker pull mcr.microsoft.com/playwright/python:v1.57.0-noble
+    docker pull mcr.microsoft.com/playwright/python:v1.58.0-noble
 
 ### Run the image[​](#run-the-image "Direct link to Run the image")
 
@@ -7486,13 +7520,13 @@ By default, the Docker image will use the `root` user to run the browsers. This 
 
 On trusted websites, you can avoid creating a separate user and use root for it since you trust the code which will run on the browsers.
 
-    docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.57.0-noble /bin/bash
+    docker run -it --rm --ipc=host mcr.microsoft.com/playwright/python:v1.58.0-noble /bin/bash
 
 #### Crawling and scraping[​](#crawling-and-scraping "Direct link to Crawling and scraping")
 
 On untrusted websites, it's recommended to use a separate user for launching the browsers in combination with the seccomp profile. Inside the container or if you are using the Docker image as a base image you have to use `adduser` for it.
 
-    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright/python:v1.57.0-noble /bin/bash
+    docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json mcr.microsoft.com/playwright/python:v1.58.0-noble /bin/bash
 
 [`seccomp_profile.json`](https://github.com/microsoft/playwright/blob/main/utils/docker/seccomp_profile.json) is needed to run Chromium with sandbox. This is a [default Docker seccomp profile](https://github.com/docker/engine/blob/d0d99b04cf6e00ed3fc27e81fc3d94e7eda70af3/profiles/seccomp/default.json) with extra user namespace cloning permissions:
 
@@ -7518,7 +7552,7 @@ You can run Playwright Server in Docker while keeping your tests running on the 
 
 Start the Playwright Server in Docker:
 
-    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.57.0-noble /bin/sh -c "npx -y playwright@1.57.0 run-server --port 3000 --host 0.0.0.0"
+    docker run -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.58.0-noble /bin/sh -c "npx -y playwright@1.58.0 run-server --port 3000 --host 0.0.0.0"
 
 #### Connecting to the Server[​](#connecting-to-the-server "Direct link to Connecting to the Server")
 
@@ -7533,7 +7567,7 @@ Start the Playwright Server in Docker:
 
 If you need to access local servers from within the Docker container:
 
-    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.57.0-noble /bin/sh -c "npx -y playwright@1.57.0 run-server --port 3000 --host 0.0.0.0"
+    docker run --add-host=hostmachine:host-gateway -p 3000:3000 --rm --init -it --workdir /home/pwuser --user pwuser mcr.microsoft.com/playwright:v1.58.0-noble /bin/sh -c "npx -y playwright@1.58.0 run-server --port 3000 --host 0.0.0.0"
 
 This makes `hostmachine` point to the host's localhost. Your tests should use `hostmachine` instead of `localhost` when accessing local servers.
 
@@ -7556,9 +7590,9 @@ See [all available image tags](https://mcr.microsoft.com/en-us/product/playwrigh
 
 We currently publish images with the following tags:
 
-*   `:v1.57.0` - Playwright v1.57.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.57.0-noble` - Playwright v1.57.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
-*   `:v1.57.0-jammy` - Playwright v1.57.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
+*   `:v1.58.0` - Playwright v1.58.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.58.0-noble` - Playwright v1.58.0 release docker image based on Ubuntu 24.04 LTS (Noble Numbat).
+*   `:v1.58.0-jammy` - Playwright v1.58.0 release docker image based on Ubuntu 22.04 LTS (Jammy Jellyfish).
 
 note
 
@@ -7580,7 +7614,7 @@ Build your own image[​](#build-your-own-image "Direct link to Build your own i
 
 To run Playwright inside Docker, you need to have Python, [Playwright browsers](/python/docs/browsers#install-browsers) and [browser system dependencies](/python/docs/browsers#install-system-dependencies) installed. See the following Dockerfile:
 
-    FROM python:3.12-bookwormRUN pip install playwright==@1.57.0 && \    playwright install --with-deps
+    FROM python:3.12-bookwormRUN pip install playwright==@1.58.0 && \    playwright install --with-deps
 
 # Continuous Integration
 
@@ -7626,7 +7660,7 @@ GitHub Actions support [running jobs in a container](https://docs.github.com/en/
 
 .github/workflows/playwright.yml
 
-    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright/python:v1.57.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v5      - name: Set up Python        uses: actions/setup-python@v6        with:          python-version: '3.13'      - name: Install dependencies        run: |          python -m pip install --upgrade pip          pip install -r local-requirements.txt          pip install -e .      - name: Run your tests        run: pytest
+    name: Playwright Testson:  push:    branches: [ main, master ]  pull_request:    branches: [ main, master ]jobs:  playwright:    name: 'Playwright Tests'    runs-on: ubuntu-latest    container:      image: mcr.microsoft.com/playwright/python:v1.58.0-noble      options: --user 1001    steps:      - uses: actions/checkout@v5      - name: Set up Python        uses: actions/setup-python@v6        with:          python-version: '3.13'      - name: Install dependencies        run: |          python -m pip install --upgrade pip          pip install -r local-requirements.txt          pip install -e .      - name: Run your tests        run: pytest
 
 #### On deployment[​](#on-deployment "Direct link to On deployment")
 
@@ -7652,13 +7686,13 @@ For running the Playwright tests use this pipeline task:
 
 #### Azure Pipelines (containerized)[​](#azure-pipelines-containerized "Direct link to Azure Pipelines (containerized)")
 
-    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright/python:v1.57.0-noblesteps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.13'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: pytest  displayName: 'Run tests'
+    trigger:- mainpool:  vmImage: ubuntu-latestcontainer: mcr.microsoft.com/playwright/python:v1.58.0-noblesteps:- task: UsePythonVersion@0  inputs:    versionSpec: '3.13'  displayName: 'Use Python'- script: |    python -m pip install --upgrade pip    pip install -r requirements.txt  displayName: 'Install dependencies'- script: pytest  displayName: 'Run tests'
 
 ### CircleCI[​](#circleci "Direct link to CircleCI")
 
 Running Playwright on CircleCI is very similar to running on GitHub Actions. In order to specify the pre-built Playwright [Docker image](/python/docs/docker), simply modify the agent definition with `docker:` in your config like so:
 
-    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright/python:v1.57.0-noble
+    executors:  pw-noble-development:    docker:      - image: mcr.microsoft.com/playwright/python:v1.58.0-noble
 
 Note: When using the docker agent definition, you are specifying the resource class of where playwright runs to the 'medium' tier [here](https://circleci.com/docs/configuration-reference?#docker-execution-environment). The default behavior of Playwright is to set the number of workers to the detected core count (2 in the case of the medium tier). Overriding the number of workers to greater than this number will cause unnecessary timeouts and failures.
 
@@ -7666,19 +7700,19 @@ Note: When using the docker agent definition, you are specifying the resource cl
 
 Jenkins supports Docker agents for pipelines. Use the [Playwright Docker image](/python/docs/docker) to run tests on Jenkins.
 
-    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright/python:v1.57.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'pip install -r requirements.txt'            sh 'pytest'         }      }   }}
+    pipeline {   agent { docker { image 'mcr.microsoft.com/playwright/python:v1.58.0-noble' } }   stages {      stage('e2e-tests') {         steps {            sh 'pip install -r requirements.txt'            sh 'pytest'         }      }   }}
 
 ### Bitbucket Pipelines[​](#bitbucket-pipelines "Direct link to Bitbucket Pipelines")
 
 Bitbucket Pipelines can use public [Docker images as build environments](https://confluence.atlassian.com/bitbucket/use-docker-images-as-build-environments-792298897.html). To run Playwright tests on Bitbucket, use our public Docker image ([see Dockerfile](/python/docs/docker)).
 
-    image: mcr.microsoft.com/playwright/python:v1.57.0-noble
+    image: mcr.microsoft.com/playwright/python:v1.58.0-noble
 
 ### GitLab CI[​](#gitlab-ci "Direct link to GitLab CI")
 
 To run Playwright tests on GitLab, use our public Docker image ([see Dockerfile](/python/docs/docker)).
 
-    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright/python:v1.57.0-noble  script:  ...
+    stages:  - testtests:  stage: test  image: mcr.microsoft.com/playwright/python:v1.58.0-noble  script:  ...
 
 Caching browsers[​](#caching-browsers "Direct link to Caching browsers")
 ------------------------------------------------------------------------
