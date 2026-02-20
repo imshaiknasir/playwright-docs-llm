@@ -9822,6 +9822,236 @@ src/pinia.spec.ts
 
 Accessing a component's internal methods or its instance within test code is neither recommended nor supported. Instead, focus on observing and interacting with the component from a user's perspective, typically by clicking or verifying if something is visible on the page. Tests become less fragile and more valuable when they avoid interacting with internal implementation details, such as the component instance or its methods. Keep in mind that if a test fails when run from a user’s perspective, it likely means the automated test has uncovered a genuine bug in your code.
 
+# Debugging Tests
+
+Debugging Tests
+===============
+
+VS Code debugger[​](#vs-code-debugger "Direct link to VS Code debugger")
+------------------------------------------------------------------------
+
+We recommend using the [VS Code Extension](/docs/getting-started-vscode) for debugging for a better developer experience. With the VS Code extension you can debug your tests right in VS Code, see error messages, set breakpoints and step through your tests.
+
+![running test in debug mode](https://user-images.githubusercontent.com/13063165/212740233-3f278825-13e7-4a88-a118-dd4478d43a16.png)
+
+### Error Messages[​](#error-messages "Direct link to Error Messages")
+
+If your test fails VS Code will show you error messages right in the editor showing what was expected, what was received as well as a complete call log.
+
+![error messaging in vs code](https://user-images.githubusercontent.com/13063165/212738654-b573b7c9-05be-476f-ab4c-201bf4265bc0.png)
+
+### Live Debugging[​](#live-debugging "Direct link to Live Debugging")
+
+You can debug your test live in VS Code. After running a test with the `Show Browser` option checked, click on any of the locators in VS Code and it will be highlighted in the Browser window. Playwright will also show you if there are multiple matches.
+
+![live debugging in VS Code](https://user-images.githubusercontent.com/13063165/212884329-0755b007-0d69-4987-b084-38fd5bfb577d.png)
+
+You can also edit the locators in VS Code and Playwright will show you the changes live in the browser window.
+
+![live debugging in VS Code](https://user-images.githubusercontent.com/13063165/212884772-5022d4b1-6fab-456f-88e3-506f2354e238.png)
+
+### Picking a Locator[​](#picking-a-locator "Direct link to Picking a Locator")
+
+Pick a [locator](/docs/locators) and copy it into your test file by clicking the **Pick locator** button form the testing sidebar. Then in the browser click the element you require and it will now show up in the **Pick locator** box in VS Code. Press 'enter' on your keyboard to copy the locator into the clipboard and then paste anywhere in your code. Or press 'escape' if you want to cancel.
+
+![Pick locators](https://user-images.githubusercontent.com/13063165/212741666-6479a702-2517-44a3-9eca-e719e13b379c.png)
+
+Playwright will look at your page and figure out the best locator, prioritizing [role, text and test id locators](/docs/locators). If Playwright finds multiple elements matching the locator, it will improve the locator to make it resilient and uniquely identify the target element, so you don't have to worry about failing tests due to locators.
+
+### Run in Debug Mode[​](#run-in-debug-mode "Direct link to Run in Debug Mode")
+
+To set a breakpoint click next to the line number where you want the breakpoint to be until a red dot appears. Run the tests in debug mode by right clicking on the line next to the test you want to run.
+
+![setting debug test mode](https://user-images.githubusercontent.com/13063165/212739847-ecb7dcfe-8929-45f3-b24e-f9c4b592f430.png)
+
+A browser window will open and the test will run and pause at where the breakpoint is set. You can step through the tests, pause the test and rerun the tests from the menu in VS Code.
+
+![running test in debug mode](https://user-images.githubusercontent.com/13063165/212740233-3f278825-13e7-4a88-a118-dd4478d43a16.png)
+
+### Debug Tests Using Chrome DevTools[​](#debug-tests-using-chrome-devtools "Direct link to Debug Tests Using Chrome DevTools")
+
+Instead of using `Debug Test`, choose `Run Test` in VS Code. With `Show Browser` enabled, the browser session is reused, letting you open Chrome DevTools for continuous debugging of your tests and the web application.
+
+### Debug in different Browsers[​](#debug-in-different-browsers "Direct link to Debug in different Browsers")
+
+By default, debugging is done using the Chromium profile. You can debug your tests on different browsers by right clicking on the debug icon in the testing sidebar and clicking on the 'Select Default Profile' option from the dropdown.
+
+![debugging on specific profile](https://user-images.githubusercontent.com/13063165/212879469-436f8130-c62a-49e1-9d67-c1903b478d5f.png)
+
+Then choose the test profile you would like to use for debugging your tests. Each time you run your test in debug mode it will use the profile you selected. You can run tests in debug mode by right clicking the line number where your test is and selecting 'Debug Test' from the menu.
+
+![choosing a profile for debugging](https://user-images.githubusercontent.com/13063165/212880198-eac22c3e-68ce-47da-9163-d6b376ae7575.png)
+
+To learn more about debugging, see [Debugging in Visual Studio Code](https://code.visualstudio.com/docs/editor/debugging).
+
+Playwright Inspector[​](#playwright-inspector "Direct link to Playwright Inspector")
+------------------------------------------------------------------------------------
+
+The Playwright Inspector is a GUI tool to help you debug your Playwright tests. It allows you to step through your tests, live edit locators, pick locators and see actionability logs.
+
+![Playwright Inspector](https://user-images.githubusercontent.com/13063165/212924587-4b84e5f6-b147-40e9-8c75-d7b9ab6b7ca1.png)
+
+### Run in debug mode[​](#run-in-debug-mode-1 "Direct link to Run in debug mode")
+
+Run your tests with the `--debug` flag to open the inspector. This configures Playwright for debugging and opens the inspector. Additional useful defaults are configured when `--debug` is used:
+
+*   Browsers launch in headed mode
+*   Default timeout is set to 0 (= no timeout)
+
+#### Debug all tests on all browsers[​](#debug-all-tests-on-all-browsers "Direct link to Debug all tests on all browsers")
+
+To debug all tests run the test command with the `--debug` flag. This will run tests one by one, and open the inspector and a browser window for each test.
+
+    npx playwright test --debug
+
+#### Debug one test on all browsers[​](#debug-one-test-on-all-browsers "Direct link to Debug one test on all browsers")
+
+To debug one test on a specific line, run the test command followed by the name of the test file and the line number of the test you want to debug, followed by the `--debug` flag. This will run a single test in each browser configured in your [`playwright.config`](/docs/test-projects#configure-projects-for-multiple-browsers) and open the inspector.
+
+    npx playwright test example.spec.ts:10 --debug
+
+#### Debug on a specific browser[​](#debug-on-a-specific-browser "Direct link to Debug on a specific browser")
+
+In Playwright you can configure projects in your [`playwright.config`](/docs/test-projects#configure-projects-for-multiple-browsers). Once configured you can then debug your tests on a specific browser or mobile viewport using the `--project` flag followed by the name of the project configured in your `playwright.config`.
+
+    npx playwright test --project=chromium --debugnpx playwright test --project="Mobile Safari" --debugnpx playwright test --project="Microsoft Edge" --debug
+
+#### Debug one test on a specific browser[​](#debug-one-test-on-a-specific-browser "Direct link to Debug one test on a specific browser")
+
+To run one test on a specific browser add the name of the test file and the line number of the test you want to debug as well as the `--project` flag followed by the name of the project.
+
+    npx playwright test example.spec.ts:10 --project=webkit --debug
+
+### Stepping through your tests[​](#stepping-through-your-tests "Direct link to Stepping through your tests")
+
+You can play, pause or step through each action of your test using the toolbar at the top of the Inspector. You can see the current action highlighted in the test code, and matching elements highlighted in the browser window.
+
+![Playwright Inspector and browser](https://user-images.githubusercontent.com/13063165/212936618-84b87acc-bc2e-46ed-994b-32b2ef742e60.png)
+
+### Run a test from a specific breakpoint[​](#run-a-test-from-a-specific-breakpoint "Direct link to Run a test from a specific breakpoint")
+
+To speed up the debugging process you can add a [page.pause()](/docs/api/class-page#page-pause) method to your test. This way you won't have to step through each action of your test to get to the point where you want to debug.
+
+    await page.pause();
+
+Once you add a `page.pause()` call, run your tests in debug mode. Clicking the "Resume" button in the Inspector will run the test and only stop on the `page.pause()`.
+
+![test with page.pause](https://user-images.githubusercontent.com/13063165/219473050-122be4c2-31d0-4cbd-aa8b-8588e8b781a6.png)
+
+### Live editing locators[​](#live-editing-locators "Direct link to Live editing locators")
+
+While running in debug mode you can live edit the locators. Next to the 'Pick Locator' button there is a field showing the [locator](/docs/locators) that the test is paused on. You can edit this locator directly in the **Pick Locator** field, and matching elements will be highlighted in the browser window.
+
+![live editing locators](https://user-images.githubusercontent.com/13063165/212980815-1cf6ef7b-e69a-496c-898a-ec603a3bc562.png)
+
+### Picking locators[​](#picking-locators "Direct link to Picking locators")
+
+While debugging, you might need to choose a more resilient locator. You can do this by clicking on the **Pick Locator** button and hovering over any element in the browser window. While hovering over an element you will see the code needed to locate this element highlighted below. Clicking an element in the browser will add the locator into the field where you can then either tweak it or copy it into your code.
+
+![Picking locators](https://user-images.githubusercontent.com/13063165/212968640-ce82a027-9277-4bdf-b0a9-6282fb2becb7.png)
+
+Playwright will look at your page and figure out the best locator, prioritizing [role, text and test id locators](/docs/locators). If Playwright finds multiple elements matching the locator, it will improve the locator to make it resilient and uniquely identify the target element, so you don't have to worry about failing tests due to locators.
+
+### Actionability logs[​](#actionability-logs "Direct link to Actionability logs")
+
+By the time Playwright has paused on a click action, it has already performed [actionability checks](/docs/actionability) that can be found in the log. This can help you understand what happened during your test and what Playwright did or tried to do. The log tells you if the element was visible, enabled and stable, if the locator resolved to an element, scrolled into view, and so much more. If actionability can't be reached, it will show the action as pending.
+
+![Actionability Logs](https://user-images.githubusercontent.com/13063165/212968907-5dede739-e0e3-482a-91cd-726a0f5b0b6d.png)
+
+Trace Viewer[​](#trace-viewer "Direct link to Trace Viewer")
+------------------------------------------------------------
+
+Playwright [Trace Viewer](/docs/trace-viewer) is a GUI tool that lets you explore recorded Playwright traces of your tests. You can go back and forward through each action on the left side, and visually see what was happening during the action. In the middle of the screen, you can see a DOM snapshot for the action. On the right side you can see action details, such as time, parameters, return value and log. You can also explore console messages, network requests and the source code.
+
+To learn more about how to record traces and use the Trace Viewer, check out the [Trace Viewer](/docs/trace-viewer) guide.
+
+Browser Developer Tools[​](#browser-developer-tools "Direct link to Browser Developer Tools")
+---------------------------------------------------------------------------------------------
+
+When running in Debug Mode with `PWDEBUG=console`, a `playwright` object is available in the Developer tools console. Developer tools can help you to:
+
+*   Inspect the DOM tree and **find element selectors**
+*   **See console logs** during execution (or learn how to [read logs via API](/docs/api/class-page#page-event-console))
+*   Check **network activity** and other developer tools features
+
+![Browser Developer Tools with Playwright object](https://user-images.githubusercontent.com/13063165/219128002-898f604d-9697-4b7f-95b5-a6a8260b7282.png)
+
+To debug your tests using the browser developer tools, start by setting a breakpoint in your test to pause the execution using the [page.pause()](/docs/api/class-page#page-pause) method.
+
+    await page.pause();
+
+Once you have set a breakpoint in your test, you can then run your test with `PWDEBUG=console`.
+
+*   Bash
+*   PowerShell
+*   Batch
+
+    PWDEBUG=console npx playwright test
+
+    $env:PWDEBUG="console"npx playwright test
+
+    set PWDEBUG=consolenpx playwright test
+
+Once Playwright launches the browser window, you can open the developer tools. The `playwright` object will be available in the console panel.
+
+#### playwright.$(selector)[​](#playwrightselector "Direct link to playwright.$(selector)")
+
+Query the Playwright selector, using the actual Playwright query engine, for example:
+
+    playwright.$('.auth-form >> text=Log in');<button>Log in</button>
+
+#### playwright.$$(selector)[​](#playwrightselector-1 "Direct link to playwright.$$(selector)")
+
+Same as `playwright.$`, but returns all matching elements.
+
+    playwright.$$('li >> text=John')[<li>, <li>, <li>, <li>]
+
+#### playwright.inspect(selector)[​](#playwrightinspectselector "Direct link to playwright.inspect(selector)")
+
+Reveal element in the Elements panel.
+
+    playwright.inspect('text=Log in')
+
+#### playwright.locator(selector)[​](#playwrightlocatorselector "Direct link to playwright.locator(selector)")
+
+Create a locator and query matching elements, for example:
+
+    playwright.locator('.auth-form', { hasText: 'Log in' });Locator ()  - element: button  - elements: [button]
+
+#### playwright.selector(element)[​](#playwrightselectorelement "Direct link to playwright.selector(element)")
+
+Generates selector for the given element. For example, select an element in the Elements panel and pass `$0`:
+
+    playwright.selector($0)"div[id="glow-ingress-block"] >> text=/.*Hello.*/"
+
+Verbose API logs[​](#verbose-api-logs "Direct link to Verbose API logs")
+------------------------------------------------------------------------
+
+Playwright supports verbose logging with the `DEBUG` environment variable.
+
+*   Bash
+*   PowerShell
+*   Batch
+
+    DEBUG=pw:api npx playwright test
+
+    $env:DEBUG="pw:api"npx playwright test
+
+    set DEBUG=pw:apinpx playwright test
+
+note
+
+**For WebKit**: launching WebKit Inspector during the execution will prevent the Playwright script from executing any further and will reset pre-configured user agent and device emulation.
+
+Headed mode[​](#headed-mode "Direct link to Headed mode")
+---------------------------------------------------------
+
+Playwright runs browsers in headless mode by default. To change this behavior, use `headless: false` as a launch option.
+
+You can also use the [slowMo](/docs/api/class-browsertype#browser-type-launch-option-slow-mo) option to slow down execution (by N milliseconds per operation) and follow along while debugging.
+
+    // Chromium, Firefox, or WebKitawait chromium.launch({ headless: false, slowMo: 100 });
+
 # Dialogs
 
 Dialogs
@@ -12115,6 +12345,204 @@ _aria snapshot_
 _aria snapshot_
 
     - button "Toggle" [pressed=true]
+
+# Test generator
+
+Test generator
+==============
+
+Introduction[​](#introduction "Direct link to Introduction")
+------------------------------------------------------------
+
+Playwright comes with the ability to generate tests for you as you perform actions in the browser and is a great way to quickly get started with testing. Playwright will look at your page and figure out the best locator, prioritizing [role, text and test id locators](/docs/locators). If the generator finds multiple elements matching the locator, it will improve the locator to make it resilient that uniquely identify the target element.
+
+Generate tests in VS Code[​](#generate-tests-in-vs-code "Direct link to Generate tests in VS Code")
+---------------------------------------------------------------------------------------------------
+
+Install the VS Code extension and generate tests directly from VS Code. The extension is available on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright). Check out our guide on [getting started with VS Code](/docs/getting-started-vscode).
+
+### Record a New Test[​](#record-a-new-test "Direct link to Record a New Test")
+
+To record a test click on the **Record new** button from the Testing sidebar. This will create a `test-1.spec.ts` file as well as open up a browser window.
+
+![record new in vs code](https://user-images.githubusercontent.com/13063165/220961665-615d0ab8-3f0b-439c-ad0b-0424d9aa154b.png)
+
+In the browser go to the URL you wish to test and start clicking around to record your user actions.
+
+![generating user actions](https://github.com/microsoft/playwright/assets/13063165/1d4c8f37-8325-4816-a665-d0e95e63f509)
+
+Playwright will record your actions and generate the test code directly in VS Code. You can also generate assertions by choosing one of the icons in the toolbar and then clicking on an element on the page to assert against. The following assertions can be generated:
+
+*   `'assert visibility'` to assert that an element is visible
+*   `'assert text'` to assert that an element contains specific text
+*   `'assert value'` to assert that an element has a specific value
+
+![generating assertions](https://github.com/microsoft/playwright/assets/13063165/d131eb35-b2ca-4bf4-a8ac-88b6e40dcf07)
+
+Once you are done recording click the **cancel** button or close the browser window. You can then inspect your `test-1.spec.ts` file and manually improve it if needed.
+
+![code from a generated test](https://github.com/microsoft/playwright/assets/13063165/2ba4c212-4713-460a-b054-6dc6b67a9a7c)
+
+### Record at Cursor[​](#record-at-cursor "Direct link to Record at Cursor")
+
+To record from a specific point in your test move your cursor to where you want to record more actions and then click the **Record at cursor** button from the Testing sidebar. If your browser window is not already open then first run the test with 'Show browser' checked and then click the **Record at cursor** button.
+
+![record at cursor in vs code](https://github.com/microsoft/playwright/assets/13063165/77948ab8-92a2-435f-9833-0944da5ae664)
+
+In the browser window start performing the actions you want to record.
+
+![add feed the dog to todo app](https://user-images.githubusercontent.com/13063165/220960770-6435cec7-1723-42a8-8c1f-8244e2d800c7.png)
+
+In the test file in VS Code you will see your new generated actions added to your test at the cursor position.
+
+![code from a generated test](https://github.com/microsoft/playwright/assets/13063165/4f4bb34e-9cda-41fe-bf65-8d8016d84c7f)
+
+### Generating locators[​](#generating-locators "Direct link to Generating locators")
+
+You can generate locators with the test generator.
+
+*   Click on the **Pick locator** button from the testing sidebar and then hover over elements in the browser window to see the [locator](/docs/locators) highlighted underneath each element.
+*   Click the element you require and it will now show up in the **Pick locator** box in VS Code.
+*   Press Enter on your keyboard to copy the locator into the clipboard and then paste anywhere in your code. Or press 'escape' if you want to cancel.
+
+![Pick locators in VS code](https://user-images.githubusercontent.com/13063165/220958368-95b03620-3c9b-40a8-be74-01c96ba03cad.png)
+
+Generate tests with the Playwright Inspector[​](#generate-tests-with-the-playwright-inspector "Direct link to Generate tests with the Playwright Inspector")
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+When running the `codegen` command two windows will be opened, a browser window where you interact with the website you wish to test and the Playwright Inspector window where you can record your tests and then copy them into your editor.
+
+### Running Codegen[​](#running-codegen "Direct link to Running Codegen")
+
+Use the `codegen` command to run the test generator followed by the URL of the website you want to generate tests for. The URL is optional and you can always run the command without it and then add the URL directly into the browser window instead.
+
+    npx playwright codegen demo.playwright.dev/todomvc
+
+### Recording a test[​](#recording-a-test "Direct link to Recording a test")
+
+Run the `codegen` command and perform actions in the browser window. Playwright will generate the code for the user interactions which you can see in the Playwright Inspector window. Once you have finished recording your test stop the recording and press the **copy** button to copy your generated test into your editor.
+
+With the test generator you can record:
+
+*   Actions like click or fill by simply interacting with the page
+*   Assertions by clicking on one of the icons in the toolbar and then clicking on an element on the page to assert against. You can choose:
+    *   `'assert visibility'` to assert that an element is visible
+    *   `'assert text'` to assert that an element contains specific text
+    *   `'assert value'` to assert that an element has a specific value
+
+![Recording a test](https://github.com/microsoft/playwright/assets/13063165/34a79ea1-639e-4cb3-8115-bfdc78e3d34d)
+
+###### [​](#-1 "Direct link to -1")
+
+When you have finished interacting with the page, press the **record** button to stop the recording and use the **copy** button to copy the generated code to your editor.
+
+Use the **clear** button to clear the code to start recording again. Once finished, close the Playwright inspector window or stop the terminal command.
+
+### Generating locators[​](#generating-locators-1 "Direct link to Generating locators")
+
+You can generate [locators](/docs/locators) with the test generator.
+
+*   Press the `'Record'` button to stop the recording and the `'Pick Locator'` button will appear.
+*   Click on the `'Pick Locator'` button and then hover over elements in the browser window to see the locator highlighted underneath each element.
+*   To choose a locator, click on the element you would like to locate and the code for that locator will appear in the field next to the Pick Locator button.
+*   You can then edit the locator in this field to fine tune it or use the copy button to copy it and paste it into your code.
+
+###### [​](#-2 "Direct link to -2")
+
+![picking a locator](https://github.com/microsoft/playwright/assets/13063165/2c8a12e2-4e98-4fdd-af92-1d73ae696d86)
+
+Emulation[​](#emulation "Direct link to Emulation")
+---------------------------------------------------
+
+You can use the test generator to generate tests using emulation so as to generate a test for a specific viewport, device, color scheme, as well as emulate the geolocation, language or timezone. The test generator can also generate a test while preserving authenticated state.
+
+### Emulate viewport size[​](#emulate-viewport-size "Direct link to Emulate viewport size")
+
+Playwright opens a browser window with its viewport set to a specific width and height and is not responsive as tests need to be run under the same conditions. Use the `--viewport` option to generate tests with a different viewport size.
+
+    npx playwright codegen --viewport-size="800,600" playwright.dev
+
+###### [​](#-3 "Direct link to -3")
+
+![Codegen generating code for tests for playwright.dev website with a specific viewport js](https://user-images.githubusercontent.com/13063165/220402029-f90d1c9f-d740-4c0f-acc8-95235ee83f85.png)
+
+### Emulate devices[​](#emulate-devices "Direct link to Emulate devices")
+
+Record scripts and tests while emulating a mobile device using the `--device` option which sets the viewport size and user agent among others.
+
+    npx playwright codegen --device="iPhone 13" playwright.dev
+
+###### [​](#-4 "Direct link to -4")
+
+![Codegen generating code for tests for playwright.dev website emulated for iPhone 13 js](https://user-images.githubusercontent.com/13063165/220921482-dc4f5532-9dce-40bd-8a28-e0d87d26a601.png)
+
+### Emulate color scheme[​](#emulate-color-scheme "Direct link to Emulate color scheme")
+
+Record scripts and tests while emulating the color scheme with the `--color-scheme` option.
+
+    npx playwright codegen --color-scheme=dark playwright.dev
+
+###### [​](#-5 "Direct link to -5")
+
+![Codegen generating code for tests for playwright.dev website in dark mode js](https://user-images.githubusercontent.com/13063165/220930273-f3a25bae-64dd-4bbb-99ed-1e97c0cb1ebf.png)
+
+### Emulate geolocation, language and timezone[​](#emulate-geolocation-language-and-timezone "Direct link to Emulate geolocation, language and timezone")
+
+Record scripts and tests while emulating timezone, language & location using the `--timezone`, `--geolocation` and `--lang` options. Once the page opens:
+
+1.  Accept the cookies
+2.  On the top right, click on the locate me button to see geolocation in action.
+
+    npx playwright codegen --timezone="Europe/Rome" --geolocation="41.890221,12.492348" --lang="it-IT" bing.com/maps
+
+###### [​](#-6 "Direct link to -6")
+
+![Codegen generating code for tests for bing maps showing timezone, geolocation as Rome, Italy and in Italian language](https://user-images.githubusercontent.com/13063165/220931996-d3144421-8d3b-4f9f-896c-769c01566c01.png)
+
+### Preserve authenticated state[​](#preserve-authenticated-state "Direct link to Preserve authenticated state")
+
+Run `codegen` with `--save-storage` to save [cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) data at the end of the session. This is useful to separately record an authentication step and reuse it later when recording more tests.
+
+    npx playwright codegen github.com/microsoft/playwright --save-storage=auth.json
+
+###### [​](#-7 "Direct link to -7")
+
+![github page before logging in js](https://user-images.githubusercontent.com/13063165/220929062-88dfe567-0c6d-4e49-b9f9-74ae241fb8c7.png)
+
+#### Login[​](#login "Direct link to Login")
+
+After performing authentication and closing the browser, `auth.json` will contain the storage state which you can then reuse in your tests.
+
+![login to GitHub screen](https://user-images.githubusercontent.com/13063165/220561688-04b2b984-4ba6-4446-8b0a-8058876e2a02.png)
+
+Make sure you only use the `auth.json` locally as it contains sensitive information. Add it to your `.gitignore` or delete it once you have finished generating your tests.
+
+#### Load authenticated state[​](#load-authenticated-state "Direct link to Load authenticated state")
+
+Run with `--load-storage` to consume the previously loaded storage from the `auth.json`. This way, all [cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies), [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) data will be restored, bringing most web apps to the authenticated state without the need to login again. This means you can continue generating tests from the logged in state.
+
+    npx playwright codegen --load-storage=auth.json github.com/microsoft/playwright
+
+###### [​](#-8 "Direct link to -8")
+
+![github signed in showing use of load storage js](https://user-images.githubusercontent.com/13063165/220927873-9e55fdda-2def-45c1-9a1b-bcc851885f96.png)
+
+#### Use existing userDataDir[​](#use-existing-userdatadir "Direct link to Use existing userDataDir")
+
+Run `codegen` with `--user-data-dir` to set a fixed [user data directory](https://playwright.dev/docs/api/class-browsertype#browser-type-launch-persistent-context-option-user-data-dir) for the browser session. If you create a custom browser user data directory, codegen will use this existing browser profile and have access to any authentication state present in that profile.
+
+warning
+
+[As of Chrome 136, the default user data directory cannot be accessed via automated tooling](https://developer.chrome.com/blog/remote-debugging-port), such as Playwright. You must create a separate user data directory for use in testing.
+
+    npx playwright codegen --user-data-dir=/path/to/your/browser/data/ github.com/microsoft/playwright
+
+Record using custom setup[​](#record-using-custom-setup "Direct link to Record using custom setup")
+---------------------------------------------------------------------------------------------------
+
+If you would like to use codegen in some non-standard setup (for example, use [browserContext.route()](/docs/api/class-browsercontext#browser-context-route)), it is possible to call [page.pause()](/docs/api/class-page#page-pause) that will open a separate window with codegen controls.
+
+    const { chromium } = require('@playwright/test');(async () => {  // Make sure to run headed.  const browser = await chromium.launch({ headless: false });  // Setup context however you like.  const context = await browser.newContext({ /* pass any options */ });  await context.route('**/*', route => route.continue());  // Pause the page, and start recording manually.  const page = await context.newPage();  await page.pause();})();
 
 # Touch events (legacy)
 
@@ -41941,6 +42369,180 @@ User-friendly test step title.
 **Type**
 
 *   [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")
+
+# Android
+
+Android
+=======
+
+Playwright has **experimental** support for Android automation. This includes Chrome for Android and Android WebView.
+
+_Requirements_
+
+*   Android device or AVD Emulator.
+*   [ADB daemon](https://developer.android.com/studio/command-line/adb) running and authenticated with your device. Typically running `adb devices` is all you need to do.
+*   [`Chrome 87`](https://play.google.com/store/apps/details?id=com.android.chrome) or newer installed on the device
+*   "Enable command line on non-rooted devices" enabled in `chrome://flags`.
+
+_Known limitations_
+
+*   Raw USB operation is not yet supported, so you need ADB.
+*   Device needs to be awake to produce screenshots. Enabling "Stay awake" developer mode will help.
+*   We didn't run all the tests against the device, so not everything works.
+
+_How to run_
+
+An example of the Android automation script would be:
+
+    const { _android: android } = require('playwright');(async () => {  // Connect to the device.  const [device] = await android.devices();  console.log(`Model: ${device.model()}`);  console.log(`Serial: ${device.serial()}`);  // Take screenshot of the whole device.  await device.screenshot({ path: 'device.png' });  {    // --------------------- WebView -----------------------    // Launch an application with WebView.    await device.shell('am force-stop org.chromium.webview_shell');    await device.shell('am start org.chromium.webview_shell/.WebViewBrowserActivity');    // Get the WebView.    const webview = await device.webView({ pkg: 'org.chromium.webview_shell' });    // Fill the input box.    await device.fill({      res: 'org.chromium.webview_shell:id/url_field',    }, 'github.com/microsoft/playwright');    await device.press({      res: 'org.chromium.webview_shell:id/url_field',    }, 'Enter');    // Work with WebView's page as usual.    const page = await webview.page();    await page.waitForNavigation({ url: /.*microsoft\/playwright.*/ });    console.log(await page.title());  }  {    // --------------------- Browser -----------------------    // Launch Chrome browser.    await device.shell('am force-stop com.android.chrome');    const context = await device.launchBrowser();    // Use BrowserContext as usual.    const page = await context.newPage();    await page.goto('https://webkit.org/');    console.log(await page.evaluate(() => window.location.href));    await page.screenshot({ path: 'page.png' });    await context.close();  }  // Close the device.  await device.close();})();
+
+* * *
+
+Methods[​](#methods "Direct link to Methods")
+---------------------------------------------
+
+### connect[​](#android-connect "Direct link to connect")
+
+Added in: v1.28 android.connect
+
+This methods attaches Playwright to an existing Android device. Use [android.launchServer()](/docs/api/class-android#android-launch-server) to launch a new Android server instance.
+
+**Usage**
+
+    await android.connect(wsEndpoint);await android.connect(wsEndpoint, options);
+
+**Arguments**
+
+*   `wsEndpoint` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")[#](#android-connect-option-ws-endpoint)
+    
+    A browser websocket endpoint to connect to.
+    
+*   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+    
+    *   `headers` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object")<[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string"), [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string")\> _(optional)_[#](#android-connect-option-headers)
+        
+        Additional HTTP headers to be sent with web socket connect request. Optional.
+        
+    *   `slowMo` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#android-connect-option-slow-mo)
+        
+        Slows down Playwright operations by the specified amount of milliseconds. Useful so that you can see what is going on. Defaults to `0`.
+        
+    *   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#android-connect-option-timeout)
+        
+        Maximum time in milliseconds to wait for the connection to be established. Defaults to `30000` (30 seconds). Pass `0` to disable timeout.
+        
+
+**Returns**
+
+*   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[AndroidDevice](/docs/api/class-androiddevice "AndroidDevice")\>[#](#android-connect-return)
+
+* * *
+
+### devices[​](#android-devices "Direct link to devices")
+
+Added in: v1.9 android.devices
+
+Returns the list of detected Android devices.
+
+**Usage**
+
+    await android.devices();await android.devices(options);
+
+**Arguments**
+
+*   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+    *   `host` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_ Added in: v1.22[#](#android-devices-option-host)
+        
+        Optional host to establish ADB server connection. Default to `127.0.0.1`.
+        
+    *   `omitDriverInstall` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_ Added in: v1.21[#](#android-devices-option-omit-driver-install)
+        
+        Prevents automatic playwright driver installation on attach. Assumes that the drivers have been installed already.
+        
+    *   `port` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_ Added in: v1.20[#](#android-devices-option-port)
+        
+        Optional port to establish ADB server connection. Default to `5037`.
+        
+
+**Returns**
+
+*   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array")<[AndroidDevice](/docs/api/class-androiddevice "AndroidDevice")\>>[#](#android-devices-return)
+
+* * *
+
+### launchServer[​](#android-launch-server "Direct link to launchServer")
+
+Added in: v1.28 android.launchServer
+
+Launches Playwright Android server that clients can connect to. See the following example:
+
+**Usage**
+
+Server Side:
+
+    const { _android } = require('playwright');(async () => {  const browserServer = await _android.launchServer({    // If you have multiple devices connected and want to use a specific one.    // deviceSerialNumber: '<deviceSerialNumber>',  });  const wsEndpoint = browserServer.wsEndpoint();  console.log(wsEndpoint);})();
+
+Client Side:
+
+    const { _android } = require('playwright');(async () => {  const device = await _android.connect('<wsEndpoint>');  console.log(device.model());  console.log(device.serial());  await device.shell('am force-stop com.android.chrome');  const context = await device.launchBrowser();  const page = await context.newPage();  await page.goto('https://webkit.org/');  console.log(await page.evaluate(() => window.location.href));  await page.screenshot({ path: 'page-chrome-1.png' });  await context.close();})();
+
+**Arguments**
+
+*   `options` [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object") _(optional)_
+    *   `adbHost` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_[#](#android-launch-server-option-adb-host)
+        
+        Optional host to establish ADB server connection. Default to `127.0.0.1`.
+        
+    *   `adbPort` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#android-launch-server-option-adb-port)
+        
+        Optional port to establish ADB server connection. Default to `5037`.
+        
+    *   `deviceSerialNumber` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_[#](#android-launch-server-option-device-serial-number)
+        
+        Optional device serial number to launch the browser on. If not specified, it will throw if multiple devices are connected.
+        
+    *   `host` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_ Added in: v1.45[#](#android-launch-server-option-host)
+        
+        Host to use for the web socket. It is optional and if it is omitted, the server will accept connections on the unspecified IPv6 address (::) when IPv6 is available, or the unspecified IPv4 address (0.0.0.0) otherwise. Consider hardening it with picking a specific interface.
+        
+    *   `omitDriverInstall` [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean") _(optional)_[#](#android-launch-server-option-omit-driver-install)
+        
+        Prevents automatic playwright driver installation on attach. Assumes that the drivers have been installed already.
+        
+    *   `port` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number") _(optional)_[#](#android-launch-server-option-port)
+        
+        Port to use for the web socket. Defaults to 0 that picks any available port.
+        
+    *   `wsPath` [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "string") _(optional)_[#](#android-launch-server-option-ws-path)
+        
+        Path at which to serve the Android Server. For security, this defaults to an unguessable string.
+        
+        warning
+        
+        Any process or web page (including those running in Playwright) with knowledge of the `wsPath` can take control of the OS user. For this reason, you should use an unguessable token when using this option.
+        
+
+**Returns**
+
+*   [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")<[BrowserServer](/docs/api/class-browserserver "BrowserServer")\>[#](#android-launch-server-return)
+
+* * *
+
+### setDefaultTimeout[​](#android-set-default-timeout "Direct link to setDefaultTimeout")
+
+Added in: v1.9 android.setDefaultTimeout
+
+This setting will change the default maximum time for all the methods accepting [timeout](/docs/api/class-android#android-set-default-timeout-option-timeout) option.
+
+**Usage**
+
+    android.setDefaultTimeout(timeout);
+
+**Arguments**
+
+*   `timeout` [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number")[#](#android-set-default-timeout-option-timeout)
+    
+    Maximum time in milliseconds
 
 # AndroidDevice
 
