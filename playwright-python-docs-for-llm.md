@@ -110,6 +110,132 @@ Playwright's API is not thread-safe. If you are using Playwright in a multi-thre
 Release notes
 =============
 
+Version 1.59[​](#version-159 "Direct link to Version 1.59")
+-----------------------------------------------------------
+
+### 🎬 Screencast[​](#-screencast "Direct link to 🎬 Screencast")
+
+New [page.screencast](/python/docs/api/class-page#page-screencast) API provides a unified interface for capturing page content with:
+
+*   Screencast recordings
+*   Action annotations
+*   Visual overlays
+*   Real-time frame capture
+*   Agentic video receipts
+
+![Demo](https://raw.githubusercontent.com/microsoft/playwright/main/docs/src/images/release-notes-1.59-screencast-demo.gif)
+
+**Screencast recording** — record video with precise start/stop control, as an alternative to the [record\_video\_dir](/python/docs/api/class-browser#browser-new-context-option-record-video-dir) option:
+
+    page.screencast.start(path="video.webm")# ... perform actions ...page.screencast.stop()
+
+**Action annotations** — enable built-in visual annotations that highlight interacted elements and display action titles during recording:
+
+    page.screencast.show_actions(position="top-right")
+
+[screencast.show\_actions()](/python/docs/api/class-screencast#screencast-show-actions) accepts `position` (`'top-left'`, `'top'`, `'top-right'`, `'bottom-left'`, `'bottom'`, `'bottom-right'`), `duration` (ms per annotation), and `font_size` (px). Returns a disposable to stop showing actions.
+
+**Visual overlays** — add chapter titles and custom HTML overlays on top of the page for richer narration:
+
+    page.screencast.show_chapter("Adding TODOs",    description="Type and press enter for each TODO",    duration=1000,)page.screencast.show_overlay('<div style="color: red">Recording</div>')
+
+**Real-time frame capture** — stream JPEG-encoded frames for custom processing like thumbnails, live previews, AI vision, and more:
+
+    page.screencast.start(    on_frame=lambda frame: send_to_vision_model(frame["data"]),)
+
+**Agentic video receipts** — coding agents can produce video evidence of their work. After completing a task, an agent can record a walkthrough video with rich annotations for human review:
+
+    page.screencast.start(path="receipt.webm")page.screencast.show_actions(position="top-right")page.screencast.show_chapter("Verifying checkout flow",    description="Added coupon code support per ticket #1234",)# Agent performs the verification steps...page.locator("#coupon").fill("SAVE20")page.locator("#apply-coupon").click()expect(page.locator(".discount")).to_contain_text("20%")page.screencast.show_chapter("Done",    description="Coupon applied, discount reflected in total",)page.screencast.stop()
+
+The resulting video serves as a receipt: chapter titles provide context, action annotations highlight each interaction, and the visual walkthrough is faster to review than text logs.
+
+### 🔍 Snapshots and Locators[​](#-snapshots-and-locators "Direct link to 🔍 Snapshots and Locators")
+
+*   Method [page.aria\_snapshot()](/python/docs/api/class-page#page-aria-snapshot) to capture the aria snapshot of the page — equivalent to `page.locator('body').aria_snapshot()`.
+*   Options `depth` and `mode` in [locator.aria\_snapshot()](/python/docs/api/class-locator#locator-aria-snapshot).
+*   Method [locator.normalize()](/python/docs/api/class-locator#locator-normalize) converts a locator to follow best practices like test ids and aria roles.
+*   Method [page.pick\_locator()](/python/docs/api/class-page#page-pick-locator) enters an interactive mode where hovering over elements highlights them and shows the corresponding locator. Click an element to get its [Locator](/python/docs/api/class-locator "Locator") back. Use [page.cancel\_pick\_locator()](/python/docs/api/class-page#page-cancel-pick-locator) to cancel.
+
+### New APIs[​](#new-apis "Direct link to New APIs")
+
+#### Screencast[​](#screencast "Direct link to Screencast")
+
+*   [page.screencast](/python/docs/api/class-page#page-screencast) provides video recording, real-time frame streaming, and overlay management.
+*   Methods [screencast.start()](/python/docs/api/class-screencast#screencast-start) and [screencast.stop()](/python/docs/api/class-screencast#screencast-stop) for recording and frame capture.
+*   Methods [screencast.show\_actions()](/python/docs/api/class-screencast#screencast-show-actions) and [screencast.hide\_actions()](/python/docs/api/class-screencast#screencast-hide-actions) for action annotations.
+*   Methods [screencast.show\_chapter()](/python/docs/api/class-screencast#screencast-show-chapter) and [screencast.show\_overlay()](/python/docs/api/class-screencast#screencast-show-overlay) for visual overlays.
+*   Methods [screencast.show\_overlays()](/python/docs/api/class-screencast#screencast-show-overlays) and [screencast.hide\_overlays()](/python/docs/api/class-screencast#screencast-hide-overlays) for overlay visibility control.
+
+#### Storage, Console and Errors[​](#storage-console-and-errors "Direct link to Storage, Console and Errors")
+
+*   Method [browser\_context.set\_storage\_state()](/python/docs/api/class-browsercontext#browser-context-set-storage-state) clears existing cookies, local storage, and IndexedDB for all origins and sets a new storage state — no need to create a new context.
+*   Methods [page.clear\_console\_messages()](/python/docs/api/class-page#page-clear-console-messages) and [page.clear\_page\_errors()](/python/docs/api/class-page#page-clear-page-errors) to clear stored messages and errors.
+*   Option `filter` in [page.console\_messages()](/python/docs/api/class-page#page-console-messages) and [page.page\_errors()](/python/docs/api/class-page#page-page-errors) controls which messages are returned.
+*   Method [console\_message.timestamp](/python/docs/api/class-consolemessage#console-message-timestamp).
+
+#### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+
+*   [browser\_context.debugger](/python/docs/api/class-browsercontext#browser-context-debugger) provides programmatic control over the Playwright debugger.
+*   Method [browser\_context.is\_closed()](/python/docs/api/class-browsercontext#browser-context-is-closed).
+*   Method [request.existing\_response](/python/docs/api/class-request#request-existing-response) returns the response without waiting.
+*   Method [response.http\_version()](/python/docs/api/class-response#response-http-version) returns the HTTP version used by the response.
+*   Option `live` in [tracing.start()](/python/docs/api/class-tracing#tracing-start) for real-time trace updates.
+*   Option `artifacts_dir` in [browser\_type.launch()](/python/docs/api/class-browsertype#browser-type-launch) to configure the artifacts directory.
+
+### 🔗 Interoperability[​](#-interoperability "Direct link to 🔗 Interoperability")
+
+New [browser.bind()](/python/docs/api/class-browser#browser-bind) API makes a launched browser available for `playwright-cli`, `@playwright/mcp`, and other clients to connect to.
+
+**Bind a browser** — start a browser and bind it so others can connect:
+
+    server_info = await browser.bind("my-session",    workspace_dir="/my/project",)
+
+**Connect from playwright-cli** — connect to the running browser from your favorite coding agent.
+
+    playwright-cli attach my-sessionplaywright-cli -s my-session snapshot
+
+**Connect from @playwright/mcp** — or point your MCP server to the running browser.
+
+    @playwright/mcp --endpoint=my-session
+
+**Connect from a Playwright client** — use API to connect to the browser. Multiple clients at a time are supported!
+
+    browser = await chromium.connect(server_info["endpoint"])
+
+Pass `host` and `port` options to bind over WebSocket instead of a named pipe:
+
+    server_info = await browser.bind("my-session",    host="localhost",    port=0,)# server_info["endpoint"] is a ws:// URL
+
+Call [browser.unbind()](/python/docs/api/class-browser#browser-unbind) to stop accepting new connections.
+
+### 📊 Observability[​](#-observability "Direct link to 📊 Observability")
+
+Run `playwright-cli show` to open the Dashboard that lists all the bound browsers, their statuses, and allows interacting with them:
+
+*   See what your agent is doing on the background browsers
+*   Click into the sessions for manual interventions
+*   Open DevTools to inspect pages from the background browsers.
+
+![Demo](https://raw.githubusercontent.com/microsoft/playwright/main/docs/src/images/release-notes-1.59-dashboard.png)
+
+*   `playwright-cli` binds all of its browsers automatically, so you can see what your agents are doing.
+*   Pass `PLAYWRIGHT_DASHBOARD=1` env variable to see all `@playwright/test` browsers in the dashboard.
+
+### Breaking Changes ⚠️[​](#breaking-changes-️ "Direct link to Breaking Changes ⚠️")
+
+*   Removed macOS 14 support for WebKit. We recommend upgrading your macOS version, or keeping an older Playwright version.
+
+### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+
+*   Chromium 147.0.7727.15
+*   Mozilla Firefox 148.0.2
+*   WebKit 26.4
+
+This version was also tested against the following stable channels:
+
+*   Google Chrome 146
+*   Microsoft Edge 146
+
 Version 1.58[​](#version-158 "Direct link to Version 1.58")
 -----------------------------------------------------------
 
@@ -122,18 +248,18 @@ Version 1.58[​](#version-158 "Direct link to Version 1.58")
 
 Thanks to [@cpAdm](https://github.com/cpAdm) for contributing these improvements!
 
-### Miscellaneous[​](#miscellaneous "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
 
 [browser\_type.connect\_over\_cdp()](/python/docs/api/class-browsertype#browser-type-connect-over-cdp) now accepts an `is_local` option. When set to `True`, it tells Playwright that it runs on the same host as the CDP server, enabling file system optimizations.
 
-### Breaking Changes ⚠️[​](#breaking-changes-️ "Direct link to Breaking Changes ⚠️")
+### Breaking Changes ⚠️[​](#breaking-changes-️-1 "Direct link to Breaking Changes ⚠️")
 
 *   Removed `_react` and `_vue` selectors. See [locators guide](/python/docs/locators) for alternatives.
 *   Removed `:light` selector engine suffix. Use standard CSS selectors instead.
 *   Option `devtools` from [browser\_type.launch()](/python/docs/api/class-browsertype#browser-type-launch) has been removed. Use `args=['--auto-open-devtools-for-tabs']` instead.
 *   Removed macOS 13 support for WebKit. We recommend to upgrade your macOS version, or keep using an older Playwright version.
 
-### Browser Versions[​](#browser-versions "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
 
 *   Chromium 145.0.7632.6
 *   Mozilla Firefox 146.0.1
@@ -163,7 +289,7 @@ On Arm64 Linux, Playwright continues to use Chromium.
 
 After 3 years of being deprecated, we removed `page.accessibility` from our API. Please use other libraries such as [Axe](https://www.deque.com/axe/) if you need to test page accessibility. See our Node.js [guide](https://playwright.dev/docs/accessibility-testing) for integration with Axe.
 
-### New APIs[​](#new-apis "Direct link to New APIs")
+### New APIs[​](#new-apis-1 "Direct link to New APIs")
 
 *   [worker.on("console")](/python/docs/api/class-worker#worker-event-console) event is emitted when JavaScript within the worker calls one of console API methods, e.g. console.log or console.dir. [worker.expect\_event()](/python/docs/api/class-worker#worker-wait-for-event) can be used to wait for it.
 *   [locator.description](/python/docs/api/class-locator#locator-description) returns locator description previously set with [locator.describe()](/python/docs/api/class-locator#locator-describe).
@@ -171,7 +297,7 @@ After 3 years of being deprecated, we removed `page.accessibility` from our API.
 *   Network requests issued by [Service Workers](/python/docs/service-workers#network-events-and-routing) are now reported and can be routed through the [BrowserContext](/python/docs/api/class-browsercontext), only in Chromium. You can opt out using the `PLAYWRIGHT_DISABLE_SERVICE_WORKER_NETWORK` environment variable.
 *   Console messages from Service Workers are dispatched through [worker.on("console")](/python/docs/api/class-worker#worker-event-console). You can opt out of this using the `PLAYWRIGHT_DISABLE_SERVICE_WORKER_CONSOLE` environment variable.
 
-### Browser Versions[​](#browser-versions-1 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
 
 *   Chromium 143.0.7499.4
 *   Mozilla Firefox 144.0.2
@@ -180,7 +306,7 @@ After 3 years of being deprecated, we removed `page.accessibility` from our API.
 Version 1.56[​](#version-156 "Direct link to Version 1.56")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-1 "Direct link to New APIs")
+### New APIs[​](#new-apis-2 "Direct link to New APIs")
 
 *   New methods [page.console\_messages()](/python/docs/api/class-page#page-console-messages) and [page.page\_errors()](/python/docs/api/class-page#page-page-errors) for retrieving the most recent console messages from the page
 *   New method [page.requests()](/python/docs/api/class-page#page-requests) for retrieving the most recent network requests from the page
@@ -189,11 +315,11 @@ Version 1.56[​](#version-156 "Direct link to Version 1.56")
 
 *   Event [browser\_context.on("backgroundpage")](/python/docs/api/class-browsercontext#browser-context-event-background-page) has been deprecated and will not be emitted. Method [browser\_context.background\_pages](/python/docs/api/class-browsercontext#browser-context-background-pages) will return an empty list
 
-### Miscellaneous[​](#miscellaneous-1 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
 
 *   Aria snapshots render and compare `input` `placeholder`
 
-### Browser Versions[​](#browser-versions-2 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
 
 *   Chromium 141.0.7390.37
 *   Mozilla Firefox 142.0.1
@@ -210,11 +336,11 @@ Version 1.55[​](#version-155 "Direct link to Version 1.55")
 
 *   ⚠️ Dropped support for Chromium extension manifest v2.
 
-### Miscellaneous[​](#miscellaneous-2 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
 
 *   Added support for Debian 13 "Trixie".
 
-### Browser Versions[​](#browser-versions-3 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
 
 *   Chromium 140.0.7339.16
 *   Mozilla Firefox 141.0
@@ -239,7 +365,7 @@ Version 1.54[​](#version-154 "Direct link to Version 1.54")
 *   `playwright open` does not open the test recorder anymore. Use `playwright codegen` instead.
     
 
-### Browser Versions[​](#browser-versions-4 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
 
 *   Chromium 139.0.7258.5
 *   Mozilla Firefox 140.0.2
@@ -255,8 +381,9 @@ Version 1.53[​](#version-153 "Direct link to Version 1.53")
 
 ### Trace Viewer and HTML Reporter Updates[​](#trace-viewer-and-html-reporter-updates "Direct link to Trace Viewer and HTML Reporter Updates")
 
-*   New Steps in Trace Viewer: ![New Trace Viewer Steps](https://github.com/user-attachments/assets/1963ff7d-4070-41be-a79b-4333176921a2)
+*   New Steps in Trace Viewer:
     
+    ![New Trace Viewer Steps](https://github.com/user-attachments/assets/1963ff7d-4070-41be-a79b-4333176921a2)
 *   New method [locator.describe()](/python/docs/api/class-locator#locator-describe) to describe a locator. Used for trace viewer.
     
         button = page.get_by_test_id("btn-sub").describe("Subscribe button")button.click()
@@ -264,7 +391,7 @@ Version 1.53[​](#version-153 "Direct link to Version 1.53")
 *   `python -m playwright install --list` will now list all installed browsers, versions and locations.
     
 
-### Browser Versions[​](#browser-versions-5 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
 
 *   Chromium 138.0.7204.4
 *   Mozilla Firefox 139.0
@@ -284,12 +411,12 @@ Version 1.52[​](#version-152 "Direct link to Version 1.52")
     
           expect(page.get_by_role('listitem', name='Ship v1.52')).to_contain_class('done')
     
-*   [Aria Snapshots](/python/docs/aria-snapshots) got two new properties: [`/children`](/python/docs/aria-snapshots#strict-matching) for strict matching and `/url` for links.
+*   [Aria Snapshots](/python/docs/aria-snapshots) got two new properties: [`/children`](/python/docs/aria-snapshots#strict-matching) for strict matching and [`/url`](/python/docs/aria-snapshots#links) for links.
     
         expect(locator).to_match_aria_snapshot("""  - list    - /children: equal    - listitem: Feature A    - listitem:      - link "Feature B":        - /url: "https://playwright.dev"""")
     
 
-### Miscellaneous[​](#miscellaneous-3 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
 
 *   New option [max\_redirects](/python/docs/api/class-apirequest#api-request-new-context-option-max-redirects) in [api\_request.new\_context()](/python/docs/api/class-apirequest#api-request-new-context) to control the maximum number of redirects.
 
@@ -299,7 +426,7 @@ Version 1.52[​](#version-152 "Direct link to Version 1.52")
 *   Method [route.continue\_()](/python/docs/api/class-route#route-continue) does not allow to override the `Cookie` header anymore. If a `Cookie` header is provided, it will be ignored, and the cookie will be loaded from the browser's cookie store. To set custom cookies, use [browser\_context.add\_cookies()](/python/docs/api/class-browsercontext#browser-context-add-cookies).
 *   macOS 13 is now deprecated and will no longer receive WebKit updates. Please upgrade to a more recent macOS version to continue benefiting from the latest WebKit improvements.
 
-### Browser Versions[​](#browser-versions-6 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
 
 *   Chromium 136.0.7103.25
 *   Mozilla Firefox 137.0
@@ -330,7 +457,7 @@ Version 1.51[​](#version-151 "Direct link to Version 1.51")
 *   New option [fail\_on\_status\_code](/python/docs/api/class-apirequest#api-request-new-context-option-fail-on-status-code) makes all fetch requests made through the [APIRequestContext](/python/docs/api/class-apirequestcontext "APIRequestContext") throw on response codes other than 2xx and 3xx.
     
 
-### Browser Versions[​](#browser-versions-7 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
 
 *   Chromium 134.0.6998.35
 *   Mozilla Firefox 135.0
@@ -348,7 +475,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 
 *   [Playwright's Pytest plugin](/python/docs/test-runners) now has support for [Async Fixtures](https://playwright.dev/python/docs/test-runners#async-fixtures).
 
-### Miscellaneous[​](#miscellaneous-4 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
 
 *   Added method [expect(locator).to\_have\_accessible\_error\_message()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-accessible-error-message) to assert the Locator points to an element with a given [aria errormessage](https://w3c.github.io/aria/#aria-errormessage).
 
@@ -363,7 +490,7 @@ Version 1.50[​](#version-150 "Direct link to Version 1.50")
 
 *   [expect(locator).to\_be\_editable()](/python/docs/api/class-locatorassertions#locator-assertions-to-be-editable) and [locator.is\_editable()](/python/docs/api/class-locator#locator-is-editable) now throw if the target element is not `<input>`, `<select>`, or a number of other editable elements.
 
-### Browser Versions[​](#browser-versions-8 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
 
 *   Chromium 133.0.6943.16
 *   Mozilla Firefox 134.0
@@ -412,13 +539,13 @@ See [issue #33566](https://github.com/microsoft/playwright/issues/33566) for the
 
     pytest test_login.py --browser-channel chromium
 
-### Miscellaneous[​](#miscellaneous-5 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
 
 *   There will be no more updates for WebKit on Ubuntu 20.04 and Debian 11. We recommend updating your OS to a later version.
 *   `<canvas>` elements inside a snapshot now draw a preview.
 *   Python 3.8 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-9 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
 
 *   Chromium 131.0.6778.33
 *   Mozilla Firefox 132.0
@@ -446,12 +573,12 @@ See [WebSocketRoute](/python/docs/api/class-websocketroute "WebSocketRoute") for
 *   Route method calls like [route.fulfill()](/python/docs/api/class-route#route-fulfill) are not shown in the report and trace viewer anymore. You can see which network requests were routed in the network tab instead.
 *   New "Copy as cURL" and "Copy as fetch" buttons for requests in the network tab.
 
-### Miscellaneous[​](#miscellaneous-6 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
 
 *   New method [page.request\_gc()](/python/docs/api/class-page#page-request-gc) may help detect memory leaks.
 *   Requests made by [APIRequestContext](/python/docs/api/class-apirequestcontext "APIRequestContext") now record detailed timing and security information in the HAR.
 
-### Browser Versions[​](#browser-versions-10 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
 
 *   Chromium 130.0.6723.19
 *   Mozilla Firefox 130.0
@@ -475,7 +602,7 @@ The Network tab in the trace viewer has several nice improvements:
 
 ![Network tab now has filters](https://github.com/user-attachments/assets/4bd1b67d-90bd-438b-a227-00b9e86872e2)
 
-### Miscellaneous[​](#miscellaneous-7 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
 
 *   The `mcr.microsoft.com/playwright/python:v1.47.0` now serves a Playwright image based on Ubuntu 24.04 Noble. To use the 22.04 jammy-based image, please use `mcr.microsoft.com/playwright/python:v1.47.0-jammy` instead.
 *   The `:latest`/`:focal`/`:jammy` tag for Playwright Docker images is no longer being published. Pin to a specific version for better stability and reproducibility.
@@ -483,7 +610,7 @@ The Network tab in the trace viewer has several nice improvements:
 *   [no\_wait\_after](/python/docs/api/class-locator#locator-select-option-option-no-wait-after) in [locator.select\_option()](/python/docs/api/class-locator#locator-select-option) was deprecated.
 *   We've seen reports of WebGL in Webkit misbehaving on GitHub Actions `macos-13`. We recommend upgrading GitHub Actions to `macos-14`.
 
-### Browser Versions[​](#browser-versions-11 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
 
 *   Chromium 129.0.6668.29
 *   Mozilla Firefox 130.0
@@ -513,11 +640,11 @@ You can provide client certificates as a parameter of [browser.new\_context()](/
 *   New button to copy source file location to clipboard.
 *   Metadata pane now displays the `base_url`.
 
-### Miscellaneous[​](#miscellaneous-8 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
 
 *   New `maxRetries` option in [api\_request\_context.fetch()](/python/docs/api/class-apirequestcontext#api-request-context-fetch) which retries on the `ECONNRESET` network error.
 
-### Browser Versions[​](#browser-versions-12 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
 
 *   Chromium 128.0.6613.18
 *   Mozilla Firefox 128.0
@@ -544,7 +671,7 @@ Utilizing the new [Clock](/python/docs/api/class-clock "Clock") API allows to ma
 
 See [the clock guide](/python/docs/clock) for more details.
 
-### Miscellaneous[​](#miscellaneous-9 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-10 "Direct link to Miscellaneous")
 
 *   Method [locator.set\_input\_files()](/python/docs/api/class-locator#locator-set-input-files) now supports uploading a directory for `<input type=file webkitdirectory>` elements.
     
@@ -561,7 +688,7 @@ See [the clock guide](/python/docs/clock) for more details.
 *   v1.45 is the last release to receive WebKit update for macOS 12 Monterey. Please update macOS to keep using the latest WebKit.
     
 
-### Browser Versions[​](#browser-versions-13 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
 
 *   Chromium 127.0.6533.5
 *   Mozilla Firefox 127.0
@@ -575,7 +702,7 @@ This version was also tested against the following stable channels:
 Version 1.44[​](#version-144 "Direct link to Version 1.44")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-2 "Direct link to New APIs")
+### New APIs[​](#new-apis-3 "Direct link to New APIs")
 
 **Accessibility assertions**
 
@@ -605,7 +732,7 @@ Version 1.44[​](#version-144 "Direct link to Version 1.44")
 
 *   [expect(page).to\_have\_url()](/python/docs/api/class-pageassertions#page-assertions-to-have-url) now supports `ignore_case` [option](/python/docs/api/class-pageassertions#page-assertions-to-have-url-option-ignore-case).
 
-### Browser Versions[​](#browser-versions-14 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
 
 *   Chromium 125.0.6422.14
 *   Mozilla Firefox 125.0.1
@@ -619,7 +746,7 @@ This version was also tested against the following stable channels:
 Version 1.43[​](#version-143 "Direct link to Version 1.43")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-3 "Direct link to New APIs")
+### New APIs[​](#new-apis-4 "Direct link to New APIs")
 
 *   Method [browser\_context.clear\_cookies()](/python/docs/api/class-browsercontext#browser-context-clear-cookies) now supports filters to remove only some cookies.
     
@@ -636,7 +763,7 @@ Version 1.43[​](#version-143 "Direct link to Version 1.43")
 *   Conda builds are now published for macOS-arm64 and Linux-arm64.
     
 
-### Browser Versions[​](#browser-versions-15 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
 
 *   Chromium 124.0.6367.8
 *   Mozilla Firefox 124.0
@@ -656,7 +783,7 @@ New method [page.add\_locator\_handler()](/python/docs/api/class-page#page-add-l
 
     # Setup the handler.page.add_locator_handler(    page.get_by_role("heading", name="Hej! You are in control of your cookies."),    lambda: page.get_by_role("button", name="Accept all").click(),)# Write the test as usual.page.goto("https://www.ikea.com/")page.get_by_role("link", name="Collection of blue and white").click()expect(page.get_by_role("heading", name="Light and easy")).to_be_visible()
 
-### New APIs[​](#new-apis-4 "Direct link to New APIs")
+### New APIs[​](#new-apis-5 "Direct link to New APIs")
 
 *   [page.pdf()](/python/docs/api/class-page#page-pdf) accepts two new options [tagged](/python/docs/api/class-page#page-pdf-option-tagged) and [outline](/python/docs/api/class-page#page-pdf-option-outline).
 
@@ -664,7 +791,7 @@ New method [page.add\_locator\_handler()](/python/docs/api/class-page#page-add-l
 
 *   ⚠️ Ubuntu 18 is not supported anymore.
 
-### Browser Versions[​](#browser-versions-16 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
 
 *   Chromium 123.0.6312.4
 *   Mozilla Firefox 123.0
@@ -678,13 +805,13 @@ This version was also tested against the following stable channels:
 Version 1.41[​](#version-141 "Direct link to Version 1.41")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-5 "Direct link to New APIs")
+### New APIs[​](#new-apis-6 "Direct link to New APIs")
 
 *   New method [page.unroute\_all()](/python/docs/api/class-page#page-unroute-all) removes all routes registered by [page.route()](/python/docs/api/class-page#page-route) and [page.route\_from\_har()](/python/docs/api/class-page#page-route-from-har). Optionally allows to wait for ongoing routes to finish, or ignore any errors from them.
 *   New method [browser\_context.unroute\_all()](/python/docs/api/class-browsercontext#browser-context-unroute-all) removes all routes registered by [browser\_context.route()](/python/docs/api/class-browsercontext#browser-context-route) and [browser\_context.route\_from\_har()](/python/docs/api/class-browsercontext#browser-context-route-from-har). Optionally allows to wait for ongoing routes to finish, or ignore any errors from them.
 *   New options [style](/python/docs/api/class-page#page-screenshot-option-style) in [page.screenshot()](/python/docs/api/class-page#page-screenshot) and [style](/python/docs/api/class-locator#locator-screenshot-option-style) in [locator.screenshot()](/python/docs/api/class-locator#locator-screenshot) to add custom CSS to the page before taking a screenshot.
 
-### Browser Versions[​](#browser-versions-17 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
 
 *   Chromium 121.0.6167.57
 *   Mozilla Firefox 121.0
@@ -712,7 +839,7 @@ Here is an example of a generated test with assertions:
 
     from playwright.sync_api import Page, expectdef test_example(page: Page) -> None:    page.goto("https://playwright.dev/")    page.get_by_role("link", name="Get started").click()    expect(page.get_by_label("Breadcrumbs").get_by_role("list")).to_contain_text("Installation")    expect(page.get_by_label("Search")).to_be_visible()    page.get_by_label("Search").click()    page.get_by_placeholder("Search docs").fill("locator")    expect(page.get_by_placeholder("Search docs")).to_have_value("locator");
 
-### New APIs[​](#new-apis-6 "Direct link to New APIs")
+### New APIs[​](#new-apis-7 "Direct link to New APIs")
 
 *   Options [reason](/python/docs/api/class-page#page-close-option-reason) in [page.close()](/python/docs/api/class-page#page-close), [reason](/python/docs/api/class-browsercontext#browser-context-close-option-reason) in [browser\_context.close()](/python/docs/api/class-browsercontext#browser-context-close) and [reason](/python/docs/api/class-browser#browser-close-option-reason) in [browser.close()](/python/docs/api/class-browser#browser-close). Close reason is reported for all operations interrupted by the closure.
 *   Option [firefox\_user\_prefs](/python/docs/api/class-browsertype#browser-type-launch-persistent-context-option-firefox-user-prefs) in [browser\_type.launch\_persistent\_context()](/python/docs/api/class-browsertype#browser-type-launch-persistent-context).
@@ -721,7 +848,7 @@ Here is an example of a generated test with assertions:
 
 *   Method [download.path()](/python/docs/api/class-download#download-path) throws an error for failed and cancelled downloads.
 
-### Browser Versions[​](#browser-versions-18 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
 
 *   Chromium 120.0.6099.28
 *   Mozilla Firefox 119.0
@@ -737,7 +864,7 @@ Version 1.39[​](#version-139 "Direct link to Version 1.39")
 
 Evergreen browsers update.
 
-### Browser Versions[​](#browser-versions-19 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
 
 *   Chromium 119.0.6045.9
 *   Mozilla Firefox 118.0.1
@@ -758,7 +885,7 @@ Version 1.38[​](#version-138 "Direct link to Version 1.38")
 1.  Zoom into time range.
 2.  Network panel redesign.
 
-### New APIs[​](#new-apis-7 "Direct link to New APIs")
+### New APIs[​](#new-apis-8 "Direct link to New APIs")
 
 *   [browser\_context.on("weberror")](/python/docs/api/class-browsercontext#browser-context-event-web-error)
 *   [locator.press\_sequentially()](/python/docs/api/class-locator#locator-press-sequentially)
@@ -767,7 +894,7 @@ Version 1.38[​](#version-138 "Direct link to Version 1.38")
 
 *   The following methods were deprecated: [page.type()](/python/docs/api/class-page#page-type), [frame.type()](/python/docs/api/class-frame#frame-type), [locator.type()](/python/docs/api/class-locator#locator-type) and [element\_handle.type()](/python/docs/api/class-elementhandle#element-handle-type). Please use [locator.fill()](/python/docs/api/class-locator#locator-fill) instead which is much faster. Use [locator.press\_sequentially()](/python/docs/api/class-locator#locator-press-sequentially) only if there is a special keyboard handling on the page, and you need to press keys one-by-one.
 
-### Browser Versions[​](#browser-versions-20 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
 
 *   Chromium 117.0.5938.62
 *   Mozilla Firefox 117.0
@@ -831,7 +958,7 @@ Firefox
 
 ✅
 
-### Browser Versions[​](#browser-versions-21 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
 
 *   Chromium 116.0.5845.82
 *   Mozilla Firefox 115.0
@@ -847,7 +974,7 @@ Version 1.36[​](#version-136 "Direct link to Version 1.36")
 
 🏝️ Summer maintenance release.
 
-### Browser Versions[​](#browser-versions-22 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.75
 *   Mozilla Firefox 115.0
@@ -870,7 +997,7 @@ Version 1.35[​](#version-135 "Direct link to Version 1.35")
         $ playwright uninstall # remove browsers installed by this installation$ playwright uninstall --all # remove all ever-install Playwright browsers
     
 
-### Browser Versions[​](#browser-versions-23 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
 
 *   Chromium 115.0.5790.13
 *   Mozilla Firefox 113.0
@@ -893,7 +1020,7 @@ Version 1.34[​](#version-134 "Direct link to Version 1.34")
 *   New events [browser\_context.on("console")](/python/docs/api/class-browsercontext#browser-context-event-console) and [browser\_context.on("dialog")](/python/docs/api/class-browsercontext#browser-context-event-dialog) to subscribe to any dialogs and console messages from any page from the given browser context. Use the new methods [console\_message.page](/python/docs/api/class-consolemessage#console-message-page) and [dialog.page](/python/docs/api/class-dialog#dialog-page) to pin-point event source.
     
 
-### Browser Versions[​](#browser-versions-24 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
 
 *   Chromium 114.0.5735.26
 *   Mozilla Firefox 113.0
@@ -920,7 +1047,7 @@ Version 1.33[​](#version-133 "Direct link to Version 1.33")
 *   Use new web-first assertion [expect(locator).to\_be\_attached()](/python/docs/api/class-locatorassertions#locator-assertions-to-be-attached) to ensure that the element is present in the page's DOM. Do not confuse with the [expect(locator).to\_be\_visible()](/python/docs/api/class-locatorassertions#locator-assertions-to-be-visible) that ensures that element is both attached & visible.
     
 
-### New APIs[​](#new-apis-8 "Direct link to New APIs")
+### New APIs[​](#new-apis-9 "Direct link to New APIs")
 
 *   [locator.or\_()](/python/docs/api/class-locator#locator-or)
 *   New option [has\_not](/python/docs/api/class-locator#locator-filter-option-has-not) in [locator.filter()](/python/docs/api/class-locator#locator-filter)
@@ -932,7 +1059,7 @@ Version 1.33[​](#version-133 "Direct link to Version 1.33")
 
 *   The `mcr.microsoft.com/playwright/python:v1.33.0` now serves a Playwright image based on Ubuntu Jammy. To use the focal-based image, please use `mcr.microsoft.com/playwright/python:v1.33.0-focal` instead.
 
-### Browser Versions[​](#browser-versions-25 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
 
 *   Chromium 113.0.5672.53
 *   Mozilla Firefox 112.0
@@ -946,14 +1073,14 @@ This version was also tested against the following stable channels:
 Version 1.32[​](#version-132 "Direct link to Version 1.32")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-9 "Direct link to New APIs")
+### New APIs[​](#new-apis-10 "Direct link to New APIs")
 
 *   Custom expect message, see [test assertions documentation](/python/docs/test-assertions#custom-expect-message).
 *   New options [update\_mode](/python/docs/api/class-page#page-route-from-har-option-update-mode) and [update\_content](/python/docs/api/class-page#page-route-from-har-option-update-content) in [page.route\_from\_har()](/python/docs/api/class-page#page-route-from-har) and [browser\_context.route\_from\_har()](/python/docs/api/class-browsercontext#browser-context-route-from-har).
 *   Chaining existing locator objects, see [locator docs](/python/docs/locators#matching-inside-a-locator) for details.
 *   New option [name](/python/docs/api/class-tracing#tracing-start-chunk-option-name) in method [tracing.start\_chunk()](/python/docs/api/class-tracing#tracing-start-chunk).
 
-### Browser Versions[​](#browser-versions-26 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
 
 *   Chromium 112.0.5615.29
 *   Mozilla Firefox 111.0
@@ -967,21 +1094,21 @@ This version was also tested against the following stable channels:
 Version 1.31[​](#version-131 "Direct link to Version 1.31")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-10 "Direct link to New APIs")
+### New APIs[​](#new-apis-11 "Direct link to New APIs")
 
 *   New assertion [expect(locator).to\_be\_in\_viewport()](/python/docs/api/class-locatorassertions#locator-assertions-to-be-in-viewport) ensures that locator points to an element that intersects viewport, according to the [intersection observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API).
     
         from playwright.sync_api import expectlocator = page.get_by_role("button")# Make sure at least some part of element intersects viewport.expect(locator).to_be_in_viewport()# Make sure element is fully outside of viewport.expect(locator).not_to_be_in_viewport()# Make sure that at least half of the element intersects viewport.expect(locator).to_be_in_viewport(ratio=0.5)
     
 
-### Miscellaneous[​](#miscellaneous-10 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-11 "Direct link to Miscellaneous")
 
 *   DOM snapshots in trace viewer can be now opened in a separate window.
 *   New option [max\_redirects](/python/docs/api/class-route#route-fetch-option-max-redirects) for method [route.fetch()](/python/docs/api/class-route#route-fetch).
 *   Playwright now supports Debian 11 arm64.
 *   Official [docker images](/python/docs/docker) now include Node 18 instead of Node 16.
 
-### Browser Versions[​](#browser-versions-27 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
 
 *   Chromium 111.0.5563.19
 *   Mozilla Firefox 109.0
@@ -995,7 +1122,7 @@ This version was also tested against the following stable channels:
 Version 1.30[​](#version-130 "Direct link to Version 1.30")
 -----------------------------------------------------------
 
-### Browser Versions[​](#browser-versions-28 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
 
 *   Chromium 110.0.5481.38
 *   Mozilla Firefox 108.0.2
@@ -1009,7 +1136,7 @@ This version was also tested against the following stable channels:
 Version 1.29[​](#version-129 "Direct link to Version 1.29")
 -----------------------------------------------------------
 
-### New APIs[​](#new-apis-11 "Direct link to New APIs")
+### New APIs[​](#new-apis-12 "Direct link to New APIs")
 
 *   New method [route.fetch()](/python/docs/api/class-route#route-fetch) and new option `json` for [route.fulfill()](/python/docs/api/class-route#route-fulfill):
     
@@ -1026,11 +1153,11 @@ Version 1.29[​](#version-129 "Direct link to Version 1.29")
         element.select_option("Red")
     
 
-### Miscellaneous[​](#miscellaneous-11 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-12 "Direct link to Miscellaneous")
 
 *   Option `postData` in method [route.continue\_()](/python/docs/api/class-route#route-continue) now supports [Serializable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Description "Serializable") values.
 
-### Browser Versions[​](#browser-versions-29 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
 
 *   Chromium 109.0.5414.46
 *   Mozilla Firefox 107.0
@@ -1050,12 +1177,12 @@ Version 1.28[​](#version-128 "Direct link to Version 1.28")
 
 ![Locator Explorer](https://user-images.githubusercontent.com/9798949/202293514-8e2eade6-c809-4b0a-864b-899dfcee3d84.png)
 
-### New APIs[​](#new-apis-12 "Direct link to New APIs")
+### New APIs[​](#new-apis-13 "Direct link to New APIs")
 
 *   [locator.blur()](/python/docs/api/class-locator#locator-blur)
 *   [locator.clear()](/python/docs/api/class-locator#locator-clear)
 
-### Browser Versions[​](#browser-versions-30 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
 
 *   Chromium 108.0.5359.29
 *   Mozilla Firefox 106.0
@@ -1096,7 +1223,7 @@ All the same methods are also available on [Locator](/python/docs/api/class-loca
         expect(page.get_by_role("button")).to_have_attribute("disabled", "")
     
 
-### Browser Versions[​](#browser-versions-31 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
 
 *   Chromium 107.0.5304.18
 *   Mozilla Firefox 105.0.1
@@ -1132,7 +1259,7 @@ Prior to 1.26, this would wait for all iframes to fire the `DOMContentLoaded` ev
 
 To align with web specification, the `'domcontentloaded'` value only waits for the target frame to fire the `'DOMContentLoaded'` event. Use `wait_until="load"` to wait for all iframes.
 
-### Browser Versions[​](#browser-versions-32 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
 
 *   Chromium 106.0.5249.30
 *   Mozilla Firefox 104.0
@@ -1152,7 +1279,7 @@ Version 1.25[​](#version-125 "Direct link to Version 1.25")
 *   🪦 This is the last release with macOS 10.15 support (deprecated as of 1.21).
 *   ⚠️ Ubuntu 18 is now deprecated and will not be supported as of Dec 2022.
 
-### Browser Versions[​](#browser-versions-33 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
 
 *   Chromium 105.0.5195.19
 *   Mozilla Firefox 103.0
@@ -1229,7 +1356,7 @@ Note that the new methods [page.route\_from\_har()](/python/docs/api/class-page#
 *   New method [expect(locator).to\_have\_values()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-values) that asserts all selected values of `<select multiple>` element.
 *   Methods [expect(locator).to\_contain\_text()](/python/docs/api/class-locatorassertions#locator-assertions-to-contain-text) and [expect(locator).to\_have\_text()](/python/docs/api/class-locatorassertions#locator-assertions-to-have-text) now accept `ignore_case` option.
 
-### Miscellaneous[​](#miscellaneous-12 "Direct link to Miscellaneous")
+### Miscellaneous[​](#miscellaneous-13 "Direct link to Miscellaneous")
 
 *   If there's a service worker that's in your way, you can now easily disable it with a new context option `service_workers`:
     
@@ -1279,7 +1406,6 @@ Version 1.22[​](#version-122 "Direct link to Version 1.22")
 *   Codegen now supports generating Pytest Tests
     
     ![Graphics](https://user-images.githubusercontent.com/746130/168098384-40784024-6c26-4426-8255-e714862af6fc.png)
-    
 
 Version 1.21[​](#version-121 "Direct link to Version 1.21")
 -----------------------------------------------------------
@@ -1307,7 +1433,7 @@ Version 1.21[​](#version-121 "Direct link to Version 1.21")
 *   The `mcr.microsoft.com/playwright` docker image no longer contains Python. Please use `mcr.microsoft.com/playwright/python` as a Playwright-ready docker image with pre-installed Python.
 *   Playwright now supports large file uploads (100s of MBs) via [locator.set\_input\_files()](/python/docs/api/class-locator#locator-set-input-files) API.
 
-### Browser Versions[​](#browser-versions-34 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4951.26
 *   Mozilla Firefox 98.0.2
@@ -1334,7 +1460,7 @@ Version 1.20[​](#version-120 "Direct link to Version 1.20")
 *   We now ship a designated Python docker image `mcr.microsoft.com/playwright/python`. Please switch over to it if you use Python. This is the last release that includes Python inside our javascript `mcr.microsoft.com/playwright` docker image.
 *   v1.20 is the last release to receive WebKit update for macOS 10.15 Catalina. Please update macOS to keep using latest & greatest WebKit!
 
-### Browser Versions[​](#browser-versions-35 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
 
 *   Chromium 101.0.4921.0
 *   Mozilla Firefox 97.0.1
@@ -1368,7 +1494,7 @@ Version 1.19[​](#version-119 "Direct link to Version 1.19")
 *   Playwright Codegen now generates locators and frame locators
     
 
-### Browser Versions[​](#browser-versions-36 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
 
 *   Chromium 100.0.4863.0
 *   Mozilla Firefox 96.0.1
@@ -1439,7 +1565,7 @@ Read more in [our documentation](/python/docs/test-assertions).
 *   [`accept_downloads`](/python/docs/api/class-browser#browser-new-context-option-accept-downloads) option now defaults to `True`.
 *   [`sources`](/python/docs/api/class-tracing#tracing-start-option-sources) option to embed sources into traces.
 
-### Browser Versions[​](#browser-versions-37 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
 
 *   Chromium 99.0.4812.0
 *   Mozilla Firefox 95.0
@@ -1494,7 +1620,7 @@ Playwright Trace Viewer is now **available online** at [https://trace.playwright
         npx playwright install msedge
     
 
-### New APIs[​](#new-apis-13 "Direct link to New APIs")
+### New APIs[​](#new-apis-14 "Direct link to New APIs")
 
 *   Tracing now supports a [`'title'`](/python/docs/api/class-tracing#tracing-start-option-title) option
 *   Page navigations support a new [`'commit'`](/python/docs/api/class-page#page-goto) waiting option
@@ -1527,7 +1653,7 @@ Read more about [Docker integration](/python/docs/docker).
 
 Read more about [Trace Viewer](/python/docs/trace-viewer).
 
-### Browser Versions[​](#browser-versions-38 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
 
 *   Chromium 97.0.4666.0
 *   Mozilla Firefox 93.0
@@ -1561,7 +1687,7 @@ Previously it was not possible to get multiple header values of a response. This
 
 Its now possible to emulate the `forced-colors` CSS media feature by passing it in the [browser.new\_context()](/python/docs/api/class-browser#browser-new-context) or calling [page.emulate\_media()](/python/docs/api/class-page#page-emulate-media).
 
-### New APIs[​](#new-apis-14 "Direct link to New APIs")
+### New APIs[​](#new-apis-15 "Direct link to New APIs")
 
 *   [page.route()](/python/docs/api/class-page#page-route) accepts new `times` option to specify how many times this route should be matched.
 *   [page.set\_checked()](/python/docs/api/class-page#page-set-checked) and [locator.set\_checked()](/python/docs/api/class-locator#locator-set-checked) were introduced to set the checked state of a checkbox.
@@ -1569,7 +1695,7 @@ Its now possible to emulate the `forced-colors` CSS media feature by passing it 
 *   [tracing.start\_chunk()](/python/docs/api/class-tracing#tracing-start-chunk) - Start a new trace chunk.
 *   [tracing.stop\_chunk()](/python/docs/api/class-tracing#tracing-stop-chunk) - Stops a new trace chunk.
 
-### Browser Versions[​](#browser-versions-39 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
 
 *   Chromium 96.0.4641.0
 *   Mozilla Firefox 92.0
@@ -1598,13 +1724,13 @@ Also, locators are **"strict" by default**!
 
 Learn more in the [documentation](/python/docs/api/class-locator).
 
-#### 🧩 Experimental [**React**](/python/docs/other-locators#react-locator) and [**Vue**](/python/docs/other-locators#vue-locator) selector engines[​](#-experimental-react-and-vue-selector-engines "Direct link to -experimental-react-and-vue-selector-engines")
+#### 🧩 Experimental [**React**](/python/docs/other-locators) and [**Vue**](/python/docs/other-locators) selector engines[​](#-experimental-react-and-vue-selector-engines "Direct link to -experimental-react-and-vue-selector-engines")
 
 React and Vue selectors allow selecting elements by its component name and/or property values. The syntax is very similar to [attribute selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) and supports all attribute selector operators.
 
     page.locator("_react=SubmitButton[enabled=true]").click()page.locator("_vue=submit-button[enabled=true]").click()
 
-Learn more in the [react selectors documentation](/python/docs/other-locators#react-locator) and the [vue selectors documentation](/python/docs/other-locators#vue-locator).
+Learn more in the [react selectors documentation](/python/docs/other-locators) and the [vue selectors documentation](/python/docs/other-locators).
 
 #### ✨ New [**`nth`**](/python/docs/other-locators#n-th-element-locator) and [**`visible`**](/python/docs/other-locators#css-matching-only-visible-elements) selector engines[​](#-new-nth-and-visible-selector-engines "Direct link to -new-nth-and-visible-selector-engines")
 
@@ -1613,7 +1739,7 @@ Learn more in the [react selectors documentation](/python/docs/other-locators#re
 
     # select the first button among all buttonsbutton.click("button >> nth=0")# or if you are using locators, you can use first, nth() and lastpage.locator("button").first.click()# click a visible buttonbutton.click("button >> visible=true")
 
-### Browser Versions[​](#browser-versions-40 "Direct link to Browser Versions")
+### Browser Versions[​](#browser-versions-41 "Direct link to Browser Versions")
 
 *   Chromium 94.0.4595.0
 *   Mozilla Firefox 91.0
@@ -1637,7 +1763,7 @@ Version 1.13[​](#version-113 "Direct link to Version 1.13")
 *   [Authentication](/python/docs/auth)
 *   [Chrome Extensions](/python/docs/chrome-extensions)
 
-#### Browser Versions[​](#browser-versions-41 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-42 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4576.0
 *   Mozilla Firefox 90.0
@@ -1678,7 +1804,7 @@ That will open the following GUI:
 
 👉 Read more in [trace viewer documentation](/python/docs/trace-viewer).
 
-#### Browser Versions[​](#browser-versions-42 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-43 "Direct link to Browser Versions")
 
 *   Chromium 93.0.4530.0
 *   Mozilla Firefox 89.0
@@ -1689,7 +1815,7 @@ This version of Playwright was also tested against the following stable channels
 *   Google Chrome 91
 *   Microsoft Edge 91
 
-#### New APIs[​](#new-apis-15 "Direct link to New APIs")
+#### New APIs[​](#new-apis-16 "Direct link to New APIs")
 
 *   `reducedMotion` option in [page.emulate\_media()](/python/docs/api/class-page#page-emulate-media), [browser\_type.launch\_persistent\_context()](/python/docs/api/class-browsertype#browser-type-launch-persistent-context), [browser.new\_context()](/python/docs/api/class-browser#browser-new-context) and [browser.new\_page()](/python/docs/api/class-browser#browser-new-page)
 *   [browser\_context.on("request")](/python/docs/api/class-browsercontext#browser-context-event-request)
@@ -1710,13 +1836,13 @@ Version 1.11[​](#version-111 "Direct link to Version 1.11")
 *   Did live demos with new features ✨
 *   **Special thanks** to [applitools](http://applitools.com/) for hosting the event and inviting us!
 
-#### Browser Versions[​](#browser-versions-43 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-44 "Direct link to Browser Versions")
 
 *   Chromium 92.0.4498.0
 *   Mozilla Firefox 89.0b6
 *   WebKit 14.2
 
-#### New APIs[​](#new-apis-16 "Direct link to New APIs")
+#### New APIs[​](#new-apis-17 "Direct link to New APIs")
 
 *   support for **async predicates** across the API in methods such as [page.expect\_request()](/python/docs/api/class-page#page-wait-for-request) and others
 *   new **emulation devices**: Galaxy S8, Galaxy S9+, Galaxy Tab S4, Pixel 3, Pixel 4
@@ -1746,7 +1872,7 @@ This version of Playwright was also tested against the following stable channels
 *   Google Chrome 89
 *   Microsoft Edge 89
 
-#### New APIs[​](#new-apis-17 "Direct link to New APIs")
+#### New APIs[​](#new-apis-18 "Direct link to New APIs")
 
 *   [browser\_type.launch()](/python/docs/api/class-browsertype#browser-type-launch) now accepts the new `'channel'` option. Read more in [our documentation](/python/docs/browsers).
 
@@ -1763,13 +1889,13 @@ Version 1.9[​](#version-19 "Direct link to Version 1.9")
 *   **Page dialogs are now auto-dismissed** during execution, unless a listener for `dialog` event is configured. [Learn more](/python/docs/dialogs) about this.
 *   [Playwright for Python](https://github.com/microsoft/playwright-python) is **now stable** with an idiomatic snake case API and pre-built [Docker image](/python/docs/docker) to run tests in CI/CD.
 
-#### Browser Versions[​](#browser-versions-44 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-45 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4421.0
 *   Mozilla Firefox 86.0b10
 *   WebKit 14.1
 
-#### New APIs[​](#new-apis-18 "Direct link to New APIs")
+#### New APIs[​](#new-apis-19 "Direct link to New APIs")
 
 *   [page.pause()](/python/docs/api/class-page#page-pause).
 
@@ -1787,7 +1913,7 @@ Version 1.8[​](#version-18 "Direct link to Version 1.8")
 *   New methods to [assert element state](/python/docs/actionability#assertions) like [page.is\_editable()](/python/docs/api/class-page#page-is-editable).
     
 
-#### New APIs[​](#new-apis-19 "Direct link to New APIs")
+#### New APIs[​](#new-apis-20 "Direct link to New APIs")
 
 *   [element\_handle.is\_checked()](/python/docs/api/class-elementhandle#element-handle-is-checked).
 *   [element\_handle.is\_disabled()](/python/docs/api/class-elementhandle#element-handle-is-disabled).
@@ -1803,7 +1929,7 @@ Version 1.8[​](#version-18 "Direct link to Version 1.8")
 *   [page.is\_visible()](/python/docs/api/class-page#page-is-visible).
 *   New option `'editable'` in [element\_handle.wait\_for\_element\_state()](/python/docs/api/class-elementhandle#element-handle-wait-for-element-state).
 
-#### Browser Versions[​](#browser-versions-45 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-46 "Direct link to Browser Versions")
 
 *   Chromium 90.0.4392.0
 *   Mozilla Firefox 85.0b5
@@ -1818,12 +1944,12 @@ Version 1.7[​](#version-17 "Direct link to Version 1.7")
 *   **New website**: The docs website at [playwright.dev](https://playwright.dev/) has been updated and is now built with [Docusaurus](https://v2.docusaurus.io/).
 *   **Support for Apple Silicon**: Playwright browser binaries for WebKit and Chromium are now built for Apple Silicon.
 
-#### New APIs[​](#new-apis-20 "Direct link to New APIs")
+#### New APIs[​](#new-apis-21 "Direct link to New APIs")
 
 *   [browser\_context.storage\_state()](/python/docs/api/class-browsercontext#browser-context-storage-state) to get current state for later reuse.
 *   `storageState` option in [browser.new\_context()](/python/docs/api/class-browser#browser-new-context) and [browser.new\_page()](/python/docs/api/class-browser#browser-new-page) to setup browser context state.
 
-#### Browser Versions[​](#browser-versions-46 "Direct link to Browser Versions")
+#### Browser Versions[​](#browser-versions-47 "Direct link to Browser Versions")
 
 *   Chromium 89.0.4344.0
 *   Mozilla Firefox 84.0b9
@@ -3873,7 +3999,7 @@ You can override default behavior using environment variables. When installing P
 
     set PLAYWRIGHT_BROWSERS_PATH=%USERPROFILE%\pw-browserspip install playwrightplaywright install
 
-When running Playwright scripts, ask it to search for browsers in a shared location.
+When running Playwright scripts, ask Playwright to search for browsers in a shared location.
 
 *   Bash
 *   PowerShell
@@ -3889,7 +4015,7 @@ Playwright keeps track of packages that need those browsers and will garbage col
 
 note
 
-Developers can opt-in in this mode via exporting `PLAYWRIGHT_BROWSERS_PATH=$HOME/pw-browsers` in their `.bashrc`.
+Developers can opt into this mode by exporting `PLAYWRIGHT_BROWSERS_PATH=$HOME/pw-browsers` in their `.bashrc`.
 
 ### Stale browser removal[​](#stale-browser-removal "Direct link to Stale browser removal")
 
@@ -3937,6 +4063,22 @@ Note the use of the `chromium` channel that allows to run extensions in headless
     from playwright.sync_api import sync_playwright, Playwrightpath_to_extension = "./my-extension"user_data_dir = "/tmp/test-user-data-dir"def run(playwright: Playwright):    context = playwright.chromium.launch_persistent_context(        user_data_dir,        channel="chromium",        args=[            f"--disable-extensions-except={path_to_extension}",            f"--load-extension={path_to_extension}",        ],    )    if len(context.service_workers) == 0:        service_worker = context.wait_for_event('serviceworker')    else:        service_worker = context.service_workers[0]    # Test the service worker as you would any other worker.    context.close()with sync_playwright() as playwright:    run(playwright)
 
     import asynciofrom playwright.async_api import async_playwright, Playwrightpath_to_extension = "./my-extension"user_data_dir = "/tmp/test-user-data-dir"async def run(playwright: Playwright):    context = await playwright.chromium.launch_persistent_context(        user_data_dir,        channel="chromium",        args=[            f"--disable-extensions-except={path_to_extension}",            f"--load-extension={path_to_extension}",        ],    )    if len(context.service_workers) == 0:        service_worker = await context.wait_for_event('serviceworker')    else:        service_worker = context.service_workers[0]    # Test the service worker as you would any other worker.    await context.close()async def main():    async with async_playwright() as playwright:        await run(playwright)asyncio.run(main())
+
+Service worker idle suspension (MV3)[​](#service-worker-idle-suspension-mv3 "Direct link to Service worker idle suspension (MV3)")
+----------------------------------------------------------------------------------------------------------------------------------
+
+Chrome MV3 service workers are automatically suspended after ~30 seconds of inactivity and restarted on demand. When this happens, Playwright keeps the **same [Worker](/python/docs/api/class-worker "Worker") object alive** — no new `'serviceworker'` event is emitted. New `evaluate()` calls issued during the restart window are stalled until the new context is ready and then resume automatically:
+
+*   Sync
+*   Async
+
+    sw = context.wait_for_event('serviceworker')# ... SW suspends after 30 s of inactivity and is restarted by the browser ...# The existing handle is transparent across the restart.sw.evaluate("sendMessage({ type: 'ping' })")  # just works
+
+    sw = await context.wait_for_event('serviceworker')# ... SW suspends after 30 s of inactivity and is restarted by the browser ...# The existing handle is transparent across the restart.await sw.evaluate("sendMessage({ type: 'ping' })")  # just works
+
+note
+
+`evaluate()` calls that were already in-flight at the exact moment of suspension will throw with `"Service worker restarted"`, matching the behaviour of page navigations mid-flight.
 
 Testing[​](#testing "Direct link to Testing")
 ---------------------------------------------
@@ -4368,6 +4510,12 @@ Playwright comes with a [registry of device parameters](https://github.com/micro
     import asynciofrom playwright.async_api import async_playwright, Playwrightasync def run(playwright: Playwright):    iphone_13 = playwright.devices['iPhone 13']    browser = await playwright.webkit.launch(headless=False)    context = await browser.new_context(        **iphone_13,    )async def main():    async with async_playwright() as playwright:        await run(playwright)asyncio.run(main())
 
 ![playwright.dev website emulated for iPhone 13](https://user-images.githubusercontent.com/13063165/220411073-76fe59f9-9a2d-463d-8e30-c19a7deca133.png)
+
+**Note**: Pre-configured devices assume a specific platform. For example, "Desktop Chrome" will provide a Windows-specific user agent string.
+
+If you would like to use the user agent specific to the platform that is running the tests, we recommend unsetting the user agent property.
+
+    desktop_chrome = playwright.devices["Desktop Chrome"]context = browser.new_context(**desktop_chrome, user_agent=None)
 
 Viewport[​](#viewport "Direct link to Viewport")
 ------------------------------------------------
@@ -5381,9 +5529,9 @@ Method [locator.and\_()](/python/docs/api/class-locator#locator-and) narrows dow
 *   Sync
 *   Async
 
-    button = page.get_by_role("button").and_(page.getByTitle("Subscribe"))
+    button = page.get_by_role("button").and_(page.get_by_title("Subscribe"))
 
-    button = page.get_by_role("button").and_(page.getByTitle("Subscribe"))
+    button = page.get_by_role("button").and_(page.get_by_title("Subscribe"))
 
 ### Matching one of the two alternative locators[​](#matching-one-of-the-two-alternative-locators "Direct link to Matching one of the two alternative locators")
 
@@ -5691,7 +5839,9 @@ The following code will intercept all the calls to `*/**/api/v1/fruits` and will
 
     async def test_mock_the_fruit_api(page: Page):    async def handle(route: Route):        json = [{"name": "Strawberry", "id": 21}]        # fulfill the route with the mock data        await route.fulfill(json=json)    # Intercept the route to the fruit API    await page.route("*/**/api/v1/fruits", handle)    # Go to the page    await page.goto("https://demo.playwright.dev/api-mocking")    # Assert that the Strawberry fruit is visible    await expect(page.get_by_text("Strawberry")).to_be_visible()
 
-You can see from the trace of the example test that the API was never called, it was however fulfilled with the mock data. ![api mocking trace](https://github.com/microsoft/playwright/assets/13063165/3dc14cbf-c100-4efc-ac21-d7b52d698b53)
+You can see from the trace of the example test that the API was never called, it was however fulfilled with the mock data.
+
+![api mocking trace](https://github.com/microsoft/playwright/assets/13063165/3dc14cbf-c100-4efc-ac21-d7b52d698b53)
 
 Read more about [advanced networking](/python/docs/network).
 
@@ -5709,9 +5859,13 @@ In the example below we intercept the call to the fruit API and add a new fruit 
 
     async def test_gets_the_json_from_api_and_adds_a_new_fruit(page: Page):    async def handle(route: Route):        response = await route.fetch()        json = await response.json()        json.append({ "name": "Loquat", "id": 100})        # Fulfill using the original response, while patching the response body        # with the given JSON object.        await route.fulfill(response=response, json=json)    await page.route("https://demo.playwright.dev/api-mocking/api/v1/fruits", handle)    # Go to the page    await page.goto("https://demo.playwright.dev/api-mocking")    # Assert that the new fruit is visible    await expect(page.get_by_text("Loquat", exact=True)).to_be_visible()
 
-In the trace of our test we can see that the API was called and the response was modified. ![trace of test showing api being called and fulfilled](https://github.com/microsoft/playwright/assets/13063165/8b8dd82d-1b3e-428e-871b-840581fed439)
+In the trace of our test we can see that the API was called and the response was modified.
 
-By inspecting the response we can see that our new fruit was added to the list. ![trace of test showing the mock response](https://github.com/microsoft/playwright/assets/13063165/03e6c87c-4ecc-47e8-9ca0-30fface25e9d)
+![trace of test showing api being called and fulfilled](https://github.com/microsoft/playwright/assets/13063165/8b8dd82d-1b3e-428e-871b-840581fed439)
+
+By inspecting the response we can see that our new fruit was added to the list.
+
+![trace of test showing the mock response](https://github.com/microsoft/playwright/assets/13063165/03e6c87c-4ecc-47e8-9ca0-30fface25e9d)
 
 Read more about [advanced networking](/python/docs/network).
 
@@ -5756,9 +5910,13 @@ Now that you have the HAR file recorded and modified the mock data, it can be us
 
     async def test_gets_the_json_from_har_and_checks_the_new_fruit_has_been_added(page: Page):    # Replay API requests from HAR.    # Either use a matching response from the HAR,    # or abort the request if nothing matches.    await page.route_from_har("./hars/fruit.har", url="*/**/api/v1/fruits", update=False)    # Go to the page    await page.goto("https://demo.playwright.dev/api-mocking")    # Assert that the Playwright fruit is visible    await expect(page.get_by_text("Playwright", exact=True)).to_be_visible()
 
-In the trace of our test we can see that the route was fulfilled from the HAR file and the API was not called. ![trace showing the HAR file being used](https://github.com/microsoft/playwright/assets/13063165/1bd7ab66-ea4f-43c2-a4e5-ca17d4837ff1)
+In the trace of our test we can see that the route was fulfilled from the HAR file and the API was not called.
 
-If we inspect the response we can see our new fruit was added to the JSON, which was done by manually updating the hashed `.txt` file inside the `hars` folder. ![trace showing response from HAR file](https://github.com/microsoft/playwright/assets/13063165/db3117fc-7b02-4973-9a51-29e213261a6a)
+![trace showing the HAR file being used](https://github.com/microsoft/playwright/assets/13063165/1bd7ab66-ea4f-43c2-a4e5-ca17d4837ff1)
+
+If we inspect the response we can see our new fruit was added to the JSON, which was done by manually updating the hashed `.txt` file inside the `hars` folder.
+
+![trace showing response from HAR file](https://github.com/microsoft/playwright/assets/13063165/db3117fc-7b02-4973-9a51-29e213261a6a)
 
 HAR replay matches URL and HTTP method strictly. For POST requests, it also matches POST payloads strictly. If multiple recordings match a request, the one with the most matching headers is picked. An entry resulting in a redirect will be followed automatically.
 
@@ -6184,7 +6342,7 @@ Consider a page with two buttons, first invisible and second visible.
 
 ### CSS: elements that contain other elements[​](#css-elements-that-contain-other-elements "Direct link to CSS: elements that contain other elements")
 
-The `:has()` pseudo-class is an [experimental CSS pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/:has). It returns an element if any of the selectors passed as parameters relative to the `:scope` of the given element match at least one element.
+The `:has()` pseudo-class is a [CSS pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/:has). It returns an element if any of the selectors passed as parameters relative to the `:scope` of the given element match at least one element.
 
 Following snippet returns text content of an `<article>` element that has a `<div class=promo>` inside.
 
@@ -6206,7 +6364,7 @@ Comma-separated list of CSS selectors will match all elements that can be select
 
     # Clicks a <button> that has either a "Log in" or "Sign in" text.await page.locator('button:has-text("Log in"), button:has-text("Sign in")').click()
 
-The `:is()` pseudo-class is an [experimental CSS pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/:is) that may be useful for specifying a list of extra conditions on an element.
+The `:is()` pseudo-class is a [CSS pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/:is) that may be useful for specifying a list of extra conditions on an element.
 
 ### CSS: matching elements based on layout[​](#css-matching-elements-based-on-layout "Direct link to CSS: matching elements based on layout")
 
@@ -6249,7 +6407,7 @@ It is usually possible to distinguish elements by some attribute or text content
 
 Sometimes page contains a number of similar elements, and it is hard to select a particular one. For example:
 
-    <section> <button>Buy</button> </section><article><div> <button>Buy</button> </div></article><div><div> <button>Buy</button> </div></div>
+    <section>  <button>Buy</button></section><article>  <div>    <button>Buy</button>  </div></article><div>  <div>    <button>Buy</button>  </div></div>
 
 In this case, `:nth-match(:text("Buy"), 3)` will select the third button from the snippet above. Note that index is one-based.
 
@@ -6309,91 +6467,6 @@ Alternatively, if you cannot find a suitable locator for the parent element, use
     parent = page.get_by_text("Hello").locator('xpath=..')
 
     parent = page.get_by_text("Hello").locator('xpath=..')
-
-React locator[​](#react-locator "Direct link to React locator")
----------------------------------------------------------------
-
-note
-
-React locator is experimental and prefixed with `_`. The functionality might change in future.
-
-React locator allows finding elements by their component name and property values. The syntax is very similar to [CSS attribute selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) and supports all CSS attribute selector operators.
-
-In React locator, component names are transcribed with **CamelCase**.
-
-*   Sync
-*   Async
-
-    page.locator("_react=BookItem").click()
-
-    await page.locator("_react=BookItem").click()
-
-More examples:
-
-*   match by **component**: `_react=BookItem`
-*   match by component and **exact property value**, case-sensitive: `_react=BookItem[author = "Steven King"]`
-*   match by property value only, **case-insensitive**: `_react=[author = "steven king" i]`
-*   match by component and **truthy property value**: `_react=MyButton[enabled]`
-*   match by component and **boolean value**: `_react=MyButton[enabled = false]`
-*   match by property **value substring**: `_react=[author *= "King"]`
-*   match by component and **multiple properties**: `_react=BookItem[author *= "king" i][year = 1990]`
-*   match by **nested** property value: `_react=[some.nested.value = 12]`
-*   match by component and property value **prefix**: `_react=BookItem[author ^= "Steven"]`
-*   match by component and property value **suffix**: `_react=BookItem[author $= "Steven"]`
-*   match by component and **key**: `_react=BookItem[key = '2']`
-*   match by property value **regex**: `_react=[author = /Steven(\\s+King)?/i]`
-
-To find React element names in a tree use [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi).
-
-note
-
-React locator supports React 15 and above.
-
-note
-
-React locator, as well as [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), only work against **unminified** application builds.
-
-Vue locator[​](#vue-locator "Direct link to Vue locator")
----------------------------------------------------------
-
-note
-
-Vue locator is experimental and prefixed with `_`. The functionality might change in future.
-
-Vue locator allows finding elements by their component name and property values. The syntax is very similar to [CSS attribute selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) and supports all CSS attribute selector operators.
-
-In Vue locator, component names are transcribed with **kebab-case**.
-
-*   Sync
-*   Async
-
-    page.locator("_vue=book-item").click()
-
-    await page.locator("_vue=book-item").click()
-
-More examples:
-
-*   match by **component**: `_vue=book-item`
-*   match by component and **exact property value**, case-sensitive: `_vue=book-item[author = "Steven King"]`
-*   match by property value only, **case-insensitive**: `_vue=[author = "steven king" i]`
-*   match by component and **truthy property value**: `_vue=my-button[enabled]`
-*   match by component and **boolean value**: `_vue=my-button[enabled = false]`
-*   match by property **value substring**: `_vue=[author *= "King"]`
-*   match by component and **multiple properties**: `_vue=book-item[author *= "king" i][year = 1990]`
-*   match by **nested** property value: `_vue=[some.nested.value = 12]`
-*   match by component and property value **prefix**: `_vue=book-item[author ^= "Steven"]`
-*   match by component and property value **suffix**: `_vue=book-item[author $= "Steven"]`
-*   match by property value **regex**: `_vue=[author = /Steven(\\s+King)?/i]`
-
-To find Vue element names in a tree use [Vue DevTools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en).
-
-note
-
-Vue locator supports Vue2 and above.
-
-note
-
-Vue locator, as well as [Vue DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), only work against **unminified** application builds.
 
 XPath locator[​](#xpath-locator "Direct link to XPath locator")
 ---------------------------------------------------------------
@@ -6767,9 +6840,9 @@ With Playwright's Snapshot testing you can assert the accessibility tree of a pa
 *   Sync
 *   Async
 
-    page.goto('https://playwright.dev/')expect(page.query_selector('banner')).to_match_aria_snapshot("""  - banner:    - heading /Playwright enables reliable end-to-end/ [level=1]    - link "Get started"    - link "Star microsoft/playwright on GitHub"    - link /[\\d]+k\\+ stargazers on GitHub/""")
+    page.goto('https://playwright.dev/')expect(page.query_selector('banner')).to_match_aria_snapshot("""  - banner:    - heading /Playwright enables reliable end-to-end/ [level=1]    - link "Get started":      - /url: /docs/intro    - link "Star microsoft/playwright on GitHub":      - /url: https://github.com/microsoft/playwright    - link /[\\d]+k\\+ stargazers on GitHub/""")
 
-    await page.goto('https://playwright.dev/')await expect(page.query_selector('banner')).to_match_aria_snapshot("""  - banner:    - heading /Playwright enables reliable end-to-end/ [level=1]    - link "Get started"    - link "Star microsoft/playwright on GitHub"    - link /[\\d]+k\\+ stargazers on GitHub/""")
+    await page.goto('https://playwright.dev/')await expect(page.query_selector('banner')).to_match_aria_snapshot("""  - banner:    - heading /Playwright enables reliable end-to-end/ [level=1]    - link "Get started":      - /url: /docs/intro    - link "Star microsoft/playwright on GitHub":      - /url: https://github.com/microsoft/playwright    - link /[\\d]+k\\+ stargazers on GitHub/""")
 
 Assertion testing vs Snapshot testing[​](#assertion-testing-vs-snapshot-testing "Direct link to Assertion testing vs Snapshot testing")
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -6867,7 +6940,7 @@ You can perform partial matches on nodes by omitting attributes or accessible na
 
     <button>Submit</button>
 
-_aria snapshot_
+aria snapshot
 
     - button
 
@@ -6879,7 +6952,7 @@ For elements with ARIA attributes like `checked` or `disabled`, omitting these a
 
     <input type="checkbox" checked>
 
-_aria snapshot for partial match_
+aria snapshot (partial match)
 
     - checkbox
 
@@ -6891,7 +6964,7 @@ Similarly, you can partially match children in lists or groups by omitting speci
 
     <ul>  <li>Feature A</li>  <li>Feature B</li>  <li>Feature C</li></ul>
 
-_aria snapshot for partial match_
+aria snapshot (partial match)
 
     - list  - listitem: Feature B
 
@@ -6903,7 +6976,7 @@ By default, a template containing the subset of children will be matched:
 
     <ul>  <li>Feature A</li>  <li>Feature B</li>  <li>Feature C</li></ul>
 
-_aria snapshot for partial match_
+aria snapshot (partial match)
 
     - list  - listitem: Feature B
 
@@ -6915,9 +6988,17 @@ The `/children` property can be used to control how child elements are matched:
 
     <ul>  <li>Feature A</li>  <li>Feature B</li>  <li>Feature C</li></ul>
 
-_aria snapshot will fail due to Feature C not being in the template_
+Following snapshot will fail due to Feature C not being in the template:
+
+aria snapshot
 
     - list  - /children: equal  - listitem: Feature A  - listitem: Feature B
+
+#### Setting `children` mode globally[​](#setting-children-mode-globally "Direct link to setting-children-mode-globally")
+
+Instead of adding a `/children` property to every snapshot, you can set the default children matching mode for all `toMatchAriaSnapshot` calls in the configuration file:
+
+Individual snapshots can still override the global setting by including an explicit `/children` property in the template.
 
 ### Matching with regular expressions[​](#matching-with-regular-expressions "Direct link to Matching with regular expressions")
 
@@ -6925,7 +7006,7 @@ Regular expressions allow flexible matching for elements with dynamic or variabl
 
     <h1>Issues 12</h1>
 
-_aria snapshot with regular expression_
+aria snapshot
 
     - heading /Issues \d+/
 
@@ -6965,7 +7046,7 @@ Headings can include a `level` attribute indicating their heading level.
 
     <h1>Title</h1><h2>Subtitle</h2>
 
-_aria snapshot_
+aria snapshot
 
     - heading "Title" [level=1]- heading "Subtitle" [level=2]
 
@@ -6975,7 +7056,7 @@ Standalone or descriptive text elements appear as text nodes.
 
     <div>Sample accessible name</div>
 
-_aria snapshot_
+aria snapshot
 
     - text: Sample accessible name
 
@@ -6985,19 +7066,27 @@ Multiline text, such as paragraphs, is normalized in the aria snapshot.
 
     <p>Line 1<br>Line 2</p>
 
-_aria snapshot_
+aria snapshot
 
     - paragraph: Line 1 Line 2
 
 ### Links[​](#links "Direct link to Links")
 
-Links display their text or composed content from pseudo-elements.
+Links display their text or composed content from pseudo-elements. The link’s destination may be matched using the `/url` property.
 
     <a href="#more-info">Read more about Accessibility</a>
 
-_aria snapshot_
+aria snapshot
 
-    - link "Read more about Accessibility"
+    - link "Read more about Accessibility":    - /url: "#more-info"
+
+The value of `/url` may also be a regular expression:
+
+    <a href="https://www.youtube.com/channel/UC46Zj8pDH5tDosqm1gd7WTg">YouTube channel</a>
+
+aria snapshot
+
+    - link:  - /url: /https://www.youtube.com/channel/.*/
 
 ### Text boxes[​](#text-boxes "Direct link to Text boxes")
 
@@ -7005,7 +7094,7 @@ Input elements of type `text` show their `value` attribute content.
 
     <input type="text" value="Enter your name">
 
-_aria snapshot_
+aria snapshot
 
     - textbox: Enter your name
 
@@ -7015,7 +7104,7 @@ Ordered and unordered lists include their list items.
 
     <ul aria-label="Main Features">  <li>Feature 1</li>  <li>Feature 2</li></ul>
 
-_aria snapshot_
+aria snapshot
 
     - list "Main Features":  - listitem: Feature 1  - listitem: Feature 2
 
@@ -7025,7 +7114,7 @@ Groups capture nested elements, such as `<details>` elements with summary conten
 
     <details>  <summary>Summary</summary>  <p>Detail content here</p></details>
 
-_aria snapshot_
+aria snapshot
 
     - group: Summary
 
@@ -7037,7 +7126,7 @@ Commonly used ARIA attributes, like `checked`, `disabled`, `expanded`, `level`, 
 
     <input type="checkbox" checked>
 
-_aria snapshot_
+aria snapshot
 
     - checkbox [checked]
 
@@ -7045,7 +7134,7 @@ _aria snapshot_
 
     <button aria-pressed="true">Toggle</button>
 
-_aria snapshot_
+aria snapshot
 
     - button "Toggle" [pressed=true]
 
@@ -7243,7 +7332,7 @@ Trace viewer
 Introduction[​](#introduction "Direct link to Introduction")
 ------------------------------------------------------------
 
-Playwright Trace Viewer is a GUI tool that helps you explore recorded Playwright traces after the script has run. Traces are a great way for debugging your tests when they fail on CI. You can open traces [locally](#opening-the-trace) or in your browser on [trace.playwright.dev](https://trace.playwright.dev).
+Playwright Trace Viewer is a GUI tool that helps you explore recorded Playwright traces after the script has run. Traces are a great way for debugging your tests when they fail on CI. You can open traces [locally](#opening-trace-viewer) or in your browser on [trace.playwright.dev](https://trace.playwright.dev).
 
 Opening Trace Viewer[​](#opening-trace-viewer "Direct link to Opening Trace Viewer")
 ------------------------------------------------------------------------------------
@@ -9017,6 +9106,42 @@ A Browser is created via [browser\_type.launch()](/python/docs/api/class-browser
 Methods[​](#methods "Direct link to Methods")
 ---------------------------------------------
 
+### bind[​](#browser-bind "Direct link to bind")
+
+Added in: v1.59 browser.bind
+
+Binds the browser to a named pipe or web socket, making it available for other clients to connect to.
+
+**Usage**
+
+    browser.bind(title)browser.bind(title, **kwargs)
+
+**Arguments**
+
+*   `title` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")[#](#browser-bind-option-title)
+    
+    Title of the browser server, used for identification.
+    
+*   `host` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#browser-bind-option-host)
+    
+    Host to bind the web socket server to. When specified, a web socket server is created instead of a named pipe.
+    
+*   `port` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_[#](#browser-bind-option-port)
+    
+    Port to bind the web socket server to. When specified, a web socket server is created instead of a named pipe. Use `0` to let the OS pick an available port.
+    
+*   `workspace_dir` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#browser-bind-option-workspace-dir)
+    
+    Working directory associated with this browser server.
+    
+
+**Returns**
+
+*   [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#browser-bind-return)
+    *   `endpoint` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+
+* * *
+
 ### close[​](#browser-close "Direct link to close")
 
 Added before v1.9 browser.close
@@ -9777,6 +9902,22 @@ Returns the buffer with trace data.
 
 * * *
 
+### unbind[​](#browser-unbind "Direct link to unbind")
+
+Added in: v1.59 browser.unbind
+
+Unbinds the browser server previously bound with [browser.bind()](/python/docs/api/class-browser#browser-bind).
+
+**Usage**
+
+    browser.unbind()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#browser-unbind-return)
+
+* * *
+
 Properties[​](#properties "Direct link to Properties")
 ------------------------------------------------------
 
@@ -9994,7 +10135,7 @@ The order of evaluation of multiple scripts installed via [browser\_context.add\
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#browser-context-add-init-script-return)
+*   \[Disposable\][#](#browser-context-add-init-script-return)
 
 * * *
 
@@ -10257,7 +10398,7 @@ An example of exposing page URL to all frames in all pages in the context:
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#browser-context-expose-binding-return)
+*   \[Disposable\][#](#browser-context-expose-binding-return)
 
 * * *
 
@@ -10295,7 +10436,7 @@ An example of adding a `sha256` function to all pages in the context:
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#browser-context-expose-function-return)
+*   \[Disposable\][#](#browser-context-expose-function-return)
 
 * * *
 
@@ -10338,6 +10479,7 @@ Grants specified permissions to the browser context. Only grants corresponding p
     *   `'notifications'`
     *   `'payment-handler'`
     *   `'storage-access'`
+    *   `'screen-wake-lock'`
 *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#browser-context-grant-permissions-option-origin)
     
     The [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin "Origin") to grant permissions to, e.g. "[https://example.com](https://example.com)".
@@ -10456,7 +10598,7 @@ Enabling routing disables http cache.
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#browser-context-route-return)
+*   \[Disposable\][#](#browser-context-route-return)
 
 * * *
 
@@ -10686,6 +10828,79 @@ Added before v1.9 browserContext.set\_offline
 
 * * *
 
+### set\_storage\_state[​](#browser-context-set-storage-state "Direct link to set_storage_state")
+
+Added in: v1.59 browserContext.set\_storage\_state
+
+Clears the existing cookies, local storage and IndexedDB entries for all origins and sets the new storage state.
+
+**Usage**
+
+*   Sync
+*   Async
+
+    # Load storage state from a file and apply it to the context.context.set_storage_state("state.json")
+
+    # Load storage state from a file and apply it to the context.await context.set_storage_state("state.json")
+
+**Arguments**
+
+*   `storage_state` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] | [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#browser-context-set-storage-state-option-storage-state)
+    
+    *   `cookies` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
+        *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+            
+        *   `value` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+            
+        *   `domain` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+            
+            Domain and path are required. For the cookie to apply to all subdomains as well, prefix domain with a dot, like this: ".example.com"
+            
+        *   `path` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+            
+            Domain and path are required
+            
+        *   `expires` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float")
+            
+            Unix time in seconds.
+            
+        *   `httpOnly` [bool](https://docs.python.org/3/library/stdtypes.html "bool")
+            
+        *   `secure` [bool](https://docs.python.org/3/library/stdtypes.html "bool")
+            
+        *   `sameSite` "Strict" | "Lax" | "None"
+            
+            sameSite flag
+            
+        
+        Cookies to set for context
+        
+    *   `origins` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+        
+        *   `origin` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+            
+        *   `localStorage` [List](https://docs.python.org/3/library/typing.html#typing.List "List")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]
+            
+            *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+                
+            *   `value` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+                
+            
+            localStorage to set for context
+            
+    
+    Learn more about [storage state and auth](/python/docs/auth).
+    
+    Populates context with given storage state. This option can be used to initialize context with logged-in information obtained via [browser\_context.storage\_state()](/python/docs/api/class-browsercontext#browser-context-storage-state).
+    
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#browser-context-set-storage-state-return)
+
+* * *
+
 ### storage\_state[​](#browser-context-storage-state "Direct link to storage_state")
 
 Added before v1.9 browserContext.storage\_state
@@ -10757,7 +10972,7 @@ Removes a route created with [browser\_context.route()](/python/docs/api/class-b
 
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool")[#](#browser-context-unroute-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") used to register a routing with [browser\_context.route()](/python/docs/api/class-browsercontext#browser-context-route).
+    A glob pattern, regex pattern, or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") used to register a routing with [browser\_context.route()](/python/docs/api/class-browsercontext#browser-context-route).
     
 *   `handler` [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[Route](/python/docs/api/class-route "Route"), [Request](/python/docs/api/class-request "Request")\]:[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")\[[Any](https://docs.python.org/3/library/typing.html#typing.Any "Any")\] | [Any](https://docs.python.org/3/library/typing.html#typing.Any "Any") _(optional)_[#](#browser-context-unroute-option-handler)
     
@@ -10863,6 +11078,38 @@ Playwright has ability to mock clock and passage of time.
 **Type**
 
 *   [Clock](/python/docs/api/class-clock "Clock")
+
+* * *
+
+### debugger[​](#browser-context-debugger "Direct link to debugger")
+
+Added in: v1.59 browserContext.debugger
+
+Debugger allows to pause and resume the execution.
+
+**Usage**
+
+    browser_context.debugger
+
+**Type**
+
+*   [Debugger](/python/docs/api/class-debugger "Debugger")
+
+* * *
+
+### is\_closed[​](#browser-context-is-closed "Direct link to is_closed")
+
+Added in: v1.59 browserContext.is\_closed
+
+Indicates that the browser context is in the process of closing or has already been closed.
+
+**Usage**
+
+    browser_context.is_closed()
+
+**Returns**
+
+*   [bool](https://docs.python.org/3/library/stdtypes.html "bool")[#](#browser-context-is-closed-return)
 
 * * *
 
@@ -11205,11 +11452,11 @@ The major and minor version of the Playwright instance that connects needs to ma
 
 **Usage**
 
-    browser_type.connect(ws_endpoint)browser_type.connect(ws_endpoint, **kwargs)
+    browser_type.connect(endpoint)browser_type.connect(endpoint, **kwargs)
 
 **Arguments**
 
-*   `ws_endpoint` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") Added in: v1.10[#](#browser-type-connect-option-ws-endpoint)
+*   `endpoint` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") Added in: v1.10[#](#browser-type-connect-option-endpoint)
     
     A Playwright browser websocket endpoint to connect to. You obtain this endpoint via `BrowserServer.wsEndpoint`.
     
@@ -11333,6 +11580,10 @@ You can use [ignore\_default\_args](/python/docs/api/class-browsertype#browser-t
     Use custom browser args at your own risk, as some of them may break Playwright functionality.
     
     Additional arguments to pass to the browser instance. The list of Chromium flags can be found [here](https://peter.sh/experiments/chromium-command-line-switches/).
+    
+*   `artifacts_dir` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] _(optional)_[#](#browser-type-launch-option-artifacts-dir)
+    
+    If specified, artifacts (traces, videos, downloads, HAR files, etc.) are saved into this directory. The directory is not cleaned up when the browser closes. If not specified, a temporary directory is used and cleaned up when the browser closes.
     
 *   `channel` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#browser-type-launch-option-channel)
     
@@ -11461,6 +11712,10 @@ Launches browser that uses persistent storage located at [user\_data\_dir](/pyth
     Use custom browser args at your own risk, as some of them may break Playwright functionality.
     
     Additional arguments to pass to the browser instance. The list of Chromium flags can be found [here](https://peter.sh/experiments/chromium-command-line-switches/).
+    
+*   `artifacts_dir` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] _(optional)_[#](#browser-type-launch-persistent-context-option-artifacts-dir)
+    
+    If specified, artifacts (traces, videos, downloads, HAR files, etc.) are saved into this directory. The directory is not cleaned up when the browser closes. If not specified, a temporary directory is used and cleaned up when the browser closes.
     
 *   `base_url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#browser-type-launch-persistent-context-option-base-url)
     
@@ -11875,6 +12130,25 @@ Added before v1.9 cdpSession.send
 
 *   [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#cdp-session-send-return)
 
+* * *
+
+Events[​](#events "Direct link to Events")
+------------------------------------------
+
+### on("close")[​](#cdp-session-event-close "Direct link to on(\"close\")")
+
+Added in: v1.59 cdpSession.on("close")
+
+Emitted when the session is closed, either because the target was closed or `session.detach()` was called.
+
+**Usage**
+
+    cdp_session.on("close", handler)
+
+**Event data**
+
+*   [CDPSession](/python/docs/api/class-cdpsession "CDPSession")
+
 # Clock
 
 Clock
@@ -12185,6 +12459,22 @@ The text of the console message.
 
 * * *
 
+### timestamp[​](#console-message-timestamp "Direct link to timestamp")
+
+Added in: v1.59 consoleMessage.timestamp
+
+The timestamp of the console message in milliseconds since the Unix epoch.
+
+**Usage**
+
+    console_message.timestamp
+
+**Returns**
+
+*   [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float")[#](#console-message-timestamp-return)
+
+* * *
+
 ### type[​](#console-message-type "Direct link to type")
 
 Added before v1.9 consoleMessage.type
@@ -12212,6 +12502,142 @@ The web worker or service worker that produced this console message, if any. Not
 **Returns**
 
 *   [NoneType](https://docs.python.org/3/library/constants.html#None "None") | [Worker](/python/docs/api/class-worker "Worker")[#](#console-message-worker-return)
+
+# Debugger
+
+Debugger
+========
+
+API for controlling the Playwright debugger. The debugger allows pausing script execution and inspecting the page. Obtain the debugger instance via [browser\_context.debugger](/python/docs/api/class-browsercontext#browser-context-debugger).
+
+* * *
+
+Methods[​](#methods "Direct link to Methods")
+---------------------------------------------
+
+### next[​](#debugger-next "Direct link to next")
+
+Added in: v1.59 debugger.next
+
+Resumes script execution and pauses again before the next action. Throws if the debugger is not paused.
+
+**Usage**
+
+    debugger.next()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#debugger-next-return)
+
+* * *
+
+### request\_pause[​](#debugger-request-pause "Direct link to request_pause")
+
+Added in: v1.59 debugger.request\_pause
+
+Configures the debugger to pause before the next action is executed.
+
+Throws if the debugger is already paused. Use [debugger.next()](/python/docs/api/class-debugger#debugger-next) or [debugger.run\_to()](/python/docs/api/class-debugger#debugger-run-to) to step while paused.
+
+Note that [page.pause()](/python/docs/api/class-page#page-pause) is equivalent to a "debugger" statement — it pauses execution at the call site immediately. On the contrary, [debugger.request\_pause()](/python/docs/api/class-debugger#debugger-request-pause) is equivalent to "pause on next statement" — it configures the debugger to pause before the next action is executed.
+
+**Usage**
+
+    debugger.request_pause()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#debugger-request-pause-return)
+
+* * *
+
+### resume[​](#debugger-resume "Direct link to resume")
+
+Added in: v1.59 debugger.resume
+
+Resumes script execution. Throws if the debugger is not paused.
+
+**Usage**
+
+    debugger.resume()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#debugger-resume-return)
+
+* * *
+
+### run\_to[​](#debugger-run-to "Direct link to run_to")
+
+Added in: v1.59 debugger.run\_to
+
+Resumes script execution and pauses when an action originates from the given source location. Throws if the debugger is not paused.
+
+**Usage**
+
+    debugger.run_to(location)
+
+**Arguments**
+
+*   `location` [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#debugger-run-to-option-location)
+    
+    *   `file` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+        
+    *   `line` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_
+        
+    *   `column` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_
+        
+    
+    The source location to pause at.
+    
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#debugger-run-to-return)
+
+* * *
+
+Properties[​](#properties "Direct link to Properties")
+------------------------------------------------------
+
+### paused\_details[​](#debugger-paused-details "Direct link to paused_details")
+
+Added in: v1.59 debugger.paused\_details
+
+Returns details about the currently paused call. Returns `null` if the debugger is not paused.
+
+**Usage**
+
+    debugger.paused_details
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None") | [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")[#](#debugger-paused-details-return)
+    *   `location` [Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")
+        
+        *   `file` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+            
+        *   `line` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_
+            
+        *   `column` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_
+            
+    *   `title` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+        
+
+* * *
+
+Events[​](#events "Direct link to Events")
+------------------------------------------
+
+### on("pausedstatechanged")[​](#debugger-event-paused-state-changed "Direct link to on(\"pausedstatechanged\")")
+
+Added in: v1.59 debugger.on("pausedstatechanged")
+
+Emitted when the debugger pauses or resumes.
+
+**Usage**
+
+    debugger.on("pausedstatechanged", handler)
 
 # Dialog
 
@@ -14713,7 +15139,7 @@ Consider the following DOM structure.
 
     <h3>Sign up</h3><label>  <input type="checkbox" /> Subscribe</label><br/><button>Submit</button>
 
-You can locate each element by it's implicit role:
+You can locate each element by its implicit role:
 
 *   Sync
 *   Async
@@ -14807,7 +15233,7 @@ Consider the following DOM structure.
 
     <button data-testid="directions">Itinéraire</button>
 
-You can locate the element by it's test id:
+You can locate the element by its test id:
 
 *   Sync
 *   Async
@@ -15216,7 +15642,7 @@ Waits for the frame to navigate to the given URL.
 
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool")[#](#frame-wait-for-url-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+    A glob pattern, regex pattern, or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
     
 *   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#frame-wait-for-url-option-timeout)
     
@@ -15776,7 +16202,7 @@ Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/Hist
     
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#frame-wait-for-navigation-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+    A glob pattern, regex pattern, or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
     
 *   `wait_until` "load" | "domcontentloaded" | "networkidle" | "commit" _(optional)_[#](#frame-wait-for-navigation-option-wait-until)
     
@@ -17113,7 +17539,7 @@ Consider the following DOM structure.
 
     <h3>Sign up</h3><label>  <input type="checkbox" /> Subscribe</label><br/><button>Submit</button>
 
-You can locate each element by it's implicit role:
+You can locate each element by its implicit role:
 
 *   Sync
 *   Async
@@ -17207,7 +17633,7 @@ Consider the following DOM structure.
 
     <button data-testid="directions">Itinéraire</button>
 
-You can locate the element by it's test id:
+You can locate the element by its test id:
 
 *   Sync
 *   Async
@@ -18017,6 +18443,14 @@ Captures the aria snapshot of the given element. Read more about [aria snapshots
 
 **Arguments**
 
+*   `depth` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_ Added in: v1.59[#](#locator-aria-snapshot-option-depth)
+    
+    When specified, limits the depth of the snapshot.
+    
+*   `mode` "ai" | "default" _(optional)_ Added in: v1.59[#](#locator-aria-snapshot-option-mode)
+    
+    When set to `"ai"`, returns a snapshot optimized for AI consumption. Defaults to `"default"`. See details for more information.
+    
 *   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#locator-aria-snapshot-option-timeout)
     
     Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can be changed by using the [browser\_context.set\_default\_timeout()](/python/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.set\_default\_timeout()](/python/docs/api/class-page#page-set-default-timeout) methods.
@@ -18041,6 +18475,10 @@ Below is the HTML markup and the respective ARIA snapshot:
     <ul aria-label="Links">  <li><a href="/">Home</a></li>  <li><a href="/about">About</a></li><ul>
 
     - list "Links":  - listitem:    - link "Home"  - listitem:    - link "About"
+
+An AI-optimized snapshot, controlled by [mode](/python/docs/api/class-locator#locator-aria-snapshot-option-mode), is different from a default snapshot:
+
+1.  Includes element references `[ref=e2]`. 2. Does not wait for an element matching the locator, and throws when no elements match. 3. Includes snapshots of `<iframe>`s inside the target.
 
 * * *
 
@@ -19035,7 +19473,7 @@ Consider the following DOM structure.
 
     <h3>Sign up</h3><label>  <input type="checkbox" /> Subscribe</label><br/><button>Submit</button>
 
-You can locate each element by it's implicit role:
+You can locate each element by its implicit role:
 
 *   Sync
 *   Async
@@ -19129,7 +19567,7 @@ Consider the following DOM structure.
 
     <button data-testid="directions">Itinéraire</button>
 
-You can locate the element by it's test id:
+You can locate the element by its test id:
 
 *   Sync
 *   Async
@@ -19650,6 +20088,22 @@ The method finds an element matching the specified selector in the locator's sub
 **Returns**
 
 *   [Locator](/python/docs/api/class-locator "Locator")[#](#locator-locator-return)
+
+* * *
+
+### normalize[​](#locator-normalize "Direct link to normalize")
+
+Added in: v1.59 locator.normalize
+
+Returns a new locator that uses best practices for referencing the matched element, prioritizing test ids, aria roles, and other user-facing attributes over CSS selectors. This is useful for converting implementation-detail selectors into more resilient, human-readable locators.
+
+**Usage**
+
+    locator.normalize()
+
+**Returns**
+
+*   [Locator](/python/docs/api/class-locator "Locator")[#](#locator-normalize-return)
 
 * * *
 
@@ -20851,7 +21305,7 @@ The order of evaluation of multiple scripts installed via [browser\_context.add\
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-add-init-script-return)
+*   \[Disposable\][#](#page-add-init-script-return)
 
 * * *
 
@@ -21008,6 +21462,37 @@ Adds a `<link rel="stylesheet">` tag into the page with the desired url or a `<s
 
 * * *
 
+### aria\_snapshot[​](#page-aria-snapshot "Direct link to aria_snapshot")
+
+Added in: v1.59 page.aria\_snapshot
+
+Captures the aria snapshot of the page. Read more about [aria snapshots](/python/docs/aria-snapshots).
+
+**Usage**
+
+    page.aria_snapshot()page.aria_snapshot(**kwargs)
+
+**Arguments**
+
+*   `depth` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_[#](#page-aria-snapshot-option-depth)
+    
+    When specified, limits the depth of the snapshot.
+    
+*   `mode` "ai" | "default" _(optional)_[#](#page-aria-snapshot-option-mode)
+    
+    When set to `"ai"`, returns a snapshot optimized for AI consumption: including element references like `[ref=e2]` and snapshots of `<iframe>`s. Defaults to `"default"`.
+    
+*   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#page-aria-snapshot-option-timeout)
+    
+    Maximum time in milliseconds. Defaults to `30000` (30 seconds). Pass `0` to disable timeout. The default value can be changed by using the [browser\_context.set\_default\_timeout()](/python/docs/api/class-browsercontext#browser-context-set-default-timeout) or [page.set\_default\_timeout()](/python/docs/api/class-page#page-set-default-timeout) methods.
+    
+
+**Returns**
+
+*   [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")[#](#page-aria-snapshot-return)
+
+* * *
+
 ### bring\_to\_front[​](#page-bring-to-front "Direct link to bring_to_front")
 
 Added before v1.9 page.bring\_to\_front
@@ -21021,6 +21506,54 @@ Brings page to front (activates tab).
 **Returns**
 
 *   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-bring-to-front-return)
+
+* * *
+
+### cancel\_pick\_locator[​](#page-cancel-pick-locator "Direct link to cancel_pick_locator")
+
+Added in: v1.59 page.cancel\_pick\_locator
+
+Cancels an ongoing [page.pick\_locator()](/python/docs/api/class-page#page-pick-locator) call by deactivating pick locator mode. If no pick locator mode is active, this method is a no-op.
+
+**Usage**
+
+    page.cancel_pick_locator()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-cancel-pick-locator-return)
+
+* * *
+
+### clear\_console\_messages[​](#page-clear-console-messages "Direct link to clear_console_messages")
+
+Added in: v1.59 page.clear\_console\_messages
+
+Clears all stored console messages from this page. Subsequent calls to [page.console\_messages()](/python/docs/api/class-page#page-console-messages) will only return messages logged after the clear.
+
+**Usage**
+
+    page.clear_console_messages()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-clear-console-messages-return)
+
+* * *
+
+### clear\_page\_errors[​](#page-clear-page-errors "Direct link to clear_page_errors")
+
+Added in: v1.59 page.clear\_page\_errors
+
+Clears all stored page errors from this page. Subsequent calls to [page.page\_errors()](/python/docs/api/class-page#page-page-errors) will only return errors thrown after the clear.
+
+**Usage**
+
+    page.clear_page_errors()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-clear-page-errors-return)
 
 * * *
 
@@ -21065,7 +21598,14 @@ Returns up to (currently) 200 last console messages from this page. See [page.on
 
 **Usage**
 
-    page.console_messages()
+    page.console_messages()page.console_messages(**kwargs)
+
+**Arguments**
+
+*   `filter` "all" | "since-navigation" _(optional)_ Added in: v1.59[#](#page-console-messages-option-filter)
+    
+    Controls which messages are returned:
+    
 
 **Returns**
 
@@ -21659,7 +22199,7 @@ An example of exposing page URL to all frames in a page:
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-expose-binding-return)
+*   \[Disposable\][#](#page-expose-binding-return)
 
 * * *
 
@@ -21701,7 +22241,7 @@ An example of adding a `sha256` function to the page:
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-expose-function-return)
+*   \[Disposable\][#](#page-expose-function-return)
 
 * * *
 
@@ -21886,7 +22426,7 @@ Consider the following DOM structure.
 
     <h3>Sign up</h3><label>  <input type="checkbox" /> Subscribe</label><br/><button>Submit</button>
 
-You can locate each element by it's implicit role:
+You can locate each element by its implicit role:
 
 *   Sync
 *   Async
@@ -21980,7 +22520,7 @@ Consider the following DOM structure.
 
     <button data-testid="directions">Itinéraire</button>
 
-You can locate the element by it's test id:
+You can locate the element by its test id:
 
 *   Sync
 *   Async
@@ -22284,7 +22824,14 @@ Returns up to (currently) 200 last page errors from this page. See [page.on("pag
 
 **Usage**
 
-    page.page_errors()
+    page.page_errors()page.page_errors(**kwargs)
+
+**Arguments**
+
+*   `filter` "all" | "since-navigation" _(optional)_ Added in: v1.59[#](#page-page-errors-option-filter)
+    
+    Controls which errors are returned:
+    
 
 **Returns**
 
@@ -22459,6 +23006,27 @@ note
 
 * * *
 
+### pick\_locator[​](#page-pick-locator "Direct link to pick_locator")
+
+Added in: v1.59 page.pick\_locator
+
+Enters pick locator mode where hovering over page elements highlights them and shows the corresponding locator. Once the user clicks an element, the mode is deactivated and the [Locator](/python/docs/api/class-locator "Locator") for the picked element is returned.
+
+**Usage**
+
+*   Sync
+*   Async
+
+    locator = page.pick_locator()print(locator)
+
+    locator = await page.pick_locator()print(locator)
+
+**Returns**
+
+*   [Locator](/python/docs/api/class-locator "Locator")[#](#page-pick-locator-return)
+
+* * *
+
 ### reload[​](#page-reload "Direct link to reload")
 
 Added before v1.9 page.reload
@@ -22607,6 +23175,8 @@ It is possible to examine the request to decide the route action. For example, m
 
     async def handle_route(route: Route):  if ("my-string" in route.request.post_data):    await route.fulfill(body="mocked-data")  else:    await route.continue_()await page.route("/api/**", handle_route)
 
+If a request matches multiple registered routes, the most recently registered route takes precedence.
+
 Page routes take precedence over browser context routes (set up with [browser\_context.route()](/python/docs/api/class-browsercontext#browser-context-route)) when request matches both handlers.
 
 To remove a route with its handler you can use [page.unroute()](/python/docs/api/class-page#page-unroute).
@@ -22632,7 +23202,7 @@ Enabling routing disables http cache.
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#page-route-return)
+*   \[Disposable\][#](#page-route-return)
 
 * * *
 
@@ -22996,7 +23566,7 @@ Removes a route created with [page.route()](/python/docs/api/class-page#page-rou
 
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool")[#](#page-unroute-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while routing.
+    A glob pattern, regex pattern, or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while routing.
     
 *   `handler` [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[Route](/python/docs/api/class-route "Route"), [Request](/python/docs/api/class-request "Request")\]:[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise")\[[Any](https://docs.python.org/3/library/typing.html#typing.Any "Any")\] | [Any](https://docs.python.org/3/library/typing.html#typing.Any "Any") _(optional)_[#](#page-unroute-option-handler)
     
@@ -23188,7 +23758,7 @@ Waits for the main frame to navigate to the given URL.
 
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool")[#](#page-wait-for-url-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+    A glob pattern, regex pattern, or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
     
 *   `timeout` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#page-wait-for-url-option-timeout)
     
@@ -23336,6 +23906,20 @@ API testing helper associated with this page. This method returns the same insta
 
 * * *
 
+### screencast[​](#page-screencast "Direct link to screencast")
+
+Added in: v1.59 page.screencast
+
+[Screencast](/python/docs/api/class-screencast "Screencast") object associated with this page.
+
+**Usage**
+
+**Type**
+
+*   [Screencast](/python/docs/api/class-screencast "Screencast")
+
+* * *
+
 ### touchscreen[​](#page-touchscreen "Direct link to touchscreen")
 
 Added before v1.9 page.touchscreen
@@ -23368,7 +23952,7 @@ Added before v1.9 page.url
 
 Added before v1.9 page.video
 
-Video object associated with this page.
+Video object associated with this page. Can be used to access the video file when using the `recordVideo` context option.
 
 **Usage**
 
@@ -24209,7 +24793,7 @@ Usage of the [History API](https://developer.mozilla.org/en-US/docs/Web/API/Hist
     
 *   `url` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") | [Pattern](https://docs.python.org/3/library/re.html "Pattern") | [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[URL](https://en.wikipedia.org/wiki/URL "URL")\]:[bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_[#](#page-wait-for-navigation-option-url)
     
-    A glob pattern, regex pattern or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+    A glob pattern, regex pattern, or predicate receiving [URL](https://en.wikipedia.org/wiki/URL "URL") to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
     
 *   `wait_until` "load" | "domcontentloaded" | "networkidle" | "commit" _(optional)_[#](#page-wait-for-navigation-option-wait-until)
     
@@ -25536,6 +26120,24 @@ Returns resource size information for given request.
 Properties[​](#properties "Direct link to Properties")
 ------------------------------------------------------
 
+### existing\_response[​](#request-existing-response "Direct link to existing_response")
+
+Added in: v1.59 request.existing\_response
+
+Returns the [Response](/python/docs/api/class-response "Response") object if the response has already been received, `null` otherwise.
+
+Unlike [request.response()](/python/docs/api/class-request#request-response), this method does not wait for the response to arrive. It returns immediately with the response object if the response has been received, or `null` if the response has not been received yet.
+
+**Usage**
+
+    request.existing_response
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None") | [Response](/python/docs/api/class-response "Response")[#](#request-existing-response-return)
+
+* * *
+
 ### failure[​](#request-failure "Direct link to failure")
 
 Added before v1.9 request.failure
@@ -25967,6 +26569,22 @@ An array with all the request HTTP headers associated with this response. Unlike
         
         Value of the header.
         
+
+* * *
+
+### http\_version[​](#response-http-version "Direct link to http_version")
+
+Added in: v1.59 response.http\_version
+
+Returns the http version used by the response.
+
+**Usage**
+
+    response.http_version()
+
+**Returns**
+
+*   [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")[#](#response-http-version-return)
 
 * * *
 
@@ -26492,6 +27110,203 @@ A request to be routed.
 
 *   [Request](/python/docs/api/class-request "Request")[#](#route-request-return)
 
+# Screencast
+
+Screencast
+==========
+
+Interface for capturing screencast frames from a page.
+
+* * *
+
+Methods[​](#methods "Direct link to Methods")
+---------------------------------------------
+
+### hide\_actions[​](#screencast-hide-actions "Direct link to hide_actions")
+
+Added in: v1.59 screencast.hide\_actions
+
+Removes action decorations.
+
+**Usage**
+
+    screencast.hide_actions()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#screencast-hide-actions-return)
+
+* * *
+
+### hide\_overlays[​](#screencast-hide-overlays "Direct link to hide_overlays")
+
+Added in: v1.59 screencast.hide\_overlays
+
+Hides overlays without removing them.
+
+**Usage**
+
+    screencast.hide_overlays()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#screencast-hide-overlays-return)
+
+* * *
+
+### show\_actions[​](#screencast-show-actions "Direct link to show_actions")
+
+Added in: v1.59 screencast.show\_actions
+
+Enables visual annotations on interacted elements. Returns a disposable that stops showing actions when disposed.
+
+**Usage**
+
+    screencast.show_actions()screencast.show_actions(**kwargs)
+
+**Arguments**
+
+*   `duration` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#screencast-show-actions-option-duration)
+    
+    How long each annotation is displayed in milliseconds. Defaults to `500`.
+    
+*   `font_size` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_[#](#screencast-show-actions-option-font-size)
+    
+    Font size of the action title in pixels. Defaults to `24`.
+    
+*   `position` "top-left" | "top" | "top-right" | "bottom-left" | "bottom" | "bottom-right" _(optional)_[#](#screencast-show-actions-option-position)
+    
+    Position of the action title overlay. Defaults to `"top-right"`.
+    
+
+**Returns**
+
+*   \[Disposable\][#](#screencast-show-actions-return)
+
+* * *
+
+### show\_chapter[​](#screencast-show-chapter "Direct link to show_chapter")
+
+Added in: v1.59 screencast.show\_chapter
+
+Shows a chapter overlay with a title and optional description, centered on the page with a blurred backdrop. Useful for narrating video recordings. The overlay is removed after the specified duration, or 2000ms.
+
+**Usage**
+
+    screencast.show_chapter(title)screencast.show_chapter(title, **kwargs)
+
+**Arguments**
+
+*   `title` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")[#](#screencast-show-chapter-option-title)
+    
+    Title text displayed prominently in the overlay.
+    
+*   `description` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#screencast-show-chapter-option-description)
+    
+    Optional description text displayed below the title.
+    
+*   `duration` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#screencast-show-chapter-option-duration)
+    
+    Duration in milliseconds after which the overlay is automatically removed. Defaults to `2000`.
+    
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#screencast-show-chapter-return)
+
+* * *
+
+### show\_overlay[​](#screencast-show-overlay "Direct link to show_overlay")
+
+Added in: v1.59 screencast.show\_overlay
+
+Adds an overlay with the given HTML content. The overlay is displayed on top of the page until removed. Returns a disposable that removes the overlay when disposed.
+
+**Usage**
+
+    screencast.show_overlay(html)screencast.show_overlay(html, **kwargs)
+
+**Arguments**
+
+*   `html` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")[#](#screencast-show-overlay-option-html)
+    
+    HTML content for the overlay.
+    
+*   `duration` [float](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "float") _(optional)_[#](#screencast-show-overlay-option-duration)
+    
+    Duration in milliseconds after which the overlay is automatically removed. Overlay stays until dismissed if not provided.
+    
+
+**Returns**
+
+*   \[Disposable\][#](#screencast-show-overlay-return)
+
+* * *
+
+### show\_overlays[​](#screencast-show-overlays "Direct link to show_overlays")
+
+Added in: v1.59 screencast.show\_overlays
+
+Shows overlays.
+
+**Usage**
+
+    screencast.show_overlays()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#screencast-show-overlays-return)
+
+* * *
+
+### start[​](#screencast-start "Direct link to start")
+
+Added in: v1.59 screencast.start
+
+Starts the screencast. When [path](/python/docs/api/class-screencast#screencast-start-option-path) is provided, it saves video recording to the specified file. When [on\_frame](/python/docs/api/class-screencast#screencast-start-option-on-frame) is provided, delivers JPEG-encoded frames to the callback. Both can be used together.
+
+**Usage**
+
+**Arguments**
+
+*   `on_frame` [Callable](https://docs.python.org/3/library/typing.html#typing.Callable "Callable")\[[Dict](https://docs.python.org/3/library/typing.html#typing.Dict "Dict")\]:[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise") _(optional)_[#](#screencast-start-option-on-frame)
+    
+    *   `data` [bytes](https://docs.python.org/3/library/stdtypes.html#bytes "bytes")
+        
+        JPEG-encoded frame data.
+        
+    
+    Callback that receives JPEG-encoded frame data.
+    
+*   `path` [Union](https://docs.python.org/3/library/typing.html#typing.Union "Union")\[[str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str"), [pathlib.Path](https://realpython.com/python-pathlib/ "pathlib.Path")\] _(optional)_[#](#screencast-start-option-path)
+    
+    Path where the video should be saved when the screencast is stopped. When provided, video recording is started.
+    
+*   `quality` [int](https://docs.python.org/3/library/stdtypes.html#numeric-types-int-float-complex "int") _(optional)_[#](#screencast-start-option-quality)
+    
+    The quality of the image, between 0-100.
+    
+
+**Returns**
+
+*   \[Disposable\][#](#screencast-start-return)
+
+* * *
+
+### stop[​](#screencast-stop "Direct link to stop")
+
+Added in: v1.59 screencast.stop
+
+Stops the screencast and video recording if active. If a video was being recorded, saves it to the path specified in [screencast.start()](/python/docs/api/class-screencast#screencast-start).
+
+**Usage**
+
+    screencast.stop()
+
+**Returns**
+
+*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#screencast-stop-return)
+
 # Selectors
 
 Selectors
@@ -26687,7 +27502,7 @@ Creates a new group within the trace, assigning any subsequent API calls to this
 
 **Returns**
 
-*   [NoneType](https://docs.python.org/3/library/constants.html#None "None")[#](#tracing-group-return)
+*   \[Disposable\][#](#tracing-group-return)
 
 * * *
 
@@ -26730,6 +27545,10 @@ The `context.tracing` API captures browser operations and network activity, but 
 
 **Arguments**
 
+*   `live` [bool](https://docs.python.org/3/library/stdtypes.html "bool") _(optional)_ Added in: v1.59[#](#tracing-start-option-live)
+    
+    When enabled, the trace is written to an unarchived file that is updated in real time as actions occur, instead of caching changes and archiving them into a zip file at the end. This is useful for live trace viewing during test execution.
+    
 *   `name` [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str") _(optional)_[#](#tracing-start-option-name)
     
     If specified, intermediate trace files are going to be saved into the files with the given name prefix inside the [traces\_dir](/python/docs/api/class-browsertype#browser-type-launch-option-traces-dir) directory specified in [browser\_type.launch()](/python/docs/api/class-browsertype#browser-type-launch). To specify the final trace zip file name, you need to pass `path` option to [tracing.stop()](/python/docs/api/class-tracing#tracing-stop) instead.
