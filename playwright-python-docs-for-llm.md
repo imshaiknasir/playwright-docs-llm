@@ -14497,6 +14497,66 @@ This method does not work across navigations, use [page.wait\_for\_selector()](/
 
 *   [NoneType](https://docs.python.org/3/library/constants.html#None "None") | [ElementHandle](/python/docs/api/class-elementhandle "ElementHandle")[#](#element-handle-wait-for-selector-return)
 
+# Error
+
+Error
+=====
+
+*   extends: [Exception](https://docs.python.org/3/library/exceptions.html#Exception "Exception")
+
+Error is raised whenever certain operations are terminated abnormally, e.g. browser closes while [page.evaluate()](/python/docs/api/class-page#page-evaluate) is running. All Playwright exceptions inherit from this class.
+
+* * *
+
+Properties[​](#properties "Direct link to Properties")
+------------------------------------------------------
+
+### message[​](#error-message "Direct link to message")
+
+Added in: v1.11 error.message
+
+Message of the error.
+
+**Usage**
+
+    error.message
+
+**Type**
+
+*   [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+
+* * *
+
+### name[​](#error-name "Direct link to name")
+
+Added in: v1.11 error.name
+
+Name of the error which got thrown inside the browser. Optional.
+
+**Usage**
+
+    error.name
+
+**Type**
+
+*   [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+
+* * *
+
+### stack[​](#error-stack "Direct link to stack")
+
+Added in: v1.11 error.stack
+
+Stack of the error which got thrown inside the browser. Optional.
+
+**Usage**
+
+    error.stack
+
+**Type**
+
+*   [str](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str "str")
+
 # FileChooser
 
 FileChooser
